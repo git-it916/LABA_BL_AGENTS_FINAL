@@ -4,7 +4,8 @@ __pycache__/
 *$py.class
 
 # 신승훈 추가함
-database/ 
+database/raw
+ 
 
 # C extensions
 *.so
