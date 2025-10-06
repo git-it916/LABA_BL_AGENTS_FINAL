@@ -30,3 +30,4 @@ traitlets==5.14.3
 tzdata==2025.2
 wcwidth==0.2.14
 openpyxl==3.1.5
+pyarrow==21.0.0
