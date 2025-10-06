@@ -8,7 +8,7 @@ def final():
     df = preprocessing(open_file('database', 'example.csv'))
 
     folder_name = 'database'
-    file_name = 'rf.csv'
+    file_name = 'DTB3.csv'
     file_path = os.path.join(folder_name, file_name)
     df_rf = pd.read_csv(file_path)
 
