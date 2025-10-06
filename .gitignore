@@ -6,6 +6,7 @@ __pycache__/
 # 신승훈 추가함
 database/raw
 database/monthly
+database/sector
 
 # C extensions
 *.so
