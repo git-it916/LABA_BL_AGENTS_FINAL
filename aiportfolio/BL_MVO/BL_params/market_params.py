@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-from ..utils.making_ExcessReturn import final
+from ..prepare.making_excessreturn import final
 
 # N: 자산 개수
 # K: 견해 개수
