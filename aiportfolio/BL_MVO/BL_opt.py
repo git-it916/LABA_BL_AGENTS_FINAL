@@ -9,7 +9,7 @@ def BL_optimization(tau, start_date=None, end_date=None):
     end_date = end_date
 
     # view_params
-    view_params = BlackLittermanMatrixGenerator(n_assets=9)
+    view_params = BlackLittermanMatrixGenerator(n_assets=11)
     my_matrices = view_params.generate_all_matrices(k_views=5)
     P = my_matrices['P']
     Q = my_matrices['Q']

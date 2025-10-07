@@ -1,16 +1,19 @@
 import os
 import pandas as pd
 
-from .open_file import open_file
-from .preprocessing import preprocessing
+from aiportfolio.util.data_cleanse.changing_rf_YtoM import changing_rf_YtoM
 
 def final():
-    df = preprocessing(open_file('database', 'example.csv'))
-
-    folder_name = 'database'
-    file_name = 'DTB3.csv'
+    folder_name = 'database/processed_view'
+    file_name = 'df_sector_full_view.csv'
     file_path = os.path.join(folder_name, file_name)
-    df_rf = pd.read_csv(file_path)
+    df = pd.read_csv(file_path)
+
+    print(df.info())
+    df['date'] = pd.to_datetime(df['date'])
+    df['RET_SEC'] = pd.to_numeric(df['RET_SEC'], errors='coerce')
+
+    df_rf = changing_rf_YtoM()
 
     df_rf['date'] = pd.to_datetime(df_rf['date'])
 
@@ -24,6 +27,10 @@ def final():
     # 초과수익률 생성
     merged_df['ExcessReturn'] = merged_df['RET_SEC'] - merged_df['rf']
 
-    final_df = merged_df[['date', 'SECTOR', 'ExcessReturn', 'MKT_SEC']]
-
+    final_df = merged_df[['date', 'GICS Sector', 'ExcessReturn', 'MKT_SEC']]
+    
     return final_df
+
+if __name__ == "__main__":
+    a = final()
+    print(a)

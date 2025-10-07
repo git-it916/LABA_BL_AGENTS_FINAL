@@ -18,7 +18,7 @@ class Market_Params:
     # Sigma: 초과수익률 공분산 행렬 (N*N)
     def making_sigma(self):
         filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
-        pivot_filtered_df = filtered_df.pivot_table(index='date', columns='SECTOR', values='ExcessReturn')
+        pivot_filtered_df = filtered_df.pivot_table(index='date', columns='GICS Sector', values='ExcessReturn')
         sigma = pivot_filtered_df.cov()
         return sigma
 
@@ -35,7 +35,7 @@ class Market_Params:
 
         # 가장 최근 날짜의 MKT_SEC 값만 선택
         # 날짜를 기준으로 내림차순 정렬 후 첫 번째 행을 선택 (가장 마지막 영업일)
-        last_day_data = filtered_df.sort_values(by='date', ascending=False).drop_duplicates(subset='SECTOR')
+        last_day_data = filtered_df.sort_values(by='date', ascending=False).drop_duplicates(subset='GICS Sector')
         
         # MKT_SEC 값을 reshape하여 행렬 곱셈이 가능하도록 함
         mkt_cap = last_day_data['MKT_SEC'].values.reshape(-1, 1)
