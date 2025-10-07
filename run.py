@@ -28,6 +28,7 @@ gamma = 0.1
 
 results = scene(tau=tau, gamma=gamma, forecast_period=forecast_period)
 
+'''
 # 결과 출력
 for i, scenario in enumerate(results):
     forecast_date = scenario['forecast_date'].strftime('%Y-%m-%d')
@@ -53,3 +54,4 @@ for i, scenario in enumerate(results):
     print("👉 텐전시 포트폴리오 비중 (w_tan):")
     print(w_tan_df.to_string(float_format="%.4f"))
     print("\n" + "-" * 60)
+'''

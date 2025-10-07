@@ -9,7 +9,6 @@ def final():
     file_path = os.path.join(folder_name, file_name)
     df = pd.read_csv(file_path)
 
-    print(df.info())
     df['date'] = pd.to_datetime(df['date'])
     df['RET_SEC'] = pd.to_numeric(df['RET_SEC'], errors='coerce')
 
@@ -30,7 +29,3 @@ def final():
     final_df = merged_df[['date', 'GICS Sector', 'ExcessReturn', 'MKT_SEC']]
     
     return final_df
-
-if __name__ == "__main__":
-    a = final()
-    print(a)

@@ -8,7 +8,7 @@ end_file_path = r"C:\Users\shins\OneDrive\문서\sp500_ticker_start_end.csv"
 output_path = r"C:\Users\shins\OneDrive\문서\merged_sp500.csv" 
 final_path = r"C:\Users\shins\OneDrive\문서\merged_final.csv"
 final2_path = r"C:\Users\shins\OneDrive\문서\merged_final2.csv"
-# 상윤 경로
+
 # --- 2. 데이터 불러오기 ---
 print("데이터를 불러오는 중입니다...")
 crsp_df = pd.read_csv(crsp_file_path, encoding='cp949')

@@ -1,9 +1,9 @@
 from .BL_MVO.BL_opt import BL_optimization
 from .BL_MVO.MVO_opt import MVO_Optimizer
 from .util.making_rollingdate import get_rolling_dates
+from .util.save_log_as_json import save_log_as_json
 
 def scene(tau, gamma, forecast_period):
-    
     tau = tau
     gamma = gamma
     forecast_period = forecast_period
@@ -23,16 +23,16 @@ def scene(tau, gamma, forecast_period):
 
         # MVO 실행
         mvo = MVO_Optimizer(BL[0], BL[1], BL[2])
-        w_delta_norm = mvo.optimize_utility_1(gamma)
         w_tan = mvo.optimize_tangency_1()
         
         # 결과 저장
         scenario_result = {
             "forecast_date": period['forecast_date'],
-            "w_delta_norm": w_delta_norm,
             "w_tan": w_tan,
             "SECTOR": BL[2]
         }
         results.append(scenario_result)
     
+    save_log_as_json(results)
+
     return results

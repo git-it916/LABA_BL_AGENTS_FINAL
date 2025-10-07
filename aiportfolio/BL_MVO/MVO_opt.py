@@ -9,6 +9,8 @@ class MVO_Optimizer:
         self.SECTOR = SECTOR
         self.n_assets = len(SECTOR)
 
+    # 아래는 롱온리랑 레버리지X 제약조건이 없어서 사용하지 않음
+    '''
     # 효용함수 최적화 포트폴리오
     def optimize_utility(self, gamma):
         gamma = gamma
@@ -39,6 +41,7 @@ class MVO_Optimizer:
         print("w_tan:\n", pd.Series(w_tan.flatten(), index=SECTOR))
 
         return w_tan
+    '''
     
     # 효용함수 최적화 포트폴리오
     def optimize_utility_1(self, gamma):
