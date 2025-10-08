@@ -2,23 +2,15 @@
 import numpy as np
 
 import BL_params.agent_confindence as ac
+import BL_params.view_params as vp
 
 analyst_mses = ac.analyst_mses
+current_forecasts = vp.current_forecasts
+
 
 # 소수점 출력을 보기 좋게 설정
 np.set_printoptions(precision=8, suppress=True)
 
-#  5개 비교군에 대한 애널리스트 4명의 '현재' 수익률 차이 전망치 (R_i,j)(상윤,승종, 승훈 ,은서 순)
-
-current_forecasts = np.array([
-    # IT>Fin, Disc>Stap, Health>Ind, Energy>Ind, Util>Fin / 이 기준대로
-    [-0.03, 0.03, 0.035, 0.020],  # 뷰 1: IT vs Financials
-    [0.02, 0.035, -0.02, 0.018],  # 뷰 2: Discretionary vs Staples
-    [0.01, -0.015, 0.025, 0.025],  # 뷰 3: Healthcare vs Industrials
-    [0.005, 0.04, 0.04, -0.008], # 뷰 4: Energy vs Industrials
-    [0.02, -0.025, 0.015, -0.012]  # 뷰 5: Utilities vs Financials
-])
-print(f"현재 애널리스트 전망치 (5x4 행렬):\n{current_forecasts}\n")
 
 # 전체 자산(섹터) 목록 및 공분산 행렬 (Sigma)
 # 앞에서 구해줘야 함
@@ -102,7 +94,7 @@ print(f"시장 균형 초과 수익률 Pi (8x1 벡터):\n{Pi.reshape(-1, 1)}\n")
 
 # P, Q, Omega를 사용하여 새로운 기대 초과 수익률 (Pi_new) 계산
 # Black-Litterman 공식: Pi_new = [ (tau*Sigma)^-1 + P.T * Omega^-1 * P ]^-1 * [ (tau*Sigma)^-1 * Pi + P.T * Omega^-1 * Q ]
-#P.T 전치행렬으미
+#P.T 전치행렬의미
 
 # 1. (tau*Sigma)^-1
 tau_sigma_inv = np.linalg.inv(tau * sigma)
@@ -120,4 +112,3 @@ term_B = (tau_sigma_inv @ Pi) + (PT_omega_inv @ Q)
 # 5. 최종 Pi_new 계산
 Pi_new = np.linalg.inv(term_A) @ term_B
 print(f"새로운 기대 초과 수익률 Pi_new (8x1 벡터):\n{Pi_new.reshape(-1, 1)}\n")
-print("-" * 50)
