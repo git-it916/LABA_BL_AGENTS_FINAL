@@ -37,7 +37,6 @@ sectors = [
 
 # 실제 데이터 기반의 Sigma 행렬 가져오기
 sigma = market_params.making_sigma()
-sigma = sigma.loc[sectors, sectors]
 print(f"자산 공분산 행렬 Sigma (11x11 행렬):\n{sigma}\n")
 
 # ⚖️ 모델의 신뢰도 파라미터 (Tau)
@@ -111,7 +110,7 @@ print("STEP 4: 최종 Black-Litterman 포트폴리오 계산")
 
 # 시장 균형 초과 수익률 (Pi)
 Pi = market_params.making_pi()
-print(f"시장 균형 초과 수익률 Pi (11X1 벡터):\n{Pi.values.reshape(-1, 1)}\n")
+print(f"시장 균형 초과 수익률 Pi (11X1 벡터):\n{Pi.reshape(-1, 1)}\n")
 
 # Black-Litterman 공식: Pi_new = [ (tau*Sigma)^-1 + P.T * Omega^-1 * P ]^-1 * [ (tau*Sigma)^-1 * Pi + P.T * Omega^-1 * Q ]
 
@@ -130,7 +129,7 @@ term_A = tau_sigma_inv + PT_omega_inv @ P
 # 4. [ (tau*Sigma)^-1 * Pi + P.T * Omega^-1 * Q ]
 # ✨✨✨ 여기가 가장 중요한 수정 지점입니다! ✨✨✨
 # Pi는 Pandas 객체이므로 반드시 .values를 붙여 NumPy 배열로 만들어야 합니다.
-term_B = (tau_sigma_inv @ Pi.values) + (PT_omega_inv @ Q)
+term_B = (tau_sigma_inv @ Pi) + (PT_omega_inv @ Q)
 
 # 5. 최종 Pi_new 계산
 Pi_new = np.linalg.inv(term_A) @ term_B

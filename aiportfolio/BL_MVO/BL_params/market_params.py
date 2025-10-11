@@ -84,7 +84,7 @@ class Market_Params:
         w_mkt = self.making_w_mkt()
         delta = self.making_delta()
         sigma = self.making_sigma()
-        pi = delta * sigma @ w_mkt
+        pi = delta * sigma.values @ w_mkt
         return pi
 
 
