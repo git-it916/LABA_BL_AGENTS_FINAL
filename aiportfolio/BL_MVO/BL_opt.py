@@ -94,7 +94,7 @@ for i in range(num_views):
 
     # 2. 뷰 포트폴리오의 분산 (P_i * Sigma * P_i^T) 계산
     P_row = P[i, :]
-    p_sigma_pT = P_row @ sigma.values @ P_row.T
+    p_sigma_pT = P_row @ sigma @ P_row.T
 
     # 3. 최종 omega_i 계산 및 행렬에 삽입
     omega_i = tau * sigma_q_i_sq * p_sigma_pT
@@ -109,14 +109,15 @@ print(f"최종 계산된 오메가 행렬 Omega (5x5 대각 행렬):\n{Omega}\n"
 print("STEP 4: 최종 Black-Litterman 포트폴리오 계산")
 
 # 시장 균형 초과 수익률 (Pi)
+Pi = np.zeros(len(sectors))
 Pi = market_params.making_pi()
 print(f"시장 균형 초과 수익률 Pi (11X1 벡터):\n{Pi.reshape(-1, 1)}\n")
 
 # Black-Litterman 공식: Pi_new = [ (tau*Sigma)^-1 + P.T * Omega^-1 * P ]^-1 * [ (tau*Sigma)^-1 * Pi + P.T * Omega^-1 * Q ]
-
+Pi_new = np.zeros(len(sectors))
 # 1. (tau*Sigma)^-1
 # sigma는 Pandas DataFrame이므로 .values를 사용합니다.
-tau_sigma_inv = np.linalg.inv(tau * sigma.values)
+tau_sigma_inv = np.linalg.inv(tau * sigma)
 
 # 2. P.T * Omega^-1
 omega_inv = np.linalg.inv(Omega)
@@ -125,14 +126,16 @@ PT_omega_inv = P.T @ omega_inv
 # 3. [ (tau*Sigma)^-1 + P.T * Omega^-1 * P ]
 # P는 이미 NumPy 배열이므로 .values가 필요 없습니다.
 term_A = tau_sigma_inv + PT_omega_inv @ P
+print(f"Term A (11x11 행렬):\n{term_A}\n")
 
-# 4. [ (tau*Sigma)^-1 * Pi + P.T * Omega^-1 * Q ]
-# ✨✨✨ 여기가 가장 중요한 수정 지점입니다! ✨✨✨
-# Pi는 Pandas 객체이므로 반드시 .values를 붙여 NumPy 배열로 만들어야 합니다.
-term_B = (tau_sigma_inv @ Pi) + (PT_omega_inv @ Q)
+# Pandas DataFrame인 Pi를 .values를 사용해 NumPy 배열로 변환하고,
+# 두 번째 항의 결과도 [:, np.newaxis]를 이용해 열벡터로 만들어 형태를 통일합니다.
+term_B_part1 = tau_sigma_inv @ Pi
+term_B_part2 = (PT_omega_inv @ Q)[:, np.newaxis]
+term_B = term_B_part1 + term_B_part2
 
-# 5. 최종 Pi_new 계산
+# 최종 Pi_new 계산
 Pi_new = np.linalg.inv(term_A) @ term_B
 
-# 출력 메시지의 벡터 크기를 (11x1 벡터)로 수정했습니다.
-print(f"새로운 기대 초과 수익률 Pi_new (11x1 벡터):\n{Pi_new.reshape(-1, 1)}\n")
+# Pi_new는 이미 (11, 1) 형태이므로 reshape이 필요 없습니다.
+print(f"새로운 기대 초과 수익률 Pi_new (11x1 벡터):\n{Pi_new}\n")
