@@ -3,7 +3,7 @@ import pandas as pd
 from aiportfolio.scene import scene
 
 #######################################
-# configuration
+# configuration / 옛날꺼 이 것도 수정해야 함
 #######################################
 # 연구 기간
 forecast_period = [

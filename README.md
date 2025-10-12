@@ -5,7 +5,7 @@ LABA (Lab for Accounting Big Data &amp; Artificial Intelligence) 4th project-bas
 
 
 structure:
-LABA_BL_AGENTS_FINAL
+LABA_BL_AGENTS_FINAL 
 ├── aiportfolio/
 │   ├── agents/
 │   │   ├── __init__.py

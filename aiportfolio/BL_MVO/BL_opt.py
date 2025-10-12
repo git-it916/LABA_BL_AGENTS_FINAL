@@ -1,32 +1,43 @@
 #2024년 5월 예측
 import numpy as np
 
-import BL_params.agent_confindence as ac
+import aiportfolio.BL_MVO.BL_params.agent_confindence as ac
+import aiportfolio.BL_MVO.BL_params.view_params as vp
+from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
+from datetime import datetime
 
+start_date = datetime(2021, 5, 1)
+end_date = datetime(2024, 4, 30)
+
+market_params = Market_Params(start_date, end_date)
+Pi = market_params.making_pi()
 analyst_mses = ac.analyst_mses
+current_forecasts = vp.current_forecasts
+
 
 # 소수점 출력을 보기 좋게 설정
 np.set_printoptions(precision=8, suppress=True)
 
-#  5개 비교군에 대한 애널리스트 4명의 '현재' 수익률 차이 전망치 (R_i,j)(상윤,승종, 승훈 ,은서 순)
-
-current_forecasts = np.array([
-    # IT>Fin, Disc>Stap, Health>Ind, Energy>Ind, Util>Fin / 이 기준대로
-    [-0.03, 0.03, 0.035, 0.020],  # 뷰 1: IT vs Financials
-    [0.02, 0.035, -0.02, 0.018],  # 뷰 2: Discretionary vs Staples
-    [0.01, -0.015, 0.025, 0.025],  # 뷰 3: Healthcare vs Industrials
-    [0.005, 0.04, 0.04, -0.008], # 뷰 4: Energy vs Industrials
-    [0.02, -0.025, 0.015, -0.012]  # 뷰 5: Utilities vs Financials
-])
-print(f"현재 애널리스트 전망치 (5x4 행렬):\n{current_forecasts}\n")
 
 # 전체 자산(섹터) 목록 및 공분산 행렬 (Sigma)
 # 앞에서 구해줘야 함
-sectors = ['IT', 'Financials', 'Discretionary', 'Staples', 'Healthcare', 'Industrials', 'Energy', 'Utilities']
-np.random.seed(42)
-temp_matrix = np.random.rand(8, 8)
-sigma = np.dot(temp_matrix, temp_matrix.T) / 100  # Positive semi-definite 행렬 생성
-print(f"자산 공분산 행렬 Sigma (8x8 행렬):\n{sigma}\n")
+sectors = [
+    'Communication Services',
+    'Consumer Discretionary',
+    'Consumer Staples',
+    'Energy',
+    'Financials',
+    'Health Care',
+    'Industrials',
+    'Information Technology',
+    'Materials',
+    'Real Estate',
+    'Utilities'
+]
+
+# 실제 데이터 기반의 Sigma 행렬 가져오기
+sigma = market_params.making_sigma()
+print(f"자산 공분산 행렬 Sigma (11x11 행렬):\n{sigma}\n")
 
 # ⚖️ 모델의 신뢰도 파라미터 (Tau)
 tau = 0.025
@@ -46,17 +57,21 @@ analyst_weights = inverse_mses / np.sum(inverse_mses)
 # 피킹 행렬 (P) 및 뷰 벡터 (Q) 생성
 
 
-# 피킹 행렬 P 정의 (5개 뷰 x 8개 섹터)
-# 롱 포지션(+1), 숏 포지션(-1)
+# 피킹 행렬 P 정의 (5개 뷰 x 11개 섹터)
+# 섹터 순서: Communication Services, Consumer Discretionary, Consumer Staples, Energy, Financials, Health Care, Industrials, Information Technology, Materials, Real Estate, Utilities
 P = np.array([
-    # IT, Fin, Disc, Stap, Health, Ind, Energy, Util
-    [1, -1, 0, 0, 0, 0, 0, 0],   # 뷰 1: IT > Financials
-    [0, 0, 1, -1, 0, 0, 0, 0],   # 뷰 2: Discretionary > Staples
-    [0, 0, 0, 0, 1, -1, 0, 0],   # 뷰 3: Healthcare > Industrials
-    [0, 0, 0, 0, 0, -1, 1, 0],   # 뷰 4: Energy > Industrials
-    [0, -1, 0, 0, 0, 0, 0, 1]    # 뷰 5: Utilities > Financials
+    # IT vs Financials
+    [0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0],   # 뷰 1: IT > Financials
+    # Discretionary vs Staples
+    [0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0],   # 뷰 2: Discretionary > Staples
+    # Healthcare vs Industrials
+    [0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0],   # 뷰 3: Healthcare > Industrials
+    # Energy vs Industrials
+    [0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0],   # 뷰 4: Energy > Industrials
+    # Utilities vs Financials
+    [0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1]    # 뷰 5: Utilities > Financials
 ])
-print(f"피킹 행렬 P (5x8 행렬):\n{P}\n")
+print(f"피킹 행렬 P (5x11 행렬):\n{P}\n")
 
 # 뷰 벡터 Q 계산 (전망치 행렬과 가중치 벡터의 내적)
 Q = np.dot(current_forecasts, analyst_weights)
@@ -78,8 +93,8 @@ for i in range(num_views):
     sigma_q_i_sq = np.var(forecasts_for_view)
 
     # 2. 뷰 포트폴리오의 분산 (P_i * Sigma * P_i^T) 계산
-    Pi = P[i, :]
-    p_sigma_pT = Pi @ sigma @ Pi.T
+    P_row = P[i, :]
+    p_sigma_pT = P_row @ sigma.values @ P_row.T
 
     # 3. 최종 omega_i 계산 및 행렬에 삽입
     omega_i = tau * sigma_q_i_sq * p_sigma_pT
@@ -94,30 +109,30 @@ print(f"최종 계산된 오메가 행렬 Omega (5x5 대각 행렬):\n{Omega}\n"
 print("STEP 4: 최종 Black-Litterman 포트폴리오 계산")
 
 # 시장 균형 초과 수익률 (Pi)
-# 이 예제에서는 단순화를 위해 Pi를 0으로 설정합니다.
-# 실제로는 마켓 포트폴리오의 초과 수익률을 사용해야 합니다.
-# MVO_opt.py 또는 별도 모듈에서 계산되어 넘어와야 합니다.
-Pi = np.zeros(len(sectors))
-print(f"시장 균형 초과 수익률 Pi (8x1 벡터):\n{Pi.reshape(-1, 1)}\n")
+Pi = market_params.making_pi()
+print(f"시장 균형 초과 수익률 Pi (11X1 벡터):\n{Pi.reshape(-1, 1)}\n")
 
-# P, Q, Omega를 사용하여 새로운 기대 초과 수익률 (Pi_new) 계산
 # Black-Litterman 공식: Pi_new = [ (tau*Sigma)^-1 + P.T * Omega^-1 * P ]^-1 * [ (tau*Sigma)^-1 * Pi + P.T * Omega^-1 * Q ]
-#P.T 전치행렬으미
 
 # 1. (tau*Sigma)^-1
-tau_sigma_inv = np.linalg.inv(tau * sigma)
+# sigma는 Pandas DataFrame이므로 .values를 사용합니다.
+tau_sigma_inv = np.linalg.inv(tau * sigma.values)
 
 # 2. P.T * Omega^-1
 omega_inv = np.linalg.inv(Omega)
 PT_omega_inv = P.T @ omega_inv
 
 # 3. [ (tau*Sigma)^-1 + P.T * Omega^-1 * P ]
+# P는 이미 NumPy 배열이므로 .values가 필요 없습니다.
 term_A = tau_sigma_inv + PT_omega_inv @ P
 
 # 4. [ (tau*Sigma)^-1 * Pi + P.T * Omega^-1 * Q ]
+# ✨✨✨ 여기가 가장 중요한 수정 지점입니다! ✨✨✨
+# Pi는 Pandas 객체이므로 반드시 .values를 붙여 NumPy 배열로 만들어야 합니다.
 term_B = (tau_sigma_inv @ Pi) + (PT_omega_inv @ Q)
 
 # 5. 최종 Pi_new 계산
 Pi_new = np.linalg.inv(term_A) @ term_B
-print(f"새로운 기대 초과 수익률 Pi_new (8x1 벡터):\n{Pi_new.reshape(-1, 1)}\n")
-print("-" * 50)
+
+# 출력 메시지의 벡터 크기를 (11x1 벡터)로 수정했습니다.
+print(f"새로운 기대 초과 수익률 Pi_new (11x1 벡터):\n{Pi_new.reshape(-1, 1)}\n")
