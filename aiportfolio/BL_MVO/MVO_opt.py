@@ -32,6 +32,9 @@ class MVO_Optimizer:
         def objective_function(weights, mu, sigma):
             portfolio_return = np.dot(weights.T, mu)
             portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(sigma, weights)))
+            # 분모가 0이 되는 경우를 방지
+            if portfolio_volatility == 0:
+                return 0
             sharpe_ratio = portfolio_return / portfolio_volatility
             return -sharpe_ratio # Minimize the negative Sharpe Ratio
 
@@ -55,6 +58,10 @@ class MVO_Optimizer:
         )
         
         w_tan = result.x.reshape(-1, 1)
+        
+        # <<< 가중치 합이 1이 되도록 정규화하는 코드 추가 >>>
+        w_tan = w_tan / np.sum(w_tan)
+        
         print("w_tan:\n", pd.Series(w_tan.flatten(), index=SECTOR).to_string(float_format='{:,.4f}'.format))
 
         return w_tan
