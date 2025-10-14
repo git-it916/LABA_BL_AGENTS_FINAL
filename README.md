@@ -1,8 +1,9 @@
 # LABA_BL_AGENTS_FINAL
 LABA (Lab for Accounting Big Data &amp; Artificial Intelligence) 4th project-based semester: [Integrating an LLM-Agent into Investor Views for the traditional Black-Litterman Model]
 
-
-
+가상환경 실행
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 
 structure:
 LABA_BL_AGENTS_FINAL 
