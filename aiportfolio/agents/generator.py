@@ -1,12 +1,30 @@
-import numpy as np
+from transformers import pipeline
 
-current_forecasts = np.array([
-    # IT>Fin, Disc>Stap, Health>Ind, Energy>Ind, Util>Fin / 이 기준대로
-    [-0.03, 0.03, 0.035, 0.01],  # 뷰 1: IT vs Financials
-    [0.02, 0.035, -0.02, 0.02],  # 뷰 2: Discretionary vs Staples
-    [0.01, -0.015, -0.025, -0.01],  # 뷰 3: Healthcare vs Industrials
-    [0.005, 0.04, 0.04, -0.008], # 뷰 4: Energy vs Industrials
-    [0.02, -0.025, 0.015, -0.01]  # 뷰 5: Utilities vs Financials
-])
+class llamaAgent:
+    def __init__(self, model_id="meta-llama/Meta-Llama-3-8B-Instruct"):
+        self.pipe = pipeline(
+            "text-generation",
+            model=model_id,
+            model_kwargs={"torch_dtype": "bfloat16"},
+            device_map="auto"
+        )
 
-analyst_mses = np.array([0.00020, 0.00020, 0.00020, 0.00020])
+    def chat(self, system_prompt, user_prompt,
+            max_new_tokens=256, temperature=0.6, top_p=0.9):
+
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+
+        prompt = self.pipe.tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True
+        )
+
+        outputs = self.pipe(prompt,
+                            max_new_tokens=max_new_tokens,
+                            do_sample=True,
+                            temperature=temperature,
+                            top_p=top_p)
+
+        return outputs[0]["generated_text"]
