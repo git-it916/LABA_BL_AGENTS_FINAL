@@ -33,5 +33,21 @@ weights_df = pd.DataFrame({
     'Weights (SciPy Long-Only)': w_tan_scipy.flatten()
 }, index=sectors)
 
-print(weights_df.to_string(float_format="%.4f"))
+
+# 결과를 표시할 새로운 데이터프레임 생성
+display_df = pd.DataFrame(index=weights_df.index)
+
+# 각 열(포트폴리오)에 대해 반올림, 정규화, 포맷팅을 순차적으로 적용
+for column in weights_df.columns:
+    # 1. 소수점 셋째 자리에서 반올림
+    rounded_weights = weights_df[column].round(3)
+    
+    # 2. 반올림된 가중치의 합이 1이 되도록 다시 정규화
+    normalized_weights = rounded_weights / rounded_weights.sum()
+    
+    # 3. 백분율(%) 형태로 변환하여 display_df에 저장
+    display_df[column] = normalized_weights.apply('{:.2%}'.format)
+
+# 최종 결과 출력
+print(display_df)
 print("-" * 50)

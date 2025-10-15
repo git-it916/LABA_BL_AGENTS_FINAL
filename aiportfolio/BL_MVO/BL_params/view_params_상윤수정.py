@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 # Analyst confidence and view parameters
-from aiportfolio.agents.generator import generated_view
+from aiportfolio.agents.generator_potato import generated_view
 
 def get_view_params(sigma, tau):
     """

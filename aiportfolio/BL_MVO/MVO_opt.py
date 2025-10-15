@@ -58,10 +58,13 @@ class MVO_Optimizer:
         )
         
         w_tan = result.x.reshape(-1, 1)
+                # 1. 소수점 셋째 자리에서 반올림
+        w_tan_rounded = np.round(w_tan, 3)
         
-        # <<< 가중치 합이 1이 되도록 정규화하는 코드 추가 >>>
-        w_tan = w_tan / np.sum(w_tan)
+        # 2. 반올림된 가중치의 합이 1이 되도록 다시 정규화
+        w_tan_normalized = w_tan_rounded / np.sum(w_tan_rounded)
         
-        print("w_tan:\n", pd.Series(w_tan.flatten(), index=SECTOR).to_string(float_format='{:,.4f}'.format))
+        # 3. 결과를 백분율(%) 형태로 출력 (소수점 둘째 자리까지)
+        print("w_tan:\n", pd.Series(w_tan_normalized.flatten(), index=SECTOR).to_string(float_format='{:.2%}'.format))
 
-        return w_tan
+        return w_tan_normalized
