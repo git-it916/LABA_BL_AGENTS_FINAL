@@ -7,6 +7,11 @@ from aiportfolio.scene import scene
 #######################################
 # 연구 기간
 forecast_period = [
+    "24-05-31"
+]
+
+'''
+forecast_period = [
     "24-05-31",
     "24-06-30",
     "24-07-31",
@@ -16,17 +21,16 @@ forecast_period = [
     "24-11-30",
     "24-12-31"
 ]
+'''
 
 # tau: 시장 불확실성(pi 계산용)
 tau = 0.025
-# gamma: 위험회피계수(MVO 최적화용)
-gamma = 0.1
 
 #######################################
 # run
 #######################################
 
-results = scene(tau=tau, gamma=gamma, forecast_period=forecast_period)
+results = scene(tau=tau, forecast_period=forecast_period)
 
 '''
 # 결과 출력

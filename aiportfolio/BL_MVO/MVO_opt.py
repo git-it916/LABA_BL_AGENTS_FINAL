@@ -3,18 +3,17 @@ import numpy as np
 from scipy.optimize import minimize
 
 class MVO_Optimizer:
-    def __init__(self, mu_BL, tausigma, SECTOR):
-        self.mu_BL = mu_BL.values.reshape(-1, 1)
-        self.tausigma = tausigma
-        self.SECTOR = SECTOR
-        self.n_assets = len(SECTOR)
-
-    # 아래는 롱온리랑 레버리지X 제약조건이 없어서 사용하지 않음
+    def __init__(self, pi_new, tau, sigma, sectors):
+        self.pi_new = pi_new.reshape(-1, 1)
+        self.tau = tau
+        self.sigma = sigma
+        self.SECTOR = sectors
+        self.n_assets = len(sectors)
 
     # 탄젠트 최적화 포트폴리오(지금은 rf=0 가정, 원래는 rf 들어가야 함) 
     def optimize_tangency(self):
-        mu_BL = self.mu_BL
-        tausigma = self.tausigma
+        mu_BL = self.pi_new
+        tausigma = self.tau * self.sigma
         SECTOR = self.SECTOR
 
         tausigma_inv = np.linalg.inv(tausigma)
@@ -27,6 +26,7 @@ class MVO_Optimizer:
 
     # 탄젠트 최적화 포트폴리오(지금은 rf=0 가정, 원래는 rf 들어가야 함) 
     def optimize_tangency_1(self):
+        tausigma = self.tau * self.sigma
         SECTOR = self.SECTOR
         # Objective function to minimize (negative of the Sharpe Ratio)
         def objective_function(weights, mu, sigma):
@@ -51,7 +51,7 @@ class MVO_Optimizer:
         result = minimize(
             objective_function, 
             initial_weights, 
-            args=(self.mu_BL, self.tausigma),
+            args=(self.pi_new, tausigma),
             method='SLSQP',
             bounds=bounds,
             constraints=constraints

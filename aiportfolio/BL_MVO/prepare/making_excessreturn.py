@@ -28,10 +28,6 @@ def final():
 
     final_df = merged_df[['date', 'GICS Sector', 'ExcessReturn', 'MKT_SEC']]
 
-
-    print(final_df.head(30))    
-
-    
     return final_df
 
 if __name__ == "__main__":

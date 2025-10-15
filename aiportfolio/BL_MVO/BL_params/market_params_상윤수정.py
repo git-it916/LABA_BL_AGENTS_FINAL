@@ -3,28 +3,7 @@ import numpy as np
 import os
 from datetime import datetime
 from aiportfolio.BL_MVO.prepare.making_excessreturn import final
-'''
-# 가정: from ..prepare.making_excessreturn import final 코드는
-# 아래와 같은 형식의 DataFrame을 반환한다고 가정합니다.
-# 실제 실행을 위해 예시 데이터를 생성합니다.
-def create_dummy_data():
-    dates = pd.to_datetime(pd.date_range(start='2024-04-01', end='2024-04-30', freq='B'))
-    sectors = ['Technology', 'Financials', 'Healthcare', 'Industrials']
-    data = []
-    for date in dates:
-        for sector in sectors:
-            data.append({
-                'date': date,
-                'GICS Sector': sector,
-                'ExcessReturn': np.random.randn() * 0.01,
-                'MKT_SEC': np.random.randint(1000, 5000) * 1e9
-            })
-    return pd.DataFrame(data)
 
-# from ..prepare.making_excessreturn import final
-# 위 라인 대신 예시 함수를 사용합니다.
-final = create_dummy_data
-'''
 # N: 자산 개수
 # K: 견해 개수
 # sigma: 초과수익률 공분산 행렬 (N*N)
@@ -86,29 +65,3 @@ class Market_Params:
         sigma = self.making_sigma()
         pi = delta * sigma.values @ w_mkt
         return pi
-
-'''
-# 분석할 기간 설정 / 이거 우리  date time 형식이 어떻게 되지..?
-start_date = datetime(2021, 5, 1)
-end_date = datetime(2024, 4, 30)
-
-# Market_Params 클래스의 인스턴스 생성
-market_params_calculator = Market_Params(start_date, end_date)
-
-# 공분산 행렬(sigma) 계산
-sigma_matrix = market_params_calculator.making_sigma()
-
-# 내재 시장 균형 초과수익률(pi) 계산
-pi_vector = market_params_calculator.making_pi()
-
-# 결과 출력
-print("="*60)
-print(f"분석 기간: {start_date.strftime('%Y-%m-%d')} ~ {end_date.strftime('%Y-%m-%d')}")
-print("="*60)
-print("계산된 초과수익률 공분산 행렬 (Sigma Matrix):")
-print(sigma_matrix)
-print("\n" + "="*60)
-print("계산된 내재 시장 균형 초과수익률 (Pi Vector):")
-print(pi_vector)
-print("="*60)
-'''
