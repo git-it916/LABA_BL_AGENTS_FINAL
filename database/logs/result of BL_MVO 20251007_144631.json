@@ -1,42 +1,42 @@
 [
     {
         "forecast_date": "2024-05-31 00:00:00",
-        "w_tan": "[[1.30307142e-01]\n [3.40710533e-17]\n [0.00000000e+00]\n [1.02999206e-18]\n [5.27455653e-01]\n [1.05167611e-17]\n [0.00000000e+00]\n [1.67363788e-01]\n [2.04372110e-16]\n [1.01336140e-01]\n [7.35372766e-02]]",
+        "w_tan": "[[1.77809156e-17]\n [0.00000000e+00]\n [7.06682976e-16]\n [1.17527515e-16]\n [0.00000000e+00]\n [1.11672824e-17]\n [4.43390313e-01]\n [3.52986324e-01]\n [0.00000000e+00]\n [3.98986399e-17]\n [2.03623363e-01]]",
         "SECTOR": "Index(['Communication Services', 'Consumer Discretionary', 'Consumer Staples',\n       'Energy', 'Financials', 'Health Care', 'Industrials',\n       'Information Technology', 'Materials', 'Real Estate', 'Utilities'],\n      dtype='object', name='GICS Sector')"
     },
     {
         "forecast_date": "2024-06-30 00:00:00",
-        "w_tan": "[[2.01855989e-16]\n [9.19658176e-02]\n [7.99262919e-02]\n [0.00000000e+00]\n [0.00000000e+00]\n [2.78687272e-01]\n [3.15939177e-02]\n [4.29995489e-01]\n [0.00000000e+00]\n [8.78312114e-02]\n [9.41479474e-17]]",
+        "w_tan": "[[1.58820503e-02]\n [2.28631133e-17]\n [6.19120113e-02]\n [2.50273153e-02]\n [1.22970470e-01]\n [5.29599657e-02]\n [4.20863341e-01]\n [4.69527753e-02]\n [2.16853685e-01]\n [0.00000000e+00]\n [3.65783868e-02]]",
         "SECTOR": "Index(['Communication Services', 'Consumer Discretionary', 'Consumer Staples',\n       'Energy', 'Financials', 'Health Care', 'Industrials',\n       'Information Technology', 'Materials', 'Real Estate', 'Utilities'],\n      dtype='object', name='GICS Sector')"
     },
     {
         "forecast_date": "2024-07-31 00:00:00",
-        "w_tan": "[[0.00000000e+00]\n [0.00000000e+00]\n [1.39190759e-17]\n [2.14506837e-02]\n [1.10629779e-17]\n [7.62049718e-02]\n [2.02537798e-01]\n [3.33488816e-17]\n [6.99806547e-01]\n [0.00000000e+00]\n [2.27363717e-17]]",
+        "w_tan": "[[0.00000000e+00]\n [9.08207541e-02]\n [0.00000000e+00]\n [0.00000000e+00]\n [4.20945732e-16]\n [4.33256937e-01]\n [2.17244626e-16]\n [3.65882051e-01]\n [4.30535836e-17]\n [1.10040258e-01]\n [0.00000000e+00]]",
         "SECTOR": "Index(['Communication Services', 'Consumer Discretionary', 'Consumer Staples',\n       'Energy', 'Financials', 'Health Care', 'Industrials',\n       'Information Technology', 'Materials', 'Real Estate', 'Utilities'],\n      dtype='object', name='GICS Sector')"
     },
     {
         "forecast_date": "2024-08-31 00:00:00",
-        "w_tan": "[[1.87035363e-16]\n [1.00365891e-16]\n [4.38088827e-16]\n [6.32072692e-17]\n [0.00000000e+00]\n [1.00000000e+00]\n [0.00000000e+00]\n [7.96723462e-16]\n [0.00000000e+00]\n [6.20910789e-16]\n [0.00000000e+00]]",
+        "w_tan": "[[6.19296281e-16]\n [6.55942314e-17]\n [1.57209315e-17]\n [0.00000000e+00]\n [6.78710560e-17]\n [3.27971157e-17]\n [0.00000000e+00]\n [1.46113678e-01]\n [5.34372013e-01]\n [1.29562160e-17]\n [3.19514309e-01]]",
         "SECTOR": "Index(['Communication Services', 'Consumer Discretionary', 'Consumer Staples',\n       'Energy', 'Financials', 'Health Care', 'Industrials',\n       'Information Technology', 'Materials', 'Real Estate', 'Utilities'],\n      dtype='object', name='GICS Sector')"
     },
     {
         "forecast_date": "2024-09-30 00:00:00",
-        "w_tan": "[[0.00000000e+00]\n [0.00000000e+00]\n [1.01307851e-15]\n [0.00000000e+00]\n [0.00000000e+00]\n [1.00000000e+00]\n [0.00000000e+00]\n [0.00000000e+00]\n [0.00000000e+00]\n [0.00000000e+00]\n [0.00000000e+00]]",
+        "w_tan": "[[3.39019317e-01]\n [6.44993233e-02]\n [1.69507622e-02]\n [1.04118716e-02]\n [7.29102924e-02]\n [6.24778817e-02]\n [6.64097180e-18]\n [4.33730552e-01]\n [0.00000000e+00]\n [2.64695172e-18]\n [1.46887607e-17]]",
         "SECTOR": "Index(['Communication Services', 'Consumer Discretionary', 'Consumer Staples',\n       'Energy', 'Financials', 'Health Care', 'Industrials',\n       'Information Technology', 'Materials', 'Real Estate', 'Utilities'],\n      dtype='object', name='GICS Sector')"
     },
     {
         "forecast_date": "2024-10-31 00:00:00",
-        "w_tan": "[[0.00000000e+00]\n [2.13252467e-17]\n [0.00000000e+00]\n [3.54215947e-01]\n [6.69229791e-02]\n [1.28912328e-16]\n [1.41085103e-16]\n [4.67038505e-01]\n [1.11822569e-01]\n [0.00000000e+00]\n [8.37410744e-17]]",
+        "w_tan": "[[5.58798591e-02]\n [2.90972758e-17]\n [2.38177578e-01]\n [0.00000000e+00]\n [4.85697162e-17]\n [3.94732483e-01]\n [1.07113245e-16]\n [2.37080756e-01]\n [0.00000000e+00]\n [0.00000000e+00]\n [7.41293239e-02]]",
         "SECTOR": "Index(['Communication Services', 'Consumer Discretionary', 'Consumer Staples',\n       'Energy', 'Financials', 'Health Care', 'Industrials',\n       'Information Technology', 'Materials', 'Real Estate', 'Utilities'],\n      dtype='object', name='GICS Sector')"
     },
     {
         "forecast_date": "2024-11-30 00:00:00",
-        "w_tan": "[[0.00000000e+00]\n [3.49461897e-01]\n [3.18370752e-01]\n [3.04669418e-02]\n [4.28307023e-03]\n [1.49213324e-17]\n [1.77727273e-01]\n [1.07749493e-01]\n [2.17441774e-05]\n [0.00000000e+00]\n [1.19188290e-02]]",
+        "w_tan": "[[3.50778933e-02]\n [6.35105111e-02]\n [3.11625751e-02]\n [1.81603864e-18]\n [0.00000000e+00]\n [1.91903785e-17]\n [6.01732206e-18]\n [2.09595779e-01]\n [2.76471554e-18]\n [0.00000000e+00]\n [6.60653242e-01]]",
         "SECTOR": "Index(['Communication Services', 'Consumer Discretionary', 'Consumer Staples',\n       'Energy', 'Financials', 'Health Care', 'Industrials',\n       'Information Technology', 'Materials', 'Real Estate', 'Utilities'],\n      dtype='object', name='GICS Sector')"
     },
     {
         "forecast_date": "2024-12-31 00:00:00",
-        "w_tan": "[[0.00000000e+00]\n [0.00000000e+00]\n [5.47826664e-01]\n [0.00000000e+00]\n [0.00000000e+00]\n [2.05046568e-01]\n [0.00000000e+00]\n [2.47126769e-01]\n [0.00000000e+00]\n [0.00000000e+00]\n [6.39687686e-16]]",
+        "w_tan": "[[2.89757796e-01]\n [6.25084959e-02]\n [0.00000000e+00]\n [8.75503777e-03]\n [5.05916047e-02]\n [1.43040148e-16]\n [3.16714684e-02]\n [1.04946775e-01]\n [0.00000000e+00]\n [4.24602579e-01]\n [2.71662432e-02]]",
         "SECTOR": "Index(['Communication Services', 'Consumer Discretionary', 'Consumer Staples',\n       'Energy', 'Financials', 'Health Care', 'Industrials',\n       'Information Technology', 'Materials', 'Real Estate', 'Utilities'],\n      dtype='object', name='GICS Sector')"
     }
 ]

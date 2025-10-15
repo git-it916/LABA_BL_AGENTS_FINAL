@@ -1,0 +1,12 @@
+import numpy as np
+
+current_forecasts = np.array([
+    # IT>Fin, Disc>Stap, Health>Ind, Energy>Ind, Util>Fin / 이 기준대로
+    [-0.03, 0.03, 0.035, 0.01],  # 뷰 1: IT vs Financials
+    [0.02, 0.035, -0.02, 0.02],  # 뷰 2: Discretionary vs Staples
+    [0.01, -0.015, -0.025, -0.01],  # 뷰 3: Healthcare vs Industrials
+    [0.005, 0.04, 0.04, -0.008], # 뷰 4: Energy vs Industrials
+    [0.02, -0.025, 0.015, -0.01]  # 뷰 5: Utilities vs Financials
+])
+
+analyst_mses = np.array([0.00020, 0.00020, 0.00020, 0.00020])
