@@ -3,21 +3,20 @@ import numpy as np
 from scipy.optimize import minimize
 
 class MVO_Optimizer:
-    def __init__(self, pi_new, tau, sigma, sectors):
-        self.pi_new = pi_new.reshape(-1, 1)
-        self.tau = tau
+    def __init__(self, mu, sigma, sectors):
+        self.mu = mu
         self.sigma = sigma
         self.SECTOR = sectors
         self.n_assets = len(sectors)
 
     # 탄젠트 최적화 포트폴리오(지금은 rf=0 가정, 원래는 rf 들어가야 함) 
     def optimize_tangency(self):
-        mu_BL = self.pi_new
-        tausigma = self.tau * self.sigma
+        mu_BL = self.mu
+        sigma = self.sigma
         SECTOR = self.SECTOR
 
-        tausigma_inv = np.linalg.inv(tausigma)
-        w_dir = tausigma_inv @ mu_BL
+        sigma_inv = np.linalg.inv(sigma)
+        w_dir = sigma_inv @ mu_BL
         w_tan = w_dir / np.sum(w_dir)
 
         print("w_tan:\n", pd.Series(w_tan.flatten(), index=SECTOR))
@@ -26,7 +25,7 @@ class MVO_Optimizer:
 
     # 탄젠트 최적화 포트폴리오(지금은 rf=0 가정, 원래는 rf 들어가야 함) 
     def optimize_tangency_1(self):
-        tausigma = self.tau * self.sigma
+        sigma = self.sigma
         SECTOR = self.SECTOR
         # Objective function to minimize (negative of the Sharpe Ratio)
         def objective_function(weights, mu, sigma):
@@ -51,7 +50,7 @@ class MVO_Optimizer:
         result = minimize(
             objective_function, 
             initial_weights, 
-            args=(self.pi_new, tausigma),
+            args=(self.mu, sigma),
             method='SLSQP',
             bounds=bounds,
             constraints=constraints

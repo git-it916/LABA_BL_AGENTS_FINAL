@@ -21,14 +21,14 @@ def scene(tau, forecast_period):
         BL = get_bl_outputs(tau, start_date=start_date, end_date=end_date)
 
         # MVO 실행
-        mvo = MVO_Optimizer(BL[0], BL[1], BL[2], BL[3])
+        mvo = MVO_Optimizer(mu=BL[0], sigma=BL[1], sectors=BL[2])
         w_tan = mvo.optimize_tangency_1()
         
         # 결과 저장
         scenario_result = {
             "forecast_date": period['forecast_date'],
-            "w_tan": [f"{weight[0] * 100:.4f}%" for weight in w_tan],
-            "SECTOR": BL[3]
+            "w_aiportfolio": [f"{weight[0] * 100:.4f}%" for weight in w_tan],
+            "SECTOR": BL[2]
         }
         results.append(scenario_result)
     

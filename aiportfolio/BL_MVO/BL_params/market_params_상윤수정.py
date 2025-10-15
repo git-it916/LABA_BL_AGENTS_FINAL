@@ -65,3 +65,8 @@ class Market_Params:
         sigma = self.making_sigma()
         pi = delta * sigma.values @ w_mkt
         return pi
+    
+    def making_mu(self):
+        filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
+        mu = filtered_df.groupby('GICS Sector')['ExcessReturn'].mean()
+        return mu

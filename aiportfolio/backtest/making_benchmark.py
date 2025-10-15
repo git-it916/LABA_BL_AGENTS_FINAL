@@ -1,30 +1,26 @@
-import pandas as pd
-
-from aiportfolio.BL_MVO.prepare.making_excessreturn import final
-from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
+from aiportfolio.BL_MVO.BL_params.market_params_상윤수정 import Market_Params
 from aiportfolio.BL_MVO.MVO_opt import MVO_Optimizer
-from aiportfolio.util.making_rollingdate import get_rolling_dates
+from aiportfolio.backtest.making_dataframe import open_log
 
-# 일단 24년 5월만 예측하기 위해 기간 설정
-forecast_period = [
-    "24-05-31"
-]
-forecast_date = get_rolling_dates(forecast_period)
-start_date = forecast_date[0]['start_date']
-end_date = forecast_date[0]['end_date']
+# benchmark1: 시총가중 포트폴리오
+# benchmark2: tangency 포트폴리오
+# aiportfoilo: 우리가 만든 포트폴리오
 
-# 공분산
-market_params = Market_Params(start_date=start_date, end_date=end_date)
-sigma = market_params.making_sigma()
+def prepare_benchmark(start_date, end_date):
 
-# 섹터구분
-SECTOR = sigma.columns
+    # benchmark1 비중
+    market_params = Market_Params(start_date, end_date)
+    w_benchmark1 = market_params.making_w_mkt()
 
-# 수익률
-df = final()
-filtered_df = df[df["date"] == forecast_date[0]['forecast_date']]
-benchmark_return = pd.Series(filtered_df, index=SECTOR)
-print(df)
+    # benchmark2 비중
+    mu_benchmark2 = market_params.making_mu()
+    sigma_benchmark2 = market_params.making_sigma()
+    sectors_benchmark2 = list(sigma_benchmark2.columns)
 
-mvo = MVO_Optimizer(benchmark_return, sigma, SECTOR)
-w_tan = mvo.optimize_tangency_1()
+    mvo = MVO_Optimizer(mu=mu_benchmark2, sigma=sigma_benchmark2, sectors=sectors_benchmark2)
+    w_benchmark2 = mvo.optimize_tangency_1()
+
+    # aiportfoilo 비중
+    df_aiportfoilo = open_log()
+
+    return w_benchmark1, w_benchmark2, df_aiportfoilo

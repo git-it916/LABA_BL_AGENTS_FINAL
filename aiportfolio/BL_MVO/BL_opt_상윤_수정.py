@@ -11,15 +11,14 @@ def get_bl_outputs(tau, start_date, end_date):
     This function runs the full Black-Litterman model by fetching market and view
     parameters and then returns the new combined expected returns.
     """
+    # BL 변수 생성
     market_params = Market_Params(start_date, end_date)
     Pi = market_params.making_pi()      # Equilibrium excess returns (pi)
     sigma = market_params.making_sigma()  # Covariance matrix (Sigma)
 
-    # --- Fetch view-related parameters (P, Q, Omega) ---
     P, Q, Omega = get_view_params(sigma, tau)
 
     # --- Execute the Black-Litterman formula ---
-    # Convert inputs to NumPy arrays for calculation
     pi_np = Pi.values.flatten() if isinstance(Pi, pd.DataFrame) else Pi.flatten()
     sigma_np = sigma.values if isinstance(sigma, pd.DataFrame) else sigma
 
@@ -41,8 +40,9 @@ def get_bl_outputs(tau, start_date, end_date):
 
     # --- Return the outputs for the MVO script ---
     sectors = list(sigma.columns)
+    tausigma = tau * sigma
 
-    return Pi_new, tau, sigma, sectors
+    return Pi_new.reshape(-1, 1), tausigma, sectors
 
 # This part allows the script to be run on its own for testing purposes
 if __name__ == '__main__':
