@@ -15,8 +15,18 @@ from aiportfolio.agents.generator import llamaAgent
 
 agent = llamaAgent()
 reply = agent.chat(
-    "You are a financial LLM agent.",
-    "Generate views for 11 US sectors with expected returns and confidence levels."
+    "You are a short-term strategist (1-3 months horizon) with a moderately aggressive style. "
+    "You aim to identify near-term opportunities using recent ExcessReturn patterns, "
+    "but avoid making extreme or speculative bets.",
+
+    f"Input data (sector monthly excess returns and market sizes):\n"
+    f"{sector_table}\n\n"
+    "Instructions:\n"
+    "- Analyze short-term performance momentum among sectors.\n"
+    "- Emphasize the speed and consistency of recent positive returns.\n"
+    "- Be open to taking slightly higher-risk, high-beta sectors when justified by data.\n"
+    "- Generate 3–5 relative views (lhs - rhs = expected excess return) based on near-term patterns.\n"
+    "Return STRICT JSON only."
 )
 
 print(reply)
