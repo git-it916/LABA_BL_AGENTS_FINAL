@@ -11,6 +11,7 @@ aiportfolio/__pycache__
 aiportfolio/BL_MVO/BL_opt2.py
 aiportfolio/BL_MVO/BL_opt_은서.py
 aiportfolio/BL_MVO/BL_opt.py
+Scripts
 
 # C extensions
 *.so
