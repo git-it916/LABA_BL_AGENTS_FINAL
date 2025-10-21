@@ -4,6 +4,8 @@ __pycache__/
 *$py.class
 classes_CoreProject.dot
 packages_CoreProject.dot
+Scripts/
+
 # 신승훈 추가함
 database/raw
 database/monthly
