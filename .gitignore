@@ -2,6 +2,9 @@
 __pycache__/
 *.py[codz]
 *$py.class
+classes_CoreProject.dot
+packages_CoreProject.dot
+Scripts/
 
 # 신승훈 추가함
 database/raw
