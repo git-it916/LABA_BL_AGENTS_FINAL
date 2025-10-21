@@ -32,6 +32,7 @@ def get_view_params(sigma, tau):
         [0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0],   # 뷰 4: Energy > Industrials
         [0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1]    # 뷰 5: Utilities > Financials
     ])
+    
 
     # --- View vector (Q) ---
     Q = np.dot(current_forecasts, analyst_weights)

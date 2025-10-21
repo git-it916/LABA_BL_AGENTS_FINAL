@@ -1,0 +1,31 @@
+[
+    {
+        "forecast_date": "2024-05-31 00:00:00",
+        "w_aiportfolio": [
+            "0.0000%",
+            "0.0000%",
+            "0.0000%",
+            "39.4605%",
+            "0.0000%",
+            "0.0000%",
+            "0.0000%",
+            "39.0609%",
+            "0.0000%",
+            "0.0000%",
+            "21.4785%"
+        ],
+        "SECTOR": [
+            "Communication Services",
+            "Consumer Discretionary",
+            "Consumer Staples",
+            "Energy",
+            "Financials",
+            "Health Care",
+            "Industrials",
+            "Information Technology",
+            "Materials",
+            "Real Estate",
+            "Utilities"
+        ]
+    }
+]

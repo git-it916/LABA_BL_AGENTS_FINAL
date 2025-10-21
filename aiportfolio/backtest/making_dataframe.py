@@ -3,7 +3,7 @@ import pandas as pd
 
 def open_log():
     
-    file_path = 'database/logs/result of BL_MVO 20251015_113143.json' 
+    file_path = 'database/logs/result of BL_MVO 20251021_154937.json' 
 
     try:
         # 파일을 열고 JSON 데이터를 파이썬 딕셔너리/리스트로 불러옵니다.
@@ -17,7 +17,7 @@ def open_log():
 
         # 2. JSON 데이터의 각 항목(날짜별 데이터)을 순회합니다.
         for record in data:
-            weights = [float(w.strip('%')) / 100 for w in record['w_tan']]
+            weights = [float(w.strip('%')) / 100 for w in record['w_aiportfolio']]
             sectors = record['SECTOR']
             
             # 4. 'SECTOR'와 'Weight'를 컬럼으로 하는 DataFrame을 직접 생성합니다.
