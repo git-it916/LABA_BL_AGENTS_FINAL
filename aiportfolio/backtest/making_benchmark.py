@@ -11,13 +11,13 @@ from aiportfolio.BL_MVO.prepare.making_excessreturn import final
 
 def prepare_benchmark(start_date, end_date):
 
-    # benchmark1 비중
+    # benchmark1 비중 및 섹터 데이터프레임
     market_params = Market_Params(start_date, end_date)
     w_benchmark1 = market_params.making_w_mkt()
 
     benchmark1 = pd.DataFrame({'SECTOR': w_benchmark1[1], 'Weight': w_benchmark1[0].flatten()})
 
-    # benchmark2 비중
+    # benchmark2 비중 및 섹터 데이터프레임
     mu_benchmark2 = market_params.making_mu()
     sigma_benchmark2 = market_params.making_sigma()
     sectors_benchmark2 = list(sigma_benchmark2.columns)
@@ -27,7 +27,7 @@ def prepare_benchmark(start_date, end_date):
 
     benchmark2 = pd.DataFrame({'SECTOR': w_benchmark2[1], 'Weight': w_benchmark2[0].flatten()})
 
-    # aiportfoilo 비중
+    # aiportfoilo 비중 및 섹터 데이터프레임
     df_aiportfoilo = open_log()
 
     return benchmark1, benchmark2, df_aiportfoilo
