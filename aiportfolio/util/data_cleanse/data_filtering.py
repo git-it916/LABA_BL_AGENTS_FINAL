@@ -1,5 +1,5 @@
 import pandas as pd
-
+import os
 # --- 1. 파일 경로 설정 ---
 # !!! 중요: 사용자 환경에 맞게 아래 파일 경로를 직접 수정해주세요.
 crsp_file_path = r"C:\Users\shins\OneDrive\문서\CRSP 2015.01-2024.12.csv"
@@ -99,7 +99,7 @@ print(f"\n모든 작업 완료! 최종 결과 파일이 아래 경로에 저장�
 # --- 7. 필터링된 데이터와 end day 데이터 병합 ---
 # `filtered_df`의 'TICKER' 열과 `sp500_df`의 'Symbol' 열을 기준으로 inner join 수행
 print("필터링된 데이터와 S&P 500 데이터를 병합합니다...")
-merged_df = pd.merge(merged_df, end_df, left_on="TICKER", right_on="ticker", how="outer")
+merged_df = pd.merge(merged_df, end_df, left_on="TICKER", right_on="ticker", how="inner")
 print("병합 완료.")
 print(merged_df.head())
 # --- 8. 최종 결과 저장 ---
@@ -161,6 +161,11 @@ after = merged_df.shape[0]
 print(f"중복 제거 완료. {before} -> {after} 행")
 
 # (선택) 중복 제거본 저장
-merged_df.to_csv(final2_path, index=False, encoding="utf-8-sig")
-merged_df.to_excel("your_file_converted_dedup.xlsx", index=False)
-print(f"중복 제거본 저장: {final2_path}, your_file_converted_dedup.xlsx")
+folder_name = "database"
+file_name = "merged_final2.csv"
+full_path = os.path.join(folder_name, file_name)
+
+# (선택) CSV 파일로 저장 (파일명 수정 및 경로 지정)
+merged_df.to_csv(full_path, index=False, encoding="utf-8-sig")
+
+print(f"중복 제거본 저장 완료: {full_path}")
