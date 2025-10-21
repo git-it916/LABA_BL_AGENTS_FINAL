@@ -6,7 +6,7 @@ def save_log_as_json(results):
     # 1. 저장할 디렉토리 경로 설정
     log_dir = 'database/logs'
 
-    # 2. 파일 이름에 파라미터와 현재 시간을 포함하여 동적으로 생성
+    # 2. 파일 이름을 현재 시간으로 동적으로 생성
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f'result of BL_MVO {timestamp}.json'
     filepath = os.path.join(log_dir, filename)

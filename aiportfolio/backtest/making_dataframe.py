@@ -10,39 +10,30 @@ def open_log():
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        # --- 데이터 가공 시작 ---
+        # --- 데이터 가공 시작 (수정된 부분) ---
         
-        # 1. DataFrame으로 변환할 데이터를 담을 빈 리스트를 생성합니다.
-        processed_data = []
+        # 1. 각 날짜별 포트폴리오 DataFrame을 담을 리스트를 생성합니다.
+        all_portfolios = []
 
         # 2. JSON 데이터의 각 항목(날짜별 데이터)을 순회합니다.
         for record in data:
-            # 3. 각 섹터 이름과 가중치를 짝지어 딕셔너리로 만듭니다.
             weights = [float(w.strip('%')) / 100 for w in record['w_tan']]
-            portfolio_dict = dict(zip(record['SECTOR'], weights))
+            sectors = record['SECTOR']
             
-            # 4. 'forecast_date'를 딕셔너리에 추가합니다.
-            portfolio_dict['forecast_date'] = record['forecast_date']
-            
-            processed_data.append(portfolio_dict)
+            # 4. 'SECTOR'와 'Weight'를 컬럼으로 하는 DataFrame을 직접 생성합니다.
+            portfolio_df = pd.DataFrame({
+                'SECTOR': sectors,
+                'Weight': weights
+            })
 
         # --- 데이터 가공 끝 ---
 
-        df_result = pd.DataFrame(processed_data)
-        
-        # 'forecast_date' 컬럼을 맨 앞으로 오도록 순서를 조정합니다.
-        if not df_result.empty:
-            cols = ['forecast_date'] + [col for col in df_result.columns if col != 'forecast_date']
-            df_result = df_result[cols]
-
-        print("DataFrame 변환 성공!")
-        pd.set_option('display.max_rows', None)
-        pd.set_option('display.max_columns', None)
-        print(df_result)
-
     except FileNotFoundError:
         print(f"오류: '{file_path}' 파일을 찾을 수 없습니다.")
+        return [] # 오류 발생 시 빈 리스트 반환
     except json.JSONDecodeError:
         print(f"오류: '{file_path}' 파일이 올바른 JSON 형식이 아닙니다.")
+        return [] # 오류 발생 시 빈 리스트 반환
     
-    return df_result
+    # 최종적으로 DataFrame들이 담긴 리스트를 반환합니다.
+    return portfolio_df

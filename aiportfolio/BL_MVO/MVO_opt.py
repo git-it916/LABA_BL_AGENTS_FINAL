@@ -62,8 +62,5 @@ class MVO_Optimizer:
         
         # 2. 반올림된 가중치의 합이 1이 되도록 다시 정규화
         w_tan_normalized = w_tan_rounded / np.sum(w_tan_rounded)
-        
-        # 3. 결과를 백분율(%) 형태로 출력 (소수점 둘째 자리까지)
-        print("w_tan:\n", pd.Series(w_tan_normalized.flatten(), index=SECTOR).to_string(float_format='{:.2%}'.format))
 
-        return w_tan_normalized
+        return w_tan_normalized, SECTOR

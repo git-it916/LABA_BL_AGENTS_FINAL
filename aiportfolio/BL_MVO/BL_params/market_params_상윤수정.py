@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import os
 from datetime import datetime
 from aiportfolio.BL_MVO.prepare.making_excessreturn import final
 
@@ -14,6 +13,12 @@ class Market_Params:
         self.df = final()
         self.start_date = start_date
         self.end_date = end_date
+
+    # mu: 초과수익률의 기대수익률
+    def making_mu(self):
+            filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
+            mu = filtered_df.groupby('GICS Sector')['ExcessReturn'].mean()
+            return mu
 
     # Sigma: 초과수익률 공분산 행렬 (N*N)
     def making_sigma(self):
@@ -49,8 +54,11 @@ class Market_Params:
         
         # 시장 가중치 계산
         w_mkt = mkt_cap / total_mkt_cap
-        
-        return w_mkt
+
+        # 섹터 반환
+        sector = last_day_data.index.tolist()
+
+        return w_mkt, sector
 
     def making_delta(self):
         filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
@@ -60,13 +68,8 @@ class Market_Params:
         return delta
     
     def making_pi(self):
-        w_mkt = self.making_w_mkt()
+        w_mkt = self.making_w_mkt()[0]
         delta = self.making_delta()
         sigma = self.making_sigma()
         pi = delta * sigma.values @ w_mkt
         return pi
-    
-    def making_mu(self):
-        filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
-        mu = filtered_df.groupby('GICS Sector')['ExcessReturn'].mean()
-        return mu

@@ -22,7 +22,7 @@ def scene(tau, forecast_period):
 
         # MVO 실행
         mvo = MVO_Optimizer(mu=BL[0], sigma=BL[1], sectors=BL[2])
-        w_tan = mvo.optimize_tangency_1()
+        w_tan = mvo.optimize_tangency_1()[0]
         
         # 결과 저장
         scenario_result = {
