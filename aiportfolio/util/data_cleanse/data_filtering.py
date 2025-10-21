@@ -83,7 +83,7 @@ tickers = [
 print("Ticker 목록을 기준으로 CRSP 데이터를 필터링합니다...")
 filtered_df = crsp_df[crsp_df["TICKER"].isin(tickers)]
 print("필터링 완료.")
-
+print(end_df.head())
 # --- 5. 필터링된 데이터와 S&P 500 데이터 병합 ---
 # `filtered_df`의 'TICKER' 열과 `sp500_df`의 'Symbol' 열을 기준으로 inner join 수행
 print("필터링된 데이터와 S&P 500 데이터를 병합합니다...")
@@ -99,9 +99,9 @@ print(f"\n모든 작업 완료! 최종 결과 파일이 아래 경로에 저장�
 # --- 7. 필터링된 데이터와 end day 데이터 병합 ---
 # `filtered_df`의 'TICKER' 열과 `sp500_df`의 'Symbol' 열을 기준으로 inner join 수행
 print("필터링된 데이터와 S&P 500 데이터를 병합합니다...")
-merged_df = pd.merge(merged_df, end_df, left_on="TICKER", right_on="ticker", how="inner")
+merged_df = pd.merge(merged_df, end_df, left_on="TICKER", right_on="ticker", how="outer")
 print("병합 완료.")
-
+print(merged_df.head())
 # --- 8. 최종 결과 저장 ---
 # encoding='utf-8-sig' 옵션은 엑셀에서 한글 깨짐을 방지합니다.
 merged_df.to_csv(final_path, index=False, encoding='utf-8-sig')
@@ -144,3 +144,23 @@ print(merged_df.head())
 
 # 변환된 데이터를 새 엑셀 파일로 저장
 merged_df.to_excel("your_file_converted.xlsx", index=False)
+
+# --- 10. (TICKER, date) 기준 중복 제거 ---
+print("중복 제거 진행...(TICKER, date 기준)")
+before = merged_df.shape[0]
+
+# Date added 기준으로 최신 정보 유지
+merged_df = (
+    merged_df
+    .sort_values(["TICKER", "date", "Date added"], na_position="last")
+    .drop_duplicates(subset=["TICKER", "date"], keep="last")
+    .reset_index(drop=True)
+)
+
+after = merged_df.shape[0]
+print(f"중복 제거 완료. {before} -> {after} 행")
+
+# (선택) 중복 제거본 저장
+merged_df.to_csv(final2_path, index=False, encoding="utf-8-sig")
+merged_df.to_excel("your_file_converted_dedup.xlsx", index=False)
+print(f"중복 제거본 저장: {final2_path}, your_file_converted_dedup.xlsx")
