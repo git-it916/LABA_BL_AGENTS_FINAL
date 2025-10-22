@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 
 # 확인할 Parquet 파일 경로
-file_path = Path("database/combine/all_data.parquet")
+file_path = Path("database/filtered_sp500_data.parquet")
 
 # 파일이 존재하는지 확인
 if not file_path.exists():
