@@ -1,77 +1,70 @@
 import pandas as pd
-from datetime import datetime
+import numpy as np
+from IPython.display import display
 
-from aiportfolio.backtest.making_benchmark import prepare_benchmark
-from aiportfolio.BL_MVO.prepare.making_excessreturn import final
+def calculating_performance(results):
+    df = pd.DataFrame(results)
+    df['forecast_date'] = pd.to_datetime(df['forecast_date'])
+    df.set_index('forecast_date', inplace=True)
 
-# python -m aiportfolio.backtest.calculating_performance
+    # 1. sharpe ratio(연율화)
+    df['sharpe_ratio of benchmark1'] = (df['performance_benchmark1'].mean() / df['performance_benchmark1'].std()) * np.sqrt(12)
+    df['sharpe_ratio of benchmark2'] = (df['performance_benchmark2'].mean() / df['performance_benchmark2'].std()) * np.sqrt(12)
+    df['sharpe_ratio of aiportfolio'] = (df['performance_aiportfolio'].mean() / df['performance_aiportfolio'].std()) * np.sqrt(12)
 
-start_date = datetime(2015, 1, 31)
-end_date = datetime(2024, 4, 30)
+    # 2. 누적수익률(CAGR)
+    df['cumulative_benchmark1'] = (1 + df['performance_benchmark1']).cumprod()
+    df['cumulative_benchmark2'] = (1 + df['performance_benchmark2']).cumprod()
+    df['cumulative_aiportfolio'] = (1 + df['performance_aiportfolio']).cumprod()
 
-a = prepare_benchmark(start_date=start_date, end_date=end_date)
+    # 3. MDD
+    rolling_max_1 = df['cumulative_benchmark1'].max()
+    df['drawdown_benchmark1'] = (df['cumulative_benchmark1'] - rolling_max_1) / rolling_max_1
+    df['MDD_benchmark1'] = df['drawdown_benchmark1'].min()
+    df.drop('drawdown_benchmark1', axis=1, inplace=True)
+    rolling_max_2 = df['cumulative_benchmark2'].max()
+    df['drawdown_benchmark2'] = (df['cumulative_benchmark2'] - rolling_max_2) / rolling_max_2
+    df['MDD_benchmark2'] = df['drawdown_benchmark2'].min()
+    df.drop('drawdown_benchmark2', axis=1, inplace=True)
+    rolling_max_a = df['cumulative_aiportfolio'].max()
+    df['drawdown_aiportfolio'] = (df['cumulative_aiportfolio'] - rolling_max_a) / rolling_max_a
+    df['MDD_aiportfolio'] = df['drawdown_aiportfolio'].min()
+    df.drop('drawdown_aiportfolio', axis=1, inplace=True)
 
-df_forecast = final()
-forecast_date = end_date + pd.DateOffset(months=1) + pd.offsets.MonthEnd(0)
+    # 4. VaR/CVaR
+    confidence_level = 0.95
 
-df_filtered = df_forecast[
-    (df_forecast['date'].dt.year == forecast_date.year) &
-    (df_forecast['date'].dt.month == forecast_date.month)
-]
+    var_benchmark1 = df['performance_benchmark1'].quantile(1 - confidence_level)
+    df['var_benchmark1'] = var_benchmark1
+    var_benchmark2 = df['performance_benchmark2'].quantile(1 - confidence_level)
+    df['var_benchmark2'] = var_benchmark2
+    var_aiportfolio = df['performance_aiportfolio'].quantile(1 - confidence_level)
+    df['var_aiportfolio'] = var_aiportfolio
 
-# calculating performance of benchmark1
-merged_benchmark1 = pd.merge(
-    a[0],
-    df_filtered,
-    left_on='SECTOR',
-    right_on='GICS Sector',
-    how='inner'
-)
+    cvar_benchmark1 = df['performance_benchmark1'][df['MDD_benchmark1'] <= var_benchmark1].mean()
+    df['cvar_benchmark1'] = cvar_benchmark1
+    cvar_benchmark2 = df['performance_benchmark2'][df['MDD_benchmark2'] <= var_benchmark2].mean()
+    df['cvar_benchmark2'] = cvar_benchmark2
+    cvar_aiportfolio = df['performance_aiportfolio'][df['MDD_aiportfolio'] <= var_aiportfolio].mean()
+    df['cvar_aiportfolio'] = cvar_aiportfolio
 
-merged_benchmark1['Weighted_Return'] = merged_benchmark1['Weight'] * merged_benchmark1['ExcessReturn']
-performance_benchmark1 = merged_benchmark1['Weighted_Return'].sum()
+    final_benchmark1 = {'sharpe ratio': df['sharpe_ratio of benchmark1'].tail(1),
+                        'CAGR': df['cumulative_benchmark1'].tail(1),
+                        'MDD': df['MDD_benchmark1'].tail(1),
+                        'VaR': df['var_benchmark1'].tail(1),
+                        'CVaR': df['cvar_benchmark1'].tail(1)
+                        }
+    final_benchmark2 = {'sharpe ratio': df['sharpe_ratio of benchmark2'].tail(1),
+                        'CAGR': df['cumulative_benchmark2'].tail(1),
+                        'MDD': df['MDD_benchmark2'].tail(1),
+                        'VaR': df['var_benchmark2'].tail(1),
+                        'CVaR': df['cvar_benchmark2'].tail(1)
+                        }
+    final_aiportfolio = {'sharpe ratio': df['sharpe_ratio of aiportfolio'].tail(1),
+                        'CAGR': df['cumulative_aiportfolio'].tail(1),
+                        'MDD': df['MDD_aiportfolio'].tail(1),
+                        'VaR': df['var_aiportfolio'].tail(1),
+                        'CVaR': df['cvar_aiportfolio'].tail(1)
+                        }
 
-# calculating performance of benchmark2
-merged_benchmark2 = pd.merge(
-    a[1],
-    df_filtered,
-    left_on='SECTOR',
-    right_on='GICS Sector',
-    how='inner'
-)
-
-merged_benchmark2['Weighted_Return'] = merged_benchmark2['Weight'] * merged_benchmark2['ExcessReturn']
-performance_benchmark2 = merged_benchmark2['Weighted_Return'].sum()
-
-# calculating performance of aiportfolio
-merged_aiportfolio = pd.merge(
-    a[2],
-    df_filtered,
-    left_on='SECTOR',
-    right_on='GICS Sector',
-    how='inner'
-)
-
-merged_aiportfolio['Weighted_Return'] = merged_aiportfolio['Weight'] * merged_aiportfolio['ExcessReturn']
-performance_aiportfolio = merged_aiportfolio['Weighted_Return'].sum()
-
-print("-------calculating performance of benchmark1-------")
-print("benchmark1 가중치")
-print(a[0])
-print()
-print("benchmark1 성과")
-print(performance_benchmark1)
-print()
-print("-------calculating performance of benchmark2-------")
-print("benchmark2 가중치")
-print(a[1])
-print()
-print("benchmark2 성과")
-print(performance_benchmark2)
-print()
-print("-------calculating performance of aiportfolio-------")
-print("aiportfolio 가중치")
-print(a[2])
-print()
-print("aiportfolio 성과")
-print(performance_aiportfolio)
+    return final_benchmark1, final_benchmark2, final_aiportfolio

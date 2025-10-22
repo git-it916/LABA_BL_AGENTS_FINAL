@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Import parameters from the BL_params directory
 from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
-from aiportfolio.BL_MVO.BL_params.view_params_상윤수정 import get_view_params
+from aiportfolio.BL_MVO.BL_params.view_params import get_view_params
 
 def get_bl_outputs(tau, start_date, end_date):
     """

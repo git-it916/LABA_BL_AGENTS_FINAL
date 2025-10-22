@@ -1,16 +1,18 @@
 import pandas as pd
 
 from aiportfolio.scene import scene
+from aiportfolio.test import test
 
 #######################################
-# configuration / 옛날꺼 이 것도 수정해야 함
+# configuration
 #######################################
 # 연구 기간
+'''
 forecast_period = [
     "24-05-31"
 ]
-
 '''
+
 forecast_period = [
     "24-05-31",
     "24-06-30",
@@ -21,41 +23,25 @@ forecast_period = [
     "24-11-30",
     "24-12-31"
 ]
-'''
 
-# tau: 시장 불확실성(pi 계산용)
+
+# tau: 시장 불확실성(조정계수)
 tau = 0.025
 
 #######################################
 # run
 #######################################
 
-results = scene(tau=tau, forecast_period=forecast_period)
+BL_results = scene(tau=tau, forecast_period=forecast_period)
+backtest = test(forecast_period=forecast_period)
 
-'''
-# 결과 출력
-for i, scenario in enumerate(results):
-    forecast_date = scenario['forecast_date'].strftime('%Y-%m-%d')
-    
-    print(f"\n✅ 시나리오 {i+1} : {forecast_date}")
-    print("-" * 30)
-
-    # w_delta_norm 출력
-    w_delta_norm_df = pd.DataFrame({
-        'SECTOR': scenario['SECTOR'],
-        'w_delta_norm': scenario['w_delta_norm'].flatten()
-    }).set_index('SECTOR')
-    print("👉 효용함수 포트폴리오 비중 (w_delta_norm):")
-    print(w_delta_norm_df.to_string(float_format="%.4f"))
-
-    print() # 빈 줄 추가
-
-    # w_tan 출력
-    w_tan_df = pd.DataFrame({
-        'SECTOR': scenario['SECTOR'],
-        'w_tan': scenario['w_tan'].flatten()
-    }).set_index('SECTOR')
-    print("👉 텐전시 포트폴리오 비중 (w_tan):")
-    print(w_tan_df.to_string(float_format="%.4f"))
-    print("\n" + "-" * 60)
-'''
+for name, result in zip(
+    ['Benchmark 1', 'Benchmark 2', 'AI Portfolio'],
+    backtest
+):
+    print(f"\n📊 {name} 결과 요약")
+    print("-" * 40)
+    for key, value in result.items():
+        # tail(1) 결과가 DataFrame 형태이므로 float로 변환해주는 게 깔끔함
+        val = value.values[0] if hasattr(value, "values") else value
+        print(f"{key:10s}: {val:.6f}")

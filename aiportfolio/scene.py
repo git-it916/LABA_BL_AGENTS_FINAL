@@ -1,7 +1,7 @@
-from .BL_MVO.BL_opt_상윤_수정 import get_bl_outputs
+from .BL_MVO.BL_opt import get_bl_outputs
 from .BL_MVO.MVO_opt import MVO_Optimizer
 from .util.making_rollingdate import get_rolling_dates
-from .util.save_log_as_json import save_log_as_json
+from .util.save_log_as_json import save_BL_as_json
 
 def scene(tau, forecast_period):
     tau = tau
@@ -32,6 +32,6 @@ def scene(tau, forecast_period):
         }
         results.append(scenario_result)
     
-    save_log_as_json(results)
+    save_BL_as_json(results)
 
     return results

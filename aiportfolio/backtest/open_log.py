@@ -1,17 +1,23 @@
 import json
 import pandas as pd
+import os
+import glob
 
 def open_log():
-    
-    file_path = 'database/logs/result of BL_MVO 20251021_154937.json' 
+
+    log_dir = 'database/logs/BL_MVO'
+    list_of_files = glob.glob(os.path.join(log_dir, 'result of BL_MVO*.json'))
+    if not list_of_files:
+        print("오류: 로그 파일을 찾을 수 없습니다.")
+        return None
+    latest_file = max(list_of_files, key=os.path.getctime)
+    file_path = latest_file 
 
     try:
         # 파일을 열고 JSON 데이터를 파이썬 딕셔너리/리스트로 불러옵니다.
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        # --- 데이터 가공 시작 (수정된 부분) ---
-        
         # 1. 각 날짜별 포트폴리오 DataFrame을 담을 리스트를 생성합니다.
         all_portfolios = []
 
@@ -25,8 +31,6 @@ def open_log():
                 'SECTOR': sectors,
                 'Weight': weights
             })
-
-        # --- 데이터 가공 끝 ---
 
     except FileNotFoundError:
         print(f"오류: '{file_path}' 파일을 찾을 수 없습니다.")
