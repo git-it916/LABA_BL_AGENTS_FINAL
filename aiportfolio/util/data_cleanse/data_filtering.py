@@ -49,9 +49,5 @@ print(f"총 {len(filtered_final_df):,}행 남음 (원본 {len(merged_df):,}행 �
 save_dir = Path("database")
 save_dir.mkdir(parents=True, exist_ok=True)  # 폴더 없으면 자동 생성
 
-
-
-filtered_final_GICS.df = merged_df[cond_start & cond_end & (merged_df["GICS Sector"].notna())]
-
 parquet_path = save_dir / "filtered_sp500_data.parquet"
-filtered_final_GICS_df.to_parquet(parquet_path, index=False)
+filtered_final_df.to_parquet(parquet_path, index=False)
