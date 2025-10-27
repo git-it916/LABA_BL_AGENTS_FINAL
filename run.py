@@ -33,15 +33,3 @@ tau = 0.025
 #######################################
 
 BL_results = scene(tau=tau, forecast_period=forecast_period)
-backtest = test(forecast_period=forecast_period)
-
-for name, result in zip(
-    ['Benchmark 1', 'Benchmark 2', 'AI Portfolio'],
-    backtest
-):
-    print(f"\n📊 {name} 결과 요약")
-    print("-" * 40)
-    for key, value in result.items():
-        # tail(1) 결과가 DataFrame 형태이므로 float로 변환해주는 게 깔끔함
-        val = value.values[0] if hasattr(value, "values") else value
-        print(f"{key:10s}: {val:.6f}")
