@@ -2,20 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def creating_plot(results):
-    # 1. Convert the 'results' list into a pandas DataFrame.
-    # This makes it easier to work with time-series data.
-    df = pd.DataFrame(results)
-    df['forecast_date'] = pd.to_datetime(df['forecast_date'])
-    df.set_index('forecast_date', inplace=True)
-
-    print(df)
-
-    # 2. Calculate the cumulative return for each portfolio.
-    # We assume 'performance' is the periodic return, so we calculate the cumulative product.
-    df['cumulative_benchmark1'] = (1 + df['performance_benchmark1']).cumprod()
-    df['cumulative_benchmark2'] = (1 + df['performance_benchmark2']).cumprod()
-    df['cumulative_aiportfolio'] = (1 + df['performance_aiportfolio']).cumprod()
-
     # 3. Create the plot.
     plt.figure(figsize=(14, 8)) # Set the figure size for better readability.
 
