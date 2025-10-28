@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from aiportfolio.util.data_cleanse.changing_rf_YtoM import changing_rf_YtoM
+from potato_trial.changing_rf_YtoM import changing_rf_YtoM
 
 def final():
     folder_name = 'database/processed_view'
