@@ -61,8 +61,25 @@ class Market_Params:
     
     def making_delta(self):
         filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
-        ret_mean = filtered_df['sector_return'].mean()
-        ret_variance = filtered_df['sector_return'].var()
+        
+        # 시총가중 수익률 생성
+        filtered_df["_ret_x_cap"] = filtered_df["sector_return"] * filtered_df["sector_mktcap"]
+        agg = (
+            filtered_df.groupby("date", dropna=False)
+                .agg(total_mktcap=("sector_mktcap", "sum"),
+                    ret_x_cap_sum=("_ret_x_cap", "sum"))
+                .reset_index()
+        )
+        agg["total_return"] = np.where(
+            agg["total_mktcap"] != 0,
+            agg["ret_x_cap_sum"] / agg["total_mktcap"],
+            np.nan
+        )
+        agg = agg.drop(columns=["ret_x_cap_sum"])
+        
+        # delta 계산
+        ret_mean = agg['total_return'].mean()
+        ret_variance = agg['total_return'].var()
         delta = ret_mean / ret_variance
         return delta
     
