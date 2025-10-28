@@ -1,7 +1,6 @@
 import pandas as pd
 
 from aiportfolio.scene import scene
-from aiportfolio.test import test
 
 #######################################
 # configuration

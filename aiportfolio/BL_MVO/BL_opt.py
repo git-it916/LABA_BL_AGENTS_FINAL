@@ -16,11 +16,11 @@ def get_bl_outputs(tau, start_date, end_date):
     Pi = market_params.making_pi()      # Equilibrium excess returns (pi)
     sigma = market_params.making_sigma()  # Covariance matrix (Sigma)
 
-    P, Q, Omega = get_view_params(sigma, tau)
+    P, Q, Omega = get_view_params(sigma[0], tau)
 
     # --- Execute the Black-Litterman formula ---
     pi_np = Pi.values.flatten() if isinstance(Pi, pd.DataFrame) else Pi.flatten()
-    sigma_np = sigma.values if isinstance(sigma, pd.DataFrame) else sigma
+    sigma_np = sigma[0].values if isinstance(sigma[0], pd.DataFrame) else sigma[0]
 
     # Calculate intermediate terms
     tau_sigma_inv = np.linalg.inv(tau * sigma_np)
@@ -39,20 +39,7 @@ def get_bl_outputs(tau, start_date, end_date):
     Pi_new = np.linalg.inv(term_A) @ term_B
 
     # --- Return the outputs for the MVO script ---
-    sectors = list(sigma.columns)
-    tausigma = tau * sigma
+    sectors = sigma[1]
+    tausigma = tau * sigma[0]
 
     return Pi_new.reshape(-1, 1), tausigma, sectors
-
-# This part allows the script to be run on its own for testing purposes
-if __name__ == '__main__':
-    # Set print options for better readability
-    np.set_printoptions(precision=8, suppress=True)
-
-    Pi_new, sigma, sectors, tau = get_bl_outputs(start_date=datetime(2021, 5, 1), end_date=datetime(2024, 4, 30), tau = 0.025)
-
-    print("--- Black-Litterman Model Executed Successfully ---")
-    print("\nSectors:")
-    print(sectors)
-    print(f"\nNew Expected Returns (Pi_new):\n{Pi_new}\n")
-    print(f"Covariance Matrix (Sigma):\n{sigma}\n")

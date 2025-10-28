@@ -1,6 +1,7 @@
 from .BL_MVO.BL_opt import get_bl_outputs
 from .BL_MVO.MVO_opt import MVO_Optimizer
 from .util.making_rollingdate import get_rolling_dates
+from .util.sector_mapping import map_gics_sector
 from .util.save_log_as_json import save_BL_as_json
 
 def scene(tau, forecast_period):
@@ -28,7 +29,7 @@ def scene(tau, forecast_period):
         scenario_result = {
             "forecast_date": period['forecast_date'],
             "w_aiportfolio": [f"{weight[0] * 100:.4f}%" for weight in w_tan],
-            "SECTOR": BL[2]
+            "SECTOR": map_gics_sector(BL[2])
         }
         results.append(scenario_result)
     
