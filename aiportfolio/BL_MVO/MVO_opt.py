@@ -9,7 +9,7 @@ class MVO_Optimizer:
         self.SECTOR = sectors
         self.n_assets = len(sectors)
 
-    # 탄젠트 최적화 포트폴리오(지금은 rf=0 가정, 원래는 rf 들어가야 함) 
+    # 탄젠트 최적화 포트폴리오 
     def optimize_tangency(self):
         mu_BL = self.mu
         sigma = self.sigma
@@ -23,7 +23,7 @@ class MVO_Optimizer:
 
         return w_tan
 
-    # 탄젠트 최적화 포트폴리오(지금은 rf=0 가정, 원래는 rf 들어가야 함) 
+    # 탄젠트 최적화 포트폴리오 
     def optimize_tangency_1(self):
         sigma = self.sigma
         SECTOR = self.SECTOR
