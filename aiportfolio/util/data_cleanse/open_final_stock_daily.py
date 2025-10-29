@@ -2,11 +2,11 @@ import pandas as pd
 from pathlib import Path
 import sys
 
-# python -m aiportfolio.util.data_cleanse.open_final_stock_months
+# python -m aiportfolio.util.data_cleanse.open_final_stock_daily
 
-def open_final_stock_months():
+def open_final_stock_daily():
     # 확인할 Parquet 파일 경로
-    file_path = Path("database/final_stock_months.parquet")
+    file_path = Path("database/final_stock_daily.parquet")
 
     # 파일이 존재하는지 확인
     if not file_path.exists():
@@ -35,3 +35,5 @@ def open_final_stock_months():
         sys.exit(1)
 
     return df
+
+a = open_final_stock_daily()

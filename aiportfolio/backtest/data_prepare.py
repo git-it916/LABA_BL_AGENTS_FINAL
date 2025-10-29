@@ -10,34 +10,36 @@ from aiportfolio.BL_MVO.MVO_opt import MVO_Optimizer
 # (final은 수익률 계산용이므로 여기서는 필요 없음)
 
 
-# --- [추가된 GICS 맵핑 함수] ---
-def map_gics_sector(sector_list):
-    """ GICS 숫자 코드를 영어 섹터 이름으로 변환합니다. """
-    gics_mapping = {
-        10: "Energy",
-        15: "Materials",
-        20: "Industrials",
-        25: "Consumer Discretionary",
-        30: "Consumer Staples",
-        35: "Health Care",
-        40: "Financials",
-        45: "Information Technology",
-        50: "Communication Services",
-        55: "Utilities",
-        60: "Real Estate"
-    }
+# --- [수정된 GICS 맵핑] ---
 
+# 기준이 되는 맵핑 (코드 -> 이름)
+gics_mapping_code_to_name = {
+    10: "Energy",
+    15: "Materials",
+    20: "Industrials",
+    25: "Consumer Discretionary",
+    30: "Consumer Staples",
+    35: "Health Care",
+    40: "Financials",
+    45: "Information Technology",
+    50: "Communication Services",
+    55: "Utilities",
+    60: "Real Estate"
+}
+
+# [신규] 역맵핑 (이름 -> 코드), open_log 함수에서 사용
+gics_mapping_name_to_code = {v: k for k, v in gics_mapping_code_to_name.items()}
+
+def map_gics_sector_to_code(sector_list):
+    """ [신규] GICS 영어 섹터 이름을 숫자 코드로 변환합니다. """
     mapped = []  # 결과를 담을 리스트
 
-    for code in sector_list:
-        # GICS 코드는 정수형(int)일 수 있으므로, .get()을 사용하기보다
-        # in 연산자
-        int_code = int(code) # 혹시 모를 문자열 입력을 위해 형변환
-        if int_code in gics_mapping:
-            mapped.append(gics_mapping[int_code])
+    for name in sector_list:
+        if name in gics_mapping_name_to_code:
+            mapped.append(gics_mapping_name_to_code[name])
         else:
             # 맵핑에 실패하면 오류를 발생시켜 상위에서 처리하도록 함
-            raise KeyError(f"유효하지 않은 GICS 코드입니다 (Invalid GICS code): {code}")
+            raise KeyError(f"유효하지 않은 GICS 섹터 이름입니다 (Invalid GICS name): {name}")
     
     return mapped
 # ---------------------------------
@@ -48,6 +50,7 @@ def open_log():
     """
     로그 디렉토리에서 가장 최신 BL_MVO.json 파일을 찾아,
     모든 월의 데이터를 포함하는 long-format DataFrame으로 반환합니다.
+    [수정] 영어 섹터 이름을 숫자 코드로 변환합니다.
     """
     log_dir = 'database/logs/BL_MVO'
     list_of_files = glob.glob(os.path.join(log_dir, 'result of BL_MVO*.json'))
@@ -69,12 +72,25 @@ def open_log():
             # 'M'은 월말 기준이므로, 월초 기준으로 통일합니다.
             investment_month = forecast_date.to_period('M').to_timestamp()
             weights = [float(w.strip('%')) / 100.0 for w in record['w_aiportfolio']]
-            sectors = record['SECTOR'] # BL 로그는 이미 영어 섹터 이름을 포함
             
-            for sector, weight in zip(sectors, weights):
+            # BL 로그는 영어 섹터 이름을 포함
+            sectors_english = record['SECTOR'] 
+            
+            # --- [수정된 부분] ---
+            # 영어 섹터 이름을 GICS 숫자 코드로 변환
+            try:
+                numeric_sectors = map_gics_sector_to_code(sectors_english)
+            except KeyError as e:
+                # 맵핑 실패 시 오류 출력 후 해당 레코드를 건너뜀
+                print(f"  !오류! {investment_month.date()} BL 로그 GICS 맵핑 실패: {e}")
+                continue # 이 record 처리를 건너뛰고 다음 record로 이동
+            # --------------------
+
+            # 숫자 코드(numeric_sectors)를 사용
+            for sector, weight in zip(numeric_sectors, weights):
                 all_data.append({
                     'InvestmentMonth': investment_month,
-                    'SECTOR': sector,
+                    'SECTOR': sector, # 숫자 코드가 저장됨
                     'Weight': weight
                 })
                 
@@ -88,11 +104,11 @@ def open_log():
         print(f"open_log 처리 중 오류 발생: {e}")
         return None
 
-# --- MVO 월별 가중치 계산 함수 (맵핑 로직 반영) ---
+# --- MVO 월별 가중치 계산 함수 (맵핑 로직 제거) ---
 def calculate_monthly_mvo_weights(hist_start_date, investment_start_date, investment_end_date):
     """
     주어진 기간 동안 매월 MVO 가중치를 계산합니다.
-    [수정] GICS 맵핑 함수를 사용하여 숫자 코드를 영어 섹터 이름으로 변환합니다.
+    [수정] GICS 맵핑을 제거하고 숫자 코드를 직접 사용합니다.
     """
     hist_start_date = pd.to_datetime(hist_start_date)
     investment_months = pd.date_range(
@@ -125,28 +141,21 @@ def calculate_monthly_mvo_weights(hist_start_date, investment_start_date, invest
             sigma_benchmark2, sectors_benchmark2_numeric = market_params.making_sigma()
             
             # --- [수정된 부분] ---
-            # 제공된 GICS 맵핑 함수를 사용해 숫자 코드를 영어 섹터 이름으로 변환
-            try:
-                english_sectors = map_gics_sector(sectors_benchmark2_numeric)
-            except KeyError as e:
-                # 맵핑 실패 시(map_gics_sector에서 raise된 KeyError 처리)
-                # 오류 출력 후 해당 월을 건너뜀
-                print(f"  !오류! {investment_month.date()} GICS 코드 맵핑 실패: {e}")
-                continue # 다음 월로 넘어감
+            # GICS 맵핑(숫자->영어) 로직을 제거함
             # --------------------
 
-            # MVO_Optimizer에 영어 이름(english_sectors)을 전달
-            mvo = MVO_Optimizer(mu=mu_benchmark2, sigma=sigma_benchmark2, sectors=english_sectors)
-            w_benchmark2 = mvo.optimize_tangency_1() # (weights, english_sectors) 튜플 반환
+            # [수정] MVO_Optimizer에 숫자 코드(sectors_benchmark2_numeric)를 직접 전달
+            mvo = MVO_Optimizer(mu=mu_benchmark2, sigma=sigma_benchmark2, sectors=sectors_benchmark2_numeric)
+            w_benchmark2 = mvo.optimize_tangency_1() # (weights, numeric_sectors) 튜플 반환
 
             # 3. 결과를 DataFrame으로 변환
-            # w_benchmark2[1]는 이제 맵핑된 영어 섹터 이름 리스트입니다.
+            # w_benchmark2[1]는 이제 숫자 섹터 코드 리스트입니다.
             df2 = pd.DataFrame({'SECTOR': w_benchmark2[1], 'Weight': w_benchmark2[0].flatten()})
             df2['InvestmentMonth'] = investment_month # 투자월 정보 추가
             mvo_weights_list.append(df2)
 
         except Exception as e:
-            # GICS 맵핑 외의 MVO 계산 등 다른 오류 처리
+            # MVO 계산 등 다른 오류 처리
             print(f"  !오류! {investment_month.date()} MVO 계산 실패: {e}")
             continue
             
@@ -188,7 +197,7 @@ if __name__ == "__main__":
         ).reset_index(drop=True)
 
         print("\n\n" + "="*50)
-        print("--- 최종 MVO 월별 가중치 DataFrame (정렬됨) ---")
+        print("--- 최종 MVO 월별 가중치 DataFrame (정렬됨, GICS 숫자) ---")
         print("="*50)
         print(mvo_weights_df.to_string())
     else:
@@ -202,7 +211,7 @@ if __name__ == "__main__":
         ).reset_index(drop=True)
 
         print("\n\n" + "="*50)
-        print("--- 최종 BL(AI) 월별 가중치 DataFrame (정렬됨) ---")
+        print("--- 최종 BL(AI) 월별 가중치 DataFrame (정렬됨, GICS 숫자) ---")
         print("="*50)
         print(bl_weights_df.to_string())
     else:
