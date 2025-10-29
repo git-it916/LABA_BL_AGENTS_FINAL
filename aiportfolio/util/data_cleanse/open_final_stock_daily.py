@@ -35,5 +35,3 @@ def open_final_stock_daily():
         sys.exit(1)
 
     return df
-
-a = open_final_stock_daily()
