@@ -90,7 +90,7 @@ def calculate_performance(monthly_weights_df, daily_returns_df, investment_month
         if len(daily_returns_20d) < 20:
             print(f"⚠️ 경고: {investment_month.date()}의 20일치 영업일 데이터가 부족합니다 (보유: {len(daily_returns_20d)}일).")
         
-        # 수익률(DataFrame)과 가중치(Series)의 컬럼(섹터)을 정렬
+        # 수익률(DataFrame)과 가중치(Series)의 컬럼(섹터)을 정렬/
         aligned_returns, aligned_weights = daily_returns_20d.align(weights, axis=1, fill_value=0)
         
         print(f"정렬 후 shape - 수익률: {aligned_returns.shape}, 가중치: {aligned_weights.shape}")
