@@ -4,6 +4,8 @@ import os
 import glob
 from datetime import datetime
 
+# python -m aiportfolio.backtest.data_prepare
+
 # MVO 계산에 필요한 모듈 임포트
 from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
 from aiportfolio.BL_MVO.MVO_opt import MVO_Optimizer
