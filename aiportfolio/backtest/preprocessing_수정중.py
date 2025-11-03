@@ -103,6 +103,7 @@ def total_daily_returns():
     추가적인 후처리 필요
     '''
 # python -m aiportfolio.backtest.preprocessing_수정중
+# 안녕하세요 교수님 방에 왔어요!
 
     df_rf = preprocess_rf_rate()
 
