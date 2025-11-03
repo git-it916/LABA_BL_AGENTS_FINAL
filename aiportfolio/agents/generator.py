@@ -15,7 +15,7 @@ class llamaview: # 이름 변경 (예시)
         
         [
             {
-            "view_type": "relative" | "absolute",
+            "view_type": "relative", 
             "asset_1": "TICKER_1",
             "asset_2": "TICKER_2" | null,
             "expected_performance_percent": float, // 아웃퍼폼(%) 또는 절대수익률(%)
@@ -23,7 +23,7 @@ class llamaview: # 이름 변경 (예시)
             }
         ]
         """
-        
+        # | "absolute", 상대뷰 사용시 추가
         # 2. 유저 프롬프트 (데이터 + 지시)
         user_prompt = f"""
         [시장 데이터 및 뉴스]

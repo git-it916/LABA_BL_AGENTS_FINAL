@@ -1,5 +1,5 @@
 def chat(self, system_prompt, user_prompt,
-             max_new_tokens=256, temperature=0.6, top_p=0.9):
+            max_new_tokens=256, temperature=0.6, top_p=0.9):
 
         # 1. messages (대화 내용 준비)
         # Llama 3 Instruct 모델은 '역할' 기반으로 대화합니다.
@@ -26,7 +26,7 @@ def chat(self, system_prompt, user_prompt,
             messages,
             tokenize=False, # True면 숫자로 바뀐 토큰 리스트를 줌. (우리는 문자열이 필요)
             add_generation_prompt=True # "assistant" 역할을 마지막에 추가해줌
-                                       # ("이제 네가 대답할 차례야" 라는 신호)
+                                        # ("이제 네가 대답할 차례야" 라는 신호)
         )
 
         # 3. self.pipe() (모델 실행)
@@ -35,9 +35,9 @@ def chat(self, system_prompt, user_prompt,
             prompt,
             max_new_tokens=max_new_tokens, # 최대 몇 토큰(글자)까지 생성할지
             do_sample=True,      # True: 창의적인 답변 (temperature/top_p 활성화)
-                                 # False: 매번 똑같은 답변 (가장 확률 높은 단어만 선택)
+                                # False: 매번 똑같은 답변 (가장 확률 높은 단어만 선택)
             temperature=temperature, # (0.0 ~ 1.0+) 낮을수록 논리적, 높을수록 창의적
-                                     # (금융 뷰는 0.3~0.5 정도로 낮추는 게 좋습니다)
+                                    # (금융 뷰는 0.3~0.5 정도로 낮추는 게 좋습니다)
             top_p=top_p,             # (0.0 ~ 1.0) 샘플링 시 상위 P%의 단어만 후보로 씀 (temperature와 함께 조절)
             
             # (★ 중요 개선 포인트 ★)
