@@ -41,12 +41,15 @@ def preprocess_rf_rate():
 # ---------- 2) 최종 데이터프레임 ----------
 def final():
     df = open_final_stock_months()
-
-    # S&P500 == 1 필터링
-    df_sp = df[df["sp500"] == 1].copy()
-
+    
     # date 컬럼 생성 (각 연월의 말일)
-    df_sp['date'] = pd.to_datetime(df_sp['cyear'].astype(str) + '-' + df_sp['cmonth'].astype(str)) + pd.offsets.MonthEnd(0)
+    df['date'] = pd.to_datetime(df['cyear'].astype(str) + '-' + df['cmonth'].astype(str)) + pd.offsets.MonthEnd(0)
+
+    # 전 월의 sp500에 해당하는 불리언 컬럼 추가
+    df = df.sort_values(['Ticker', 'date']).copy()
+    df['sp500_lag1'] = df.groupby('Ticker')['sp500'].shift(1)
+
+    df_sp = df[df['sp500_lag1']==1].copy()
 
     df_rf = preprocess_rf_rate()
 
@@ -68,7 +71,7 @@ def final():
     agg = (
         merged_df.groupby(group_keys, dropna=False)
             .agg(sector_prevmktcap=("prev_MthCap", "sum"), # 시총가중치 계산용
-                 sector_mktcap=("MthCap", "sum"),          # pi 계산용 
+                    sector_mktcap=("MthCap", "sum"),          # pi 계산용 
                 ret_x_cap_1_sum=("_ret_x_cap_1", "sum"),   # excess_return
                 ret_x_cap_2_sum=("_ret_x_cap_2", "sum"),   # 그냥 수익률
                 n_stocks=("Ticker", "count"))
