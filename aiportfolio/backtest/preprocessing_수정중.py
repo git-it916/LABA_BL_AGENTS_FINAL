@@ -76,9 +76,33 @@ def total_daily_returns():
     df.rename(columns={'DlyCalDt': 'date'}, inplace=True) # 컬럼명 변경
     df["date"] = pd.to_datetime(df["date"]) # 날짜 형식 변환
 
+    # 우선주 제거(date 값이 중복되어 있는 Ticker 중에서 DlyCap이 가장 큰 행만 남기기)
+    dupes = df[df.duplicated(subset=['Ticker', 'date'], keep=False)] # 중복된 그룹 찾기
+    # 중복 그룹 중에서 DlyCap이 가장 큰 행만 남기기
+    dupes_max = (
+        dupes.sort_values(['Ticker', 'date', 'DlyCap'], ascending=[True, True, False])
+            .drop_duplicates(subset=['Ticker', 'date'], keep='first')
+    )
+    # 중복이 아닌 행 찾기
+    non_dupes = df[~df.duplicated(subset=['Ticker', 'date'], keep=False)]
+    # 두 결과 합치기
+    filtered_df = pd.concat([dupes_max, non_dupes]).sort_index().reset_index(drop=True)
+
+    tickers_with_na = filtered_df.loc[filtered_df['DlyRet'].isnull(), 'Ticker'].unique()
+    print(tickers_with_na)
+
+    na_counts = (
+        filtered_df[filtered_df['Ticker'].isin(tickers_with_na) & filtered_df['DlyRet'].isnull()]
+        .groupby('Ticker')['DlyRet']
+        .size()
+        .sort_values(ascending=False)
+    )
+
+    print(na_counts.sort_values(ascending=False).head(20))
     '''
     추가적인 후처리 필요
     '''
+# python -m aiportfolio.backtest.preprocessing_수정중
 
     df_rf = preprocess_rf_rate()
 
@@ -123,3 +147,9 @@ def final_abnormal_returns():
     df_reset = pivoted_df.reset_index()
 
     return df_reset
+
+
+a = total_daily_returns()
+# print(a.head(20))
+# print(a.tail(20))
+# print(a.info())
