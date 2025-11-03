@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from aiportfolio.BL_MVO.prepare.preprocessing import final
+from aiportfolio.BL_MVO.prepare.preprocessing_수정중 import final
 
 # N: 자산 개수
 # K: 견해 개수
@@ -17,13 +17,13 @@ class Market_Params:
     # mu: 초과수익률의 기대수익률
     def making_mu(self):
             filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
-            mu = filtered_df.groupby('gsector')['sector_return'].mean()
+            mu = filtered_df.groupby('gsector')['sector_excess_return'].mean()
             return mu
     
     # Sigma: 초과수익률 공분산 행렬 (N*N)
     def making_sigma(self):
         filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
-        pivot_filtered_df = filtered_df.pivot_table(index='date', columns='gsector', values='sector_return')
+        pivot_filtered_df = filtered_df.pivot_table(index='date', columns='gsector', values='sector_excess_return')
         sigma = pivot_filtered_df.cov()
         sectors = sigma.columns.tolist()
         return sigma, sectors
@@ -63,22 +63,23 @@ class Market_Params:
         filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
         
         # 시총가중 수익률 생성
-        filtered_df["_ret_x_cap"] = filtered_df["sector_return"] * filtered_df["sector_mktcap"]
+        filtered_df["_ret_x_cap_1"] = filtered_df["sector_excess_return"] * filtered_df["sector_prevmktcap"] # excess_return
+        filtered_df["_ret_x_cap_2"] = filtered_df["sector_return"] * filtered_df["sector_prevmktcap"] # 그냥 수익률
         agg = (
             filtered_df.groupby("date", dropna=False)
-                .agg(total_mktcap=("sector_mktcap", "sum"),
-                    ret_x_cap_sum=("_ret_x_cap", "sum"))
+                .agg(total_mktcap=("sector_prevmktcap", "sum"),
+                    ret_x_cap_1_sum=("_ret_x_cap_1", "sum"),
+                    ret_x_cap_2_sum=("_ret_x_cap_2", "sum"))
                 .reset_index()
         )
-        agg["total_return"] = np.where(
-            agg["total_mktcap"] != 0,
-            agg["ret_x_cap_sum"] / agg["total_mktcap"],
-            np.nan
-        )
-        agg = agg.drop(columns=["ret_x_cap_sum"])
+        mask = agg["total_mktcap"] != 0
+        agg["total_excess_return"] = agg["ret_x_cap_1_sum"].div(agg["total_mktcap"]).where(mask)
+        agg["total_return"]        = agg["ret_x_cap_2_sum"].div(agg["total_mktcap"]).where(mask)
+
+        agg = agg.drop(columns=["ret_x_cap_1_sum", "ret_x_cap_2_sum"])  # 중간열 제거
         
         # delta 계산
-        ret_mean = agg['total_return'].mean()
+        ret_mean = agg['total_excess_return'].mean()
         ret_variance = agg['total_return'].var()
         delta = ret_mean / ret_variance
         return delta

@@ -23,7 +23,6 @@ def preprocess_rf_rate():
     df_rf['rf_daily'] = df_rf['rf_daily'].ffill() # 휴일 때문에 발생하는 결측치 바로 전날의 값으로 채움.
     df_rf['rf_daily'] = df_rf['rf_daily'] / 100  # % -> 소수점 변환
     df_rf['rf_daily'] = (1 + df_rf['rf_daily']) ** (1/252) - 1  # 연율 -> 일율 변환
-    
 
     # 월별 무위험 수익률로 변환
     rf_monthly = (
@@ -68,9 +67,10 @@ def final():
     group_keys = [merged_df['date'].dt.to_period('M'), 'gsector']
     agg = (
         merged_df.groupby(group_keys, dropna=False)
-            .agg(sector_prevmktcap=("prev_MthCap", "sum"),
-                ret_x_cap_1_sum=("_ret_x_cap_1", "sum"),
-                ret_x_cap_2_sum=("_ret_x_cap_2", "sum"),
+            .agg(sector_prevmktcap=("prev_MthCap", "sum"), # 시총가중치 계산용
+                 sector_mktcap=("MthCap", "sum"),          # pi 계산용 
+                ret_x_cap_1_sum=("_ret_x_cap_1", "sum"),   # excess_return
+                ret_x_cap_2_sum=("_ret_x_cap_2", "sum"),   # 그냥 수익률
                 n_stocks=("Ticker", "count"))
             .reset_index())
 
