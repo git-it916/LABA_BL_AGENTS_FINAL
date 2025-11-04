@@ -90,3 +90,7 @@ def final():
     agg = agg.sort_values(['date', 'gsector']).reset_index(drop=True).copy()
 
     return agg
+
+a = final()
+print(a.head(20))
+print(a.info())
