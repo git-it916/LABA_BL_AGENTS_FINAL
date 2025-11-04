@@ -41,7 +41,7 @@ def preprocess_rf_rate():
 # ---------- 2) 최종 데이터프레임 ----------
 def final():
     df = open_final_stock_months()
-    
+
     # date 컬럼 생성 (각 연월의 말일)
     df['date'] = pd.to_datetime(df['cyear'].astype(str) + '-' + df['cmonth'].astype(str)) + pd.offsets.MonthEnd(0)
 

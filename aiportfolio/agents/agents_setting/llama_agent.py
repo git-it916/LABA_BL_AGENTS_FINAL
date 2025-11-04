@@ -1,6 +1,7 @@
 from transformers import pipeline
 import torch # torch를 import해야 bfloat16을 쓸 수 있습니다.
 
+
 class llamaAgent:
     def __init__(self, model_id="meta-llama/Meta-Llama-3-8B-Instruct"):
         # 1. 'pipeline'은 모델을 쉽게 사용하도록 포장한 '종합 선물 세트'입니다.
