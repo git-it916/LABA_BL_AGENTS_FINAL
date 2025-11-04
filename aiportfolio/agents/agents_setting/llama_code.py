@@ -173,3 +173,60 @@ def generate_sector_views(pipeline_to_use):
 {json_data_string}
 [=== 11개 섹터 데이터 리스트 끝 ===]
 """
+
+    # 3. 모델 실행 및 결과 파싱
+    print("\n[알림] Llama 3 모델에 상대 뷰 생성을 요청합니다...")
+    
+    # (핵심) chat_with_llama3 함수 호출
+    generated_text = chat_with_llama3(
+        pipeline_obj=pipeline_to_use,
+        system_prompt=system_prompt,
+        user_prompt=user_prompt,
+        max_new_tokens=1024, # JSON 출력이 길 수 있으므로 넉넉하게 설정
+        temperature=0.3      # 일관성 있는 분석을 위해 낮게 설정
+    )
+
+    print("\n[알림] Llama 3가 생성한 순수 텍스트(JSON) ▼")
+    print(generated_text)
+
+    # 4. 결과 파싱 (JSON 문자열 -> Python 객체)
+    try:
+        # LLM이 생성한 텍스트에서 JSON 부분만 정확히 파싱
+        if "```json" in generated_text:
+            clean_json_string = generated_text.split("```json")[1].split("```")[0].strip()
+        elif generated_text.startswith("["):
+            clean_json_string = generated_text.strip()
+        else:
+            raise ValueError("LLM의 응답이 유효한 JSON 리스트로 시작하지 않습니다.")
+
+        if not clean_json_string:
+             raise ValueError("LLM의 응답이 비어있습니다.")
+             
+        parsed_views = json.loads(clean_json_string)
+        
+        print("\n[성공] JSON 파싱 완료. 생성된 상대 뷰 객체 ▼")
+        print(json.dumps(parsed_views, indent=2, ensure_ascii=False))
+        
+        return parsed_views
+
+    except json.JSONDecodeError as e:
+        print(f"\n[오류] LLM이 생성한 텍스트를 JSON으로 파싱하는 데 실패했습니다: {e}")
+        return None
+    except Exception as e:
+        print(f"\n[오류] 알 수 없는 오류 발생: {e}")
+        return None
+
+# --- 5. 스크립트 메인 실행 ---
+
+if __name__ == "__main__":
+    # 이 스크립트가 직접 실행되었을 때
+    
+    # 1. (위에서 실행) Hugging Face 로그인
+    # 2. (위에서 실행) quant_pipeline 객체 생성
+    
+    if 'quant_pipeline' in locals() and quant_pipeline is not None:
+        # 3. 모델 로드가 성공했을 경우, 메인 로직 실행
+        generate_sector_views(pipeline_to_use=quant_pipeline)
+    else:
+        print("\n[알림] 모델 파이프라인('quant_pipeline')이(가) 성공적으로 로드되지 않아 메인 로직을 실행할 수 없습니다.")
+        print("스크립트 상단의 모델 로드 부분을 확인하세요.")
