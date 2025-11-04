@@ -26,6 +26,20 @@ class Market_Params:
         pivot_filtered_df = filtered_df.pivot_table(index='date', columns='gsector', values='sector_excess_return')
         sigma = pivot_filtered_df.cov()
         sectors = sigma.columns.tolist()
+
+        # 공분산 행렬의 인덱스가 정해진 순서와 일치하지 않는다면 에러 발생
+        expected_index = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+        if not isinstance(sigma, pd.DataFrame):
+            raise TypeError("sigma[0] must be a pandas DataFrame (covariance matrix)")
+
+        if list(sigma.index) != expected_index or list(sigma.columns) != expected_index:
+            raise ValueError(
+                f"Covariance matrix index/columns mismatch.\n"
+                f"Expected: {expected_index}\n"
+                f"Got index: {list(sigma.index)}\n"
+                f"Got columns: {list(sigma.columns)}"
+            )
+
         return sigma, sectors
 
     # Pi: 내재 시장 균형 초과수익률 벡터 (N*1)
@@ -75,7 +89,6 @@ class Market_Params:
         mask = agg["total_mktcap"] != 0
         agg["total_excess_return"] = agg["ret_x_cap_1_sum"].div(agg["total_mktcap"]).where(mask)
         agg["total_return"]        = agg["ret_x_cap_2_sum"].div(agg["total_mktcap"]).where(mask)
-
         agg = agg.drop(columns=["ret_x_cap_1_sum", "ret_x_cap_2_sum"])  # 중간열 제거
         
         # delta 계산

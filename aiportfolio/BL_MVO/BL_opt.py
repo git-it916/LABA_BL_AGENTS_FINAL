@@ -15,6 +15,7 @@ def get_bl_outputs(tau, start_date, end_date):
     market_params = Market_Params(start_date, end_date)
     Pi = market_params.making_pi()      # Equilibrium excess returns (pi)
     sigma = market_params.making_sigma()  # Covariance matrix (Sigma)
+    expected_index = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 
     P, Q, Omega = get_view_params(sigma[0], tau)
 
