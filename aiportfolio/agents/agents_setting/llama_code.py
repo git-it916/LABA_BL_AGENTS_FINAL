@@ -229,4 +229,4 @@ if __name__ == "__main__":
         generate_sector_views(pipeline_to_use=quant_pipeline)
     else:
         print("\n[알림] 모델 파이프라인('quant_pipeline')이(가) 성공적으로 로드되지 않아 메인 로직을 실행할 수 없습니다.")
-        print("스크립트 상단의 모델 로드 부분을 확인하세요.")
+        print("스크립트 상단의 모델 로드 부분을 확인하세요!")
