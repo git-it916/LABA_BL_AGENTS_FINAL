@@ -6,28 +6,21 @@ from glob import glob
 
 # python -m aiportfolio.agents.converting_viewtomatrix
 
-# 현재 파일 기준으로 output_view 디렉토리 경로 설정
-base_path = os.path.dirname(os.path.abspath(__file__))
-output_dir = os.path.join(base_path, '../..', 'database', 'output_view')
+# database/output_view의 가장 최근 파일 열기
+def open_file():
+    base_path = os.path.dirname(os.path.abspath(__file__)) # 현재 파일 기준으로 output_view 디렉토리 경로 설정
+    output_dir = os.path.join(base_path, '../..', 'database', 'output_view')
+    json_files = glob(os.path.join(output_dir, '*.json')) # output_view 폴더 내의 모든 JSON 파일 리스트 가져오기
 
-# output_view 폴더 내의 모든 JSON 파일 리스트 가져오기
-json_files = glob(os.path.join(output_dir, '*.json'))
+    if not json_files: # JSON 파일이 하나라도 있는지 확인
+        raise FileNotFoundError(f"JSON 파일이 존재하지 않습니다: {output_dir}")
 
-# JSON 파일이 하나라도 있는지 확인
-if not json_files:
-    raise FileNotFoundError(f"JSON 파일이 존재하지 않습니다: {output_dir}")
-
-# 가장 최근 수정된 JSON 파일 찾기
-latest_file = max(json_files, key=os.path.getmtime)
-
-print(f"가장 최근 파일: {os.path.basename(latest_file)}")
-
-# 가장 최근 파일 열기
-with open(latest_file, 'r', encoding='utf-8') as f:
-    views_data = json.load(f)
-
-df = pd.DataFrame(views_data)
-print(df)
+    latest_file = max(json_files, key=os.path.getmtime) # 가장 최근 수정된 JSON 파일 찾기
+    with open(latest_file, 'r', encoding='utf-8') as f:
+        views_data = json.load(f)
+    print(latest_file)
+    
+    return views_data
 
 # ==================== 1. Q 행렬 생성 ====================
 def create_Q_vector(views_data):
@@ -38,9 +31,6 @@ def create_Q_vector(views_data):
         current_forecasts[i, 0] = view['relative_return_view']
     
     return current_forecasts
-
-current_forecasts = create_Q_vector(views_data=views_data)
-print(current_forecasts)
 
 # ==================== 2. P 행렬 생성 ====================
 def create_P_matrix(views_data):
@@ -79,7 +69,4 @@ def create_P_matrix(views_data):
         except ValueError as e:
             print(f"Warning: 섹터를 찾을 수 없습니다 - {e}")
     
-    return P, sector_order
-
-a = create_P_matrix(views_data=views_data)
-print(a)
+    return P

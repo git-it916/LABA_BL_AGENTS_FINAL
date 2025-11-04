@@ -15,9 +15,8 @@ def get_bl_outputs(tau, start_date, end_date):
     market_params = Market_Params(start_date, end_date)
     Pi = market_params.making_pi()      # Equilibrium excess returns (pi)
     sigma = market_params.making_sigma()  # Covariance matrix (Sigma)
-    expected_index = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
 
-    P, Q, Omega = get_view_params(sigma[0], tau)
+    P, Q, Omega = get_view_params(sigma[0], tau, end_date)
 
     # --- Execute the Black-Litterman formula ---
     pi_np = Pi.values.flatten() if isinstance(Pi, pd.DataFrame) else Pi.flatten()
@@ -37,10 +36,10 @@ def get_bl_outputs(tau, start_date, end_date):
     term_B = term_B_part1 + term_B_part2
 
     # Calculate new posterior expected returns (Pi_new)
-    Pi_new = np.linalg.inv(term_A) @ term_B
-
+    mu_BL = np.linalg.inv(term_A) @ term_B
+    print(mu_BL)
     # --- Return the outputs for the MVO script ---
     sectors = sigma[1]
     tausigma = tau * sigma[0]
 
-    return Pi_new.reshape(-1, 1), tausigma, sectors
+    return mu_BL.reshape(-1, 1), tausigma, sectors

@@ -1,4 +1,5 @@
-import pandas as pd
+import os
+from datetime import datetime
 
 from aiportfolio.scene import scene
 
@@ -30,5 +31,16 @@ tau = 0.025
 #######################################
 # run
 #######################################
+
+# 결과를 저장한 디렉토리 생성
+base_dir = os.path.join("database", "logs")
+current_time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+log_path = os.path.join(base_dir, f'result of {current_time_str}')
+bl_result_path = os.path.join(log_path, "BL_result")
+llm_view_path = os.path.join(log_path, "LLM_view")
+
+os.makedirs(bl_result_path, exist_ok=True)
+os.makedirs(llm_view_path, exist_ok=True)
 
 BL_results = scene(tau=tau, forecast_period=forecast_period)

@@ -4,6 +4,8 @@ from huggingface_hub import notebook_login
 import json
 import warnings
 
+# python -m aiportfolio.agents.Llama_view
+
 # --- 1. 사전 준비: 경고 무시 및 Hugging Face 로그인 ---
 
 # 불필요한 경고 메시지를 무시합니다.

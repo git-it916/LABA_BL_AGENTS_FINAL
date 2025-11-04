@@ -1,9 +1,11 @@
 import numpy as np
 import pandas as pd
 
-from aiportfolio.agents.generator_people import generated_view
+from aiportfolio.agents.Llama_config import prepare_pipeline_obj
+from aiportfolio.agents.Llama_view_수정중 import generate_sector_views
+from aiportfolio.agents.converting_viewtomatrix import open_file, create_Q_vector, create_P_matrix
 
-def get_view_params(sigma, tau):
+def get_view_params(sigma, tau, end_date):
     """
     This function calculates and returns the view-related parameters P, Q, and Omega.
 
@@ -14,38 +16,35 @@ def get_view_params(sigma, tau):
     Returns:
         tuple: A tuple containing P, Q, and Omega.
     """
-    current_forecasts, analyst_mses = generated_view()
-
-    # --- Analyst weights calculation (w) ---
-    inverse_mses = 1 / analyst_mses
-    analyst_weights = inverse_mses / np.sum(inverse_mses)
+    pipeline_to_use = prepare_pipeline_obj()
+    generate_sector_views(pipeline_to_use, end_date)
+    views_data = open_file()
 
     # --- Picking matrix (P) ---
-    # Sectors order: Communication Services, Consumer Discretionary, Consumer Staples,
-    # Energy, Financials, Health Care, Industrials, Information Technology,
-    # Materials, Real Estate, Utilities
-    P = np.array([
-        [0, 0, 0, 0, -1, 0, 0, 1, 0, 0, 0],   # 뷰 1: IT > Financials
-        [0, 1, -1, 0, 0, 0, 0, 0, 0, 0, 0],   # 뷰 2: Discretionary > Staples
-        [0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0],   # 뷰 3: Healthcare > Industrials
-        [0, 0, 0, 1, 0, 0, -1, 0, 0, 0, 0],   # 뷰 4: Energy > Industrials
-        [0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 1]    # 뷰 5: Utilities > Financials
-    ])
+    P = create_P_matrix(views_data)
 
     # --- View vector (Q) ---
-    Q = np.dot(current_forecasts, analyst_weights)
+    Q = create_Q_vector(views_data)
 
     # --- Omega matrix (Ω) ---
     num_views = P.shape[0]
     Omega = np.zeros((num_views, num_views))
     sigma_np = sigma.values if isinstance(sigma, pd.DataFrame) else sigma
 
+    '''
     for i in range(num_views):
-        forecasts_for_view = current_forecasts[i, :]
+        forecasts_for_view = Q[i, :]
         sigma_q_i_sq = np.var(forecasts_for_view)
         P_row = P[i, :]
         p_sigma_pT = P_row @ sigma_np @ P_row.T
         omega_i = tau * sigma_q_i_sq * p_sigma_pT
+        Omega[i, i] = omega_i
+    '''
+        
+    for i in range(num_views):
+        P_row = P[i, :]
+        p_sigma_pT = P_row @ sigma_np @ P_row.T
+        omega_i = tau * p_sigma_pT
         Omega[i, i] = omega_i
 
     return P, Q, Omega
