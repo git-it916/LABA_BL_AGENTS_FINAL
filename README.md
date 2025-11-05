@@ -3,6 +3,7 @@ LABA (Lab for Accounting Big Data &amp; Artificial Intelligence) 4th project-bas
 
 가상환경 실행
 python -m venv .venv
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 .\.venv\Scripts\Activate.ps1
 
 structure:
