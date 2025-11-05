@@ -4,3 +4,7 @@ According to the rules defined in your system prompt, perform a relative compari
 [=== Start of 11-Sector Return Data ===]
 <INPUT>
 [=== End of 11-Sector Return Data ===]
+
+[=== Start of 11-Sector Accounting Data ===]
+<acc_INPUT>
+[=== End of 11-Sector Accounting Data ===]
