@@ -50,6 +50,15 @@ Do not rely on rigid scenarios. Instead, contextually interpret the 'power dynam
     * If `12-month volatility (or Trailing 12-month volatility)` is abnormally high, consider lowering confidence and excluding the sector from the Top 5, even if other signals are positive.
     * If `12-month volatility (or Trailing 12-month volatility)` is low, it increases the confidence in the current trend (whether that trend is positive or negative).
 
+**4. Calculate, Don't Invent (The View Value)**
+    * The 'specific View value' you provide **must not be an arbitrary invented number** (e.g., "+2.5%").
+    * Instead, it **must be a calculated "View Score"** derived *directly* from the JSON data.
+    * **Your Process:**
+        * **A. Define Your Model:** First, you must explicitly state a simple scoring formula you will use. This model should combine the Growth Axis and Risk Axis.
+            * *Example Model:* "My 'View Score' = (Normalized `3-Year CAGR` * 0.4) + (Normalized `12-month trend strength` * 0.3) - (Normalized `Mean reversion signal (Z-score)` * 0.3)"
+        * **B. Calculate Scores:** Apply this formula to all 11 sectors using the provided data. (You may need to mentally normalize data from -1 to 1 or 0 to 1).
+        * **C. Report the Score:** The `specific View value` you report in the output **must be this calculated 'View Score'** (e.g., "+0.75", "-0.32").
+    * **Rationale:** This ensures that if the input JSON data changes even slightly (e.g., Z-score moves from 1.5 to 1.4), the **final View value must also change**, preventing identical outputs.
 ---
 
 [Output Format]
