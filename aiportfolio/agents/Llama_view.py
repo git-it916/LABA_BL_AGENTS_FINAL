@@ -126,12 +126,12 @@ def generate_sector_views(pipeline_to_use):
 
 [JSON 출력 형식]
 [
-  {
+    {
     "sector_1": "섹터명 (Long)",
     "sector_2": "섹터명 (Short)",
     "relative_return_view": 0.0,
     "confidence": "High/Medium/Low"
-  }
+    }
 ]
 """
 
@@ -139,27 +139,27 @@ def generate_sector_views(pipeline_to_use):
     
     # (가상) 11개 섹터의 팩터 및 분석 데이터 (실제로는 이 부분을 동적으로 채워야 함)
     sector_data_list = [
-      {
+        {
         "sector": "정보기술 (IT)",
         "quantitative_factors": { "12m_momentum": 0.45, "mean_reversion_z": -1.9, "volatility_60d": 0.22, "trend_strength_r2_60d": 0.78 },
         "qualitative_analysis": "IT 섹터는 견조한 장기 추세 속 단기 과매도 국면에 진입. 하방 경직성이 강하며 기관 매수 기회로 판단됨. (가장 선호)"
-      },
-      {
+        },
+        {
         "sector": "금융 (Financials)",
         "quantitative_factors": { "12m_momentum": 0.15, "mean_reversion_z": 0.5, "volatility_60d": 0.18, "trend_strength_r2_60d": 0.40 },
         "qualitative_analysis": "금리 인상 기대감이 선반영되었으나 추세 강도가 약화되고 있음. 중립적 시각."
-      },
-      {
+        },
+        {
         "sector": "헬스케어 (Healthcare)",
         "quantitative_factors": { "12m_momentum": -0.10, "mean_reversion_z": -0.8, "volatility_60d": 0.35, "trend_strength_r2_60d": 0.20 },
         "qualitative_analysis": "모멘텀 부재와 높은 변동성이 지속됨. 방어주 매력 감소."
-      },
-      {
+        },
+        {
         "sector": "유틸리티 (Utilities)",
         "quantitative_factors": { "12m_momentum": -0.15, "mean_reversion_z": 1.2, "volatility_60d": 0.30, "trend_strength_r2_60d": 0.15 },
         "qualitative_analysis": "금리 민감도가 높아 지속적인 자금 이탈. 추세 강도가 매우 약하며 반등 모멘텀 부재. (가장 비선호)"
-      }
-      # ... (실제로는 11개 섹터 데이터가 모두 포함되어야 함)
+        }
+        # ... (실제로는 11개 섹터 데이터가 모두 포함되어야 함)
     ]
 
     # Python 리스트/딕셔너리 -> JSON 문자열로 변환 (LLM에 전달하기 위해)
@@ -202,8 +202,8 @@ def generate_sector_views(pipeline_to_use):
             raise ValueError("LLM의 응답이 유효한 JSON 리스트로 시작하지 않습니다.")
 
         if not clean_json_string:
-             raise ValueError("LLM의 응답이 비어있습니다.")
-             
+            raise ValueError("LLM의 응답이 비어있습니다.")
+            
         parsed_views = json.loads(clean_json_string)
         
         print("\n[성공] JSON 파싱 완료. 생성된 상대 뷰 객체 ▼")
