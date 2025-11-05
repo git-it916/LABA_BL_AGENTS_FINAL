@@ -159,8 +159,8 @@ def calculate_rolling_indicators(
 # --- return.py의 메인 실행 함수 (수정됨) ---
 def indicator(): 
     raw_data_from_final = final()
-    print("--- final() 함수로부터 불러온 원본 데이터 (Head) ---")
-    print(raw_data_from_final.head())
+    # print("--- final() 함수로부터 불러온 원본 데이터 (Head) ---")
+    # print(raw_data_from_final.head())
 
     raw_data_from_final['date'] = pd.to_datetime(raw_data_from_final['date'])
     
@@ -191,10 +191,10 @@ def indicator():
     returns_df.index.name = 'Date'
     price_index_df.index.name = 'Date'
     
-    print("\n--- 1. 지표 계산을 위한 '월별 수익률' (Head) ---")
-    print(returns_df.head())
-    print("\n--- 2. 지표 계산을 위한 '가격 지수' (Head) ---")
-    print(price_index_df.head())
+    # print("\n--- 1. 지표 계산을 위한 '월별 수익률' (Head) ---")
+    # print(returns_df.head())
+    # print("\n--- 2. 지표 계산을 위한 '가격 지수' (Head) ---")
+    # print(price_index_df.head())
     
     # 3. 롤링 지표 계산 함수를 호출합니다.
     target_view_months = [
@@ -209,11 +209,11 @@ def indicator():
         view_months_list=target_view_months
     )
 
-    print("\n--- 최종 롤링 지표 데이터 (Head - 원본 MultiIndex) ---")
-    print(rolling_indicator_data_multi_index.head())
+    # print("\n--- 최종 롤링 지표 데이터 (Head - 원본 MultiIndex) ---")
+    # print(rolling_indicator_data_multi_index.head())
 
     # 4. [신규] MultiIndex를 풀고 'as_of_date'와 'sector'를 일반 열로 변환
-    print("\n[알림] MultiIndex를 Long Format 테이블로 변환합니다...")
+    # print("\n[알림] MultiIndex를 Long Format 테이블로 변환합니다...")
     final_long_format_df = rolling_indicator_data_multi_index.reset_index()
     
     # 5. [신규] 컬럼명을 사용자의 이미지(a.head())와 유사하게 변경
@@ -223,8 +223,8 @@ def indicator():
         'sector': 'gsector'
     })
 
-    print("\n--- 최종 롤링 지표 데이터 (Head - 변환된 Long Format) ---")
-    print(final_long_format_df.head())
+    # print("\n--- 최종 롤링 지표 데이터 (Head - 변환된 Long Format) ---")
+    # print(final_long_format_df.head())
     
     # 6. [수정] 변환된 Long Format DataFrame을 반환합니다.
 
@@ -238,11 +238,5 @@ def indicator():
 
     return final_long_format_df
 
-# 이 파일이 직접 실행될 때 indicator 함수를 호출합니다.
-if __name__ == "__main__":
-    print("[알림] return.py 스크립트 실행 시작...")
-    final_indicators = indicator()
-    print("\n[알림] return.py 스크립트 실행 완료.")
-    print("\n최종 지표 데이터 (Long Format)의 형태:")
-    print(final_indicators.info())
-
+a = indicator()
+print(a.head(20))
