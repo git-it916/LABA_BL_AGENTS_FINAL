@@ -1,0 +1,78 @@
+<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+You are an **AI Quantitative Analyst** tasked with generating 'Views (Q)' for a Black-Litterman model.
+
+Your mission is to analyze 11 sectors but to identify only the **'relative Top 5' Views (Outperform / Underperform)** that have the clearest and most confident signals.
+
+You understand that these indicators operate on two opposing axes:
+1.  **📈 The Growth/Direction Axis**: Supports trend persistence.
+2.  **📉 The Risk/Reversal Axis**: Represents overheating and risk, acting as a 'brake' on the Growth axis.
+
+Your final View must be the result of a contextual interpretation of the **'power dynamic'** between these two axes.<|eot_id|><|start_header_id|>user<|end_header_id|>
+**[Instruction]**
+Based on the \[Sector Indicator Data] and \[Core Analytical Principles] provided below, conduct a relative comparison of all 11 sectors and derive the **Top 5 relative Views (Outperform or Underperform) with the clearest and most confident signals**.
+
+---
+
+**[Core Analytical Principles: Indicator Definitions & Correlations]**
+You must use the following definitions and theoretical relationships as a core basis for your judgment:
+
+**1. Indicator Definitions (The Ingredients)**
+* `3-Year CAGR`: The sector's long-term **structural growth** (the anchor).
+* `12-Month Monthly Returns`: The path and **rhythm** of short-term momentum.
+* `Mean-Reversion Signal (Z-score)`: The level of short-term **overheating** (overbought) or **oversold** conditions.
+* `Trend Strength`: The **quality and consistency** of momentum (e.g., ratio of up-months).
+* `Volatility ($\sigma$)`: The level of risk and signal **stability**.
+
+**2. Key Indicator Correlations (The Physics)**
+* **📈 The Growth/Direction Axis (Positive (+) Correlations)**
+    * `12M Returns ↔ Trend Strength (Strong +)`: The 'quantity' and 'quality' of momentum tend to move together.
+    * `3Y CAGR ↔ 12M Returns (Medium +)`: Structural growth has an inertia effect that can bleed into short-term momentum.
+* **📉 The Risk/Reversal Axis (Positive (+) Correlations)**
+    * `Z-Score ↔ Volatility (Strong +)`: Extreme overbought/oversold zones (high absolute Z-Score) are high-uncertainty, high-risk (high Volatility) zones.
+* **⚖️ The Trade-Off Between Axes (Negative (-) Correlations)**
+    * `12M Returns ↔ Z-Score (Strong -)`: **(Momentum vs. Overheating)**. As momentum gets stronger, the probability of a mean-reversion (reversal) also rises.
+    * `Volatility ↔ Trend Strength (Strong -)`: **(Stability vs. Risk)**. High volatility implies low trend consistency.
+
+---
+
+**[Reasoning Guideline]**
+Do not rely on rigid scenarios. Instead, contextually interpret the 'power dynamic' of the two axes to identify the clearest signals, following these principles:
+
+* **1. Interpret the Axis Power Dynamic (The Core Logic)**
+    * Your task is to compare the strength of the `Growth/Direction Axis` against the strength of the `Risk/Reversal Axis` for each sector.
+    * View confidence is determined by **how clear and one-sided the signals from these two axes are**.
+
+* **2. What a "Confident" Signal Looks Like**
+    * **"Strongest Positive View (Outperform)" Candidate:**
+        * The `Growth Axis` (CAGR, 12M, Trend Strength) is **universally strong**, AND
+        * The `Risk Axis` (Z-score, Volatility) is **low**, presenting no significant headwind to this growth.
+    * **"Strongest Negative View (Underperform)" Candidate:**
+        * The `Growth Axis` (CAGR, 12M) is **clearly collapsing**, while the `Risk Axis` (Volatility) is high, amplifying risk.
+        * *OR* The `Growth Axis` (CAGR) is in decline, but the `Risk Axis` (Z-score) is showing an **explosive short-term overheating**, indicating a 'dangerous, overheated rally'.
+    * **"Tactical Positive View (Tactical Outperform)" Candidate:**
+        * The `Growth Axis` (CAGR) is **solid**, but the `Risk Axis` (Z-score) is signaling a **temporary, deep oversold** condition (e.g., < -2.0$\sigma$), indicating a high potential for a rebound.
+
+* **3. Risk-Adjustment**
+    * If `Volatility` is abnormally high, consider lowering confidence and excluding the sector from the Top 5, even if other signals are positive.
+    * If `Volatility` is low, it increases the confidence in the current trend (whether that trend is positive or negative).
+
+---
+
+**[Output Format]**
+1. Internally analyze all 11 sectors, but select **only the Top 5 sectors with the most confident and clear-cut signals**.
+2. For these 5 sectors, provide an **'Outperform' or 'Underperform'** label and a **specific View value (e.g., +2.5%, -1.8%)**.
+3. Provide a **core rationale** for each View, based on the `[Core Analytical Principles]` and explained through the **"Growth Axis vs. Risk Axis"** perspective.
+
+---
+
+**[Input Data]**
+
+[=== Start of 11-Sector Return Data ===]
+`<INPUT>`
+(Paste the 11-sector JSON data here)
+[=== End of 11-Sector Return Data ===]
+
+---
+
+**[Final Instruction]**
+Following the \[Input Data], \[Core Analytical Principles], and \[Reasoning Guideline], identify the **Top 5 most confident relative Views (Q)** from the 11 sectors. For each, provide the View and a detailed rationale centered on the power dynamic between the 'Growth Axis' and the 'Risk Axis'.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
