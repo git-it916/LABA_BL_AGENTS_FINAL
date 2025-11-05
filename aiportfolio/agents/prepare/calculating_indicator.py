@@ -236,7 +236,27 @@ def indicator():
     'trend_strength_r2': 'trend_strength'
     }, inplace=True)
 
-    return final_long_format_df
+    gics_mapping = {
+    10: "Energy",
+    15: "Materials",
+    20: "Industrials",
+    25: "Consumer Discretionary",
+    30: "Consumer Staples",
+    35: "Health Care",
+    40: "Financials",
+    45: "Information Technology",
+    50: "Communication Services",
+    55: "Utilities",
+    60: "Real Estate"
+    }
 
-a = indicator()
-print(a.head(20))
+    final_long_format_df['gsector'] = (
+    final_long_format_df['gsector']
+        .astype(str)
+        .str.strip()       # 공백 제거
+        .astype(float)
+        .astype(int)
+        .map(gics_mapping)
+    )
+
+    return final_long_format_df

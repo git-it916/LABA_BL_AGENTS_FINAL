@@ -19,7 +19,7 @@ def get_bl_outputs(tau, start_date, end_date):
     P, Q, Omega = get_view_params(sigma[0], tau, end_date)
 
     # --- Execute the Black-Litterman formula ---
-    pi_np = Pi.values.flatten() if isinstance(Pi, pd.DataFrame) else Pi.flatten()
+    pi_np = (Pi.values.flatten() if isinstance(Pi, pd.DataFrame) else Pi.flatten()).reshape(-1, 1)
     sigma_np = sigma[0].values if isinstance(sigma[0], pd.DataFrame) else sigma[0]
 
     # Calculate intermediate terms
@@ -37,9 +37,18 @@ def get_bl_outputs(tau, start_date, end_date):
 
     # Calculate new posterior expected returns (Pi_new)
     mu_BL = np.linalg.inv(term_A) @ term_B
-    print(mu_BL)
+
     # --- Return the outputs for the MVO script ---
     sectors = sigma[1]
     tausigma = tau * sigma[0]
-
+    print('P')
+    print(P)
+    print('Q')
+    print(Q)
+    print('pi')
+    print(Pi)
+    print('pi_np')
+    print(pi_np)
+    print('mu_BL')
+    print(mu_BL)
     return mu_BL.reshape(-1, 1), tausigma, sectors

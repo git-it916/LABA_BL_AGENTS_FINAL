@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
 
 from aiportfolio.util.data_cleanse.open_final_stock_daily import open_final_stock_daily
 

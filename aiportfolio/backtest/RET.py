@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+# python -m aiportfolio.backtest.RET
+
 # 1. data_prepare 및 preprocessing 모듈에서 실제 함수 임포트
 try:
     from aiportfolio.backtest.data_prepare import calculate_monthly_mvo_weights, open_log

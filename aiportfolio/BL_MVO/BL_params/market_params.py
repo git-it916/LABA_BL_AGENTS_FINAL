@@ -102,4 +102,5 @@ class Market_Params:
         w_mkt = self.making_w_mkt(sigma[1])
         delta = self.making_delta()
         pi = delta * sigma[0].values @ w_mkt[0]
+
         return pi
