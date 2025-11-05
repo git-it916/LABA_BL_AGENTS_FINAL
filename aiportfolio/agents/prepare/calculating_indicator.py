@@ -4,6 +4,8 @@ from scipy.stats import linregress
 from pandas.tseries.offsets import MonthEnd
 import warnings
 
+# python -m aiportfolio.agents.prepare.calculating_indicator
+
 # 불필요한 경고 메시지를 무시합니다.
 warnings.filterwarnings("ignore")
 
@@ -225,6 +227,15 @@ def indicator():
     print(final_long_format_df.head())
     
     # 6. [수정] 변환된 Long Format DataFrame을 반환합니다.
+
+    final_long_format_df.rename(columns={
+    '12m_returns': 'return_list',
+    'cagr_3y': 'CAGR',
+    'volatility': 'volatility',
+    'z_score': 'z-score',
+    'trend_strength_r2': 'trend_strength'
+    }, inplace=True)
+
     return final_long_format_df
 
 # 이 파일이 직접 실행될 때 indicator 함수를 호출합니다.

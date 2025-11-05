@@ -3,35 +3,12 @@ import numpy as np
 import os
 import json
 
+from aiportfolio.agents.prepare.calculating_indicator import indicator
+
 # python -m aiportfolio.agents.prompt_maker
 
-# 예시 데이터프레임
-def example():
-    dates = pd.date_range(start='2024-04-30', end='2024-11-30', freq='ME')
-    sectors = [
-        "Energy", "Materials", "Industrials", "Consumer Discretionary", 
-        "Consumer Staples", "Health Care", "Financials", "Information Technology", 
-        "Communication Services", "Utilities", "Real Estate"
-    ]
-    data = []
-    np.random.seed(42)  # 재현성을 위한 시드 설정
-    for date in dates:
-        for sector in sectors:
-            row = {
-                'date': date,
-                'gsector': sector,
-                'return_list': np.random.randn(12).tolist(),  # 12개의 랜덤 값을 가진 리스트
-                'z-score': np.random.randn(),  # 표준정규분포
-                'volatility': np.random.uniform(0.1, 0.5),  # 0.1~0.5 사이의 변동성
-                'trend_strength': np.random.uniform(0, 1),  # 0~1 사이의 추세 강도
-                'CAGR': np.random.uniform(-0.2, 0.3)  # -20%~30% 사이의 CAGR
-            }
-            data.append(row)
-    calculate_return = pd.DataFrame(data)
-    return calculate_return
-
 def making_INPUT(end_date):
-    data = example()
+    data = indicator()
 
     sector_data_list = [
         {
@@ -158,3 +135,30 @@ def making_system_prompt():
         print(f"파일을 읽는 중 오류가 발생했습니다: {e}")
     
     return content
+
+'''
+# 예시 데이터프레임
+def example():
+    dates = pd.date_range(start='2024-04-30', end='2024-11-30', freq='ME')
+    sectors = [
+        "Energy", "Materials", "Industrials", "Consumer Discretionary", 
+        "Consumer Staples", "Health Care", "Financials", "Information Technology", 
+        "Communication Services", "Utilities", "Real Estate"
+    ]
+    data = []
+    np.random.seed(42)  # 재현성을 위한 시드 설정
+    for date in dates:
+        for sector in sectors:
+            row = {
+                'date': date,
+                'gsector': sector,
+                'return_list': np.random.randn(12).tolist(),  # 12개의 랜덤 값을 가진 리스트
+                'z-score': np.random.randn(),  # 표준정규분포
+                'volatility': np.random.uniform(0.1, 0.5),  # 0.1~0.5 사이의 변동성
+                'trend_strength': np.random.uniform(0, 1),  # 0~1 사이의 추세 강도
+                'CAGR': np.random.uniform(-0.2, 0.3)  # -20%~30% 사이의 CAGR
+            }
+            data.append(row)
+    calculate_return = pd.DataFrame(data)
+    return calculate_return
+'''
