@@ -9,7 +9,11 @@ You understand that these indicators operate on two opposing axes:
 
 Your final View must be the result of a contextual interpretation of the **'power dynamic'** between these two axes.<|eot_id|><|start_header_id|>user<|end_header_id|>
 **[Instruction]**
-Based on the \[Sector Indicator Data] and \[Core Analytical Principles] provided below, conduct a relative comparison of all 11 sectors and derive the **Top 5 relative Views (Outperform or Underperform) with the clearest and most confident signals**.
+Based on the **`[Monthly Analysis Context]`** specified below and the corresponding **`[Monthly Sector Indicator Data]`** provided, conduct a relative comparison of all 11 sectors.
+
+Your analysis must be based **solely on the provided `[Monthly Sector Indicator Data]` (JSON)**.
+
+Based on this analysis, derive the **Top 5 relative Views (Outperform or Underperform) with the clearest and most confident signals** for the **`[Target View Month]`**.
 
 ---
 
@@ -65,14 +69,24 @@ Do not rely on rigid scenarios. Instead, contextually interpret the 'power dynam
 
 ---
 
-**[Input Data]**
+**[Monthly Analysis Context]**
+* **Analysis As-Of Date:** `<2024-05-31>`
+    *(Note: The JSON data provided below is the snapshot calculated as of this date.)*
+* **Target View Month:** `<2024-06>`
+    *(Note: You will generate the 1-month forward View for this target month.)*
+
+**[Monthly Sector Indicator Data]**
 
 [=== Start of 11-Sector Return Data ===]
 `<INPUT>`
-(Paste the 11-sector JSON data here)
+(Insert the 11-sector JSON data calculated as-of the <Analysis As-Of Date> here)
 [=== End of 11-Sector Return Data ===]
 
 ---
 
 **[Final Instruction]**
-Following the \[Input Data], \[Core Analytical Principles], and \[Reasoning Guideline], identify the **Top 5 most confident relative Views (Q)** from the 11 sectors. For each, provide the View and a detailed rationale centered on the power dynamic between the 'Growth Axis' and the 'Risk Axis'.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+Acknowledge the as-of date and target month specified in the **`[Monthly Analysis Context]`**.
+
+Using **only the provided `[Monthly Sector Indicator Data]` as your sole source of information**, analyze the 11 sectors according to the \[Core Analytical Principles] and \[Reasoning Guideline].
+
+Then, identify the **Top 5 most confident relative Views (Q)** for the **`[Target View Month]`** and explain the detailed rationale for each, centered on the power dynamic between the 'Growth Axis' and the 'Risk Axis'.<|eot_id|><|start_header_id|>assistant<|end_header_id|>
