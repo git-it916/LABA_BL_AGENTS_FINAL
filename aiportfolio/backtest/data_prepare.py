@@ -54,8 +54,8 @@ def open_log():
     모든 월의 데이터를 포함하는 long-format DataFrame으로 반환합니다.
     [수정] 영어 섹터 이름을 숫자 코드로 변환합니다.
     """
-    log_dir = 'database/logs/BL_MVO'
-    list_of_files = glob.glob(os.path.join(log_dir, 'result of BL_MVO*.json'))
+    log_dir = 'database/logs/result of 2025-11-05_13-31-05/BL_result'
+    list_of_files = glob.glob(os.path.join(log_dir, 'result of BL_MVO.json'))
     
     if not list_of_files:
         print(f"오류: '{log_dir}' 디렉토리에서 로그 파일을 찾을 수 없습니다.")
