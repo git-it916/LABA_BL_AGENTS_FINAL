@@ -132,10 +132,10 @@ def calculate_rolling_indicators(
             
             # 0으로 나누기 방지
             if (std_24m > 0).all():
-                 z_score = (current_return - mean_24m) / std_24m
-                 indicator_results['z_score'] = z_score
+                z_score = (current_return - mean_24m) / std_24m
+                indicator_results['z_score'] = z_score
             else:
-                 indicator_results['z_score'] = np.nan
+                indicator_results['z_score'] = np.nan
         else:
             indicator_results['z_score'] = np.nan
 
