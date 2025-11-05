@@ -47,4 +47,8 @@ def get_view_params(sigma, tau, end_date):
         omega_i = tau * p_sigma_pT
         Omega[i, i] = omega_i
 
+    print(P)
+    print(Q)
+    print(Omega)
+
     return P, Q, Omega

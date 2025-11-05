@@ -1,10 +1,10 @@
 import json
 import pandas as pd
 import os
-import glob
+from glob import glob
 from datetime import datetime
 
-# python -m aiportfolio.backtest.data_prepare
+# python -m aiportfolio.backtest.data_prepare_수정중
 
 # MVO 계산에 필요한 모듈 임포트
 from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
@@ -54,15 +54,36 @@ def open_log():
     모든 월의 데이터를 포함하는 long-format DataFrame으로 반환합니다.
     [수정] 영어 섹터 이름을 숫자 코드로 변환합니다.
     """
-    log_dir = 'database/logs/result of 2025-11-05_13-44-58/BL_result'
-    list_of_files = glob.glob(os.path.join(log_dir, 'result of BL_MVO.json'))
+    # === 1. 최신 로그 파일 찾기 (기존 로직 동일) ===
+    current_script_path = os.path.dirname(os.path.abspath(__file__))
+    mvo_logs_dir = os.path.join(current_script_path, '../..', 'database', 'logs')
+    search_pattern = os.path.join(mvo_logs_dir, 'result of *')
+    all_log_folders = glob(search_pattern)
     
-    if not list_of_files:
-        print(f"오류: '{log_dir}' 디렉토리에서 로그 파일을 찾을 수 없습니다.")
+    if not all_log_folders:
+        print(f"경고: '{mvo_logs_dir}'에서 'result of *' 폴더를 찾지 못했습니다.")
         return None
         
-    latest_file = max(list_of_files, key=os.path.getctime)
-    print(f"BL 로그 파일 사용: {latest_file}")
+    all_log_folders.sort()
+    latest_folder = all_log_folders[-1]
+    
+    if not os.path.isdir(latest_folder):
+        print(f"오류: '{latest_folder}'는 디렉토리가 아닙니다.")
+        return None
+
+    output_dir = os.path.join(latest_folder, 'BL_result')
+    
+    if not os.path.isdir(output_dir):
+        print(f"오류: 최신 로그 폴더 안에 'LLM_view'를 찾을 수 없습니다. (경로: {output_dir})")
+        return None
+
+    json_files = glob(os.path.join(output_dir, '*.json'))
+
+    if not json_files: 
+        print(f"경고: '{output_dir}'에 JSON 파일이 존재하지 않습니다.")
+        return None
+
+    latest_file = max(json_files, key=os.path.getmtime)
     
     try:
         with open(latest_file, 'r', encoding='utf-8') as f:

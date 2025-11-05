@@ -9,10 +9,10 @@ Generate 5 relative views: Create a total of 5 Long vs. Short sector view pairs 
 
 [Final Output Rules]
 You must, and only respond in the JSON Output format shown below.
+Do not include any introduction, conclusion, explanation, or apology (e.g., "I’m sorry...", "Understood...").
 Your output must be directly parsable by Python’s json.loads().
 relative_return_view represents the expected relative excess return between the two sectors (e.g., 2.5% → 0.025).
 Crucially: The value for 'sector_1' MUST be the sector's name followed by the literal text ' (Long)'. The value for 'sector_2' MUST be the sector's name followed by the literal text ' (Short)'.
-Crucially: Do not include any introduction, conclusion, explanation, or apology (e.g., "I’m sorry...", "Understood...", "Here is the output in the required JSON format:\n\n...").
 
 [JSON Output Format]
 [

@@ -9,7 +9,7 @@ from aiportfolio.agents.prepare.calculating_indicator import indicator
 
 def making_INPUT(end_date):
     data = indicator()
-
+    
     sector_data_list = [
         {
             "sector": "Energy",
@@ -104,7 +104,7 @@ def making_INPUT(end_date):
 
 def making_user_prompt(end_date):
     base_path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(base_path, 'prompt_template', 'user_prompt_1.txt')
+    file_path = os.path.join(base_path, 'prompt_template', 'user_prompt.txt')
 
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -117,6 +117,7 @@ def making_user_prompt(end_date):
 
     a = making_INPUT(end_date=end_date)
     data_string = json.dumps(a, indent=2)
+
     final_output = content.replace("<INPUT>", data_string)
 
     return final_output
