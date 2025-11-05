@@ -1,4 +1,3 @@
-from aiportfolio.agents.Llama_config import prepare_pipeline_obj
 from aiportfolio.agents.Llama_config import chat_with_llama3
 from aiportfolio.agents.prompt_maker import making_system_prompt
 from aiportfolio.agents.prompt_maker import making_user_prompt
