@@ -1,5 +1,6 @@
 import transformers
 import torch
+from transformers import BitsAndBytesConfig
 
 # python -m aiportfolio.agents.understanding_lacalLLM
 
@@ -8,7 +9,10 @@ def prepare_pipeline_obj():
     quant_pipeline = transformers.pipeline(
             "text-generation",
             model="meta-llama/Meta-Llama-3-8B-Instruct",
-            model_kwargs={"torch_dtype": torch.bfloat16}, # 모델의 숫자 정밀도를 조정하여 메모리를 아낍니다.
+            model_kwargs={
+                "torch_dtype": torch.bfloat16,
+                "load_in_4bit":True,
+                }, # 모델의 숫자 정밀도를 조정하여 메모리를 아낍니다.
             device_map="auto", # GPU가 있으면 자동으로 GPU를 사용하도록 설정합니다.
         )
     return quant_pipeline

@@ -1,4 +1,4 @@
-from aiportfolio.agents.Llama_config import chat_with_llama3
+from aiportfolio.agents.Llama_config_수정중 import chat_with_llama3
 from aiportfolio.agents.prompt_maker import making_system_prompt
 from aiportfolio.agents.prompt_maker import making_user_prompt
 from aiportfolio.util.save_log_as_json import save_view_as_json
