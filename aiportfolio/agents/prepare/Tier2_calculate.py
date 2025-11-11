@@ -7,12 +7,6 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def calculate_accounting_indicator(): 
-    """
-    gics_accounting_info.csv 파일을 읽어,
-    5가지 재무 지표 각각에 대해 '지난달 대비 변화율(%)'을 계산합니다.
-    """
-# --- 1. 데이터 파일 불러오기 ---
-# --- 1. 데이터 파일 불러오기 ---
     try:
         # 이 스크립트 파일이 있는 위치를 기준으로 경로 설정
         # base_path = c:\...\LABA_BL_AGENTS_FINAL\aiportfolio\agents\prepare
@@ -25,7 +19,7 @@ def calculate_accounting_indicator():
     # [수정] '..'을 사용하여 세 단계 상위 폴더로 이동한 후 'database' 폴더로 진입
     # '..'은 '부모 폴더'를 의미합니다.
     # .../prepare -> .../agents -> .../aiportfolio -> .../LABA_BL_AGENTS_FINAL
-    file_path = os.path.join(base_path, '..', '..', '..', 'database', 'gics_accounting_info.csv')
+    file_path = os.path.join(base_path, '..', '..', '..', 'database', 'compustat_2021.01_2024.12.csv')
     try:
         raw_df = pd.read_csv(file_path, encoding='utf-8')
     except FileNotFoundError:
@@ -36,11 +30,13 @@ def calculate_accounting_indicator():
 
     # --- 2. 계산할 5가지 재무 지표(레벨) 목록 ---
     TARGET_METRICS = [
-        'gpm_Median', 
-        'npm_Median', 
-        'roa_Median', 
-        'roe_Median', 
-        'debt_assets_Median'
+        'bm_Mean',
+        'CAPEI_Mean',
+        'GProf_Mean',
+        'npm_Mean',
+        'roa_Mean',
+        'roe_Mean',
+        'totdebt_invcap_Mean'
     ]
     
     all_mom_results = []
