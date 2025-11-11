@@ -1,13 +1,26 @@
+import os
+
 from .BL_MVO.BL_opt import get_bl_outputs
 from .BL_MVO.MVO_opt import MVO_Optimizer
 from .util.making_rollingdate import get_rolling_dates
 from .util.sector_mapping import map_gics_sector
 from .util.save_log_as_json import save_BL_as_json
 
-def scene(tau, forecast_period):
+def scene(simul_name, Tier, tau, forecast_period):
     tau = tau
     forecast_period = forecast_period
     forecast_date = get_rolling_dates(forecast_period)
+
+    # 결과를 저장한 디렉토리 생성
+    base_dir = os.path.join("database", "logs")
+    current_time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+    log_path = os.path.join(base_dir, f'result of {current_time_str}')
+    bl_result_path = os.path.join(log_path, "BL_result")
+    llm_view_path = os.path.join(log_path, "LLM_view")
+
+    os.makedirs(bl_result_path, exist_ok=True)
+    os.makedirs(llm_view_path, exist_ok=True)
 
     results = []
 
