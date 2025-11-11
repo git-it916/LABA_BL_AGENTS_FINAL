@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from aiportfolio.util.data_cleanse.open_final_stock_daily import open_final_stock_daily
+from aiportfolio.util.data_load.open_final_stock_daily import open_final_stock_daily
 
 # python -m aiportfolio.backtest.preprocessing
 

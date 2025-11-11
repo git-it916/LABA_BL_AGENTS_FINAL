@@ -6,7 +6,7 @@ from datetime import datetime
 
 # 1. data_prepare 모듈에서 가중치 계산 함수들을 임포트
 try:
-    from aiportfolio.backtest.data_prepare import calculate_monthly_mvo_weights, open_log
+    from potato_trial.data_prepare_수정중 import calculate_monthly_mvo_weights, open_log
 except ImportError:
     print("오류: data_prepare 모듈을 임포트할 수 없습니다. 경로를 확인하세요.")
     # 실제 실행 시엔 exit()을 사용하거나 경로 문제를 해결해야 합니다.

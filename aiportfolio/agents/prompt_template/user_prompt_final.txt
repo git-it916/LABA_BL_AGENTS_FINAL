@@ -1,0 +1,82 @@
+[Instruction]
+Analyze all provided data blocks according to your system prompt rules.
+Your analysis must be progressive:
+- If only Return Data is provided, generate views based on it (Stage 1).
+- If Accounting Data is also provided, integrate it with Return Data to refine the views (Stage 2).
+- If Macro Data is also provided, perform the final integrated analysis using all three data blocks (Stage 3).
+
+You MUST follow the [Data Parsing Rules] to correctly read the input.
+You MUST use the [Analytical Guidelines] (which include definitions, relationships, and stage-by-stage rules) to interpret the data and select your candidates.
+
+[=== Start of 11-Sector Return Data (Stage 1 - Required) ===]
+<INPUT>
+[=== End of 11-Sector Return Data ===]
+
+[=== Start of 11-Sector Accounting Data (Stage 2 - Optional) ===]
+<acc_INPUT>
+[=== End of 11-Sector Accounting Data ===]
+
+[=== Start of 11-Sector Macro Data (Stage 3 - Optional) ===]
+<macro_INPUT>
+[=== End of 11-Sector Macro Data ===]
+
+---
+
+[Data Parsing Rules for <INPUT> Blocks]
+The data in the <INPUT> blocks is provided as JSON.
+Crucially, all values in the JSON may be provided as **strings**. You must parse them as follows:
+
+1.  **Numeric Strings:** All indicator values (e.g., "z-score", "volatility", "trend_strength", "CAGR", "P/E", "ROE") are strings (e.g., "0.15" or "15.2"). You must parse them into floating-point numbers for analysis.
+2.  **List String:** The "Recent 12-month monthly returns..." value is a **string representation of a list** (e.g., "[0.01, -0.02, 0.05, ...]"). You must parse this string into a list of numbers to calculate its average.
+
+---
+
+[Analytical Guidelines (Stages 1-3)]
+You must use the following definitions, relationships, and rules to perform your qualitative analysis.
+
+### 1. Indicator Definitions (Your Knowledge Base)
+
+#### Stage 1: Returns Indicators
+* **"3-year CAGR"**: Long-term structural growth rate (Higher is better).
+* **"Recent 12-month monthly returns" (Average)**: Average momentum over the recent 1 year (Higher is better).
+* **"12-month trend strength"**: 'Quality of the trend,' consistency without volatility (Closer to 1.0 is better).
+* **"12-month volatility"**: Risk / Instability (Lower is better).
+* **"Mean reversion signal (z-score)"**: Overbought/Oversold signal.
+    * `Strongly Positive` (e.g., > 1.5): Overbought/Overheating (Risk of mean reversion down, Short signal).
+    * `Strongly Negative` (e.g., < -1.5): Oversold/Depressed (Potential for mean reversion up, Long signal).
+
+#### Stage 2: Accounting Indicators (Example Definitions)
+* **"P/E (Price-to-Earnings)"**: Valuation (Lower is cheaper/better for Longs).
+* **"ROE (Return on Equity)"**: Profitability / Quality (Higher is better).
+
+#### Stage 3: Macro Indicators (Example Definitions)
+* **"Interest Rate Trend"**: (e.g., Rising, Falling, Stable).
+* **"Inflation Trend"**: (e.g., Rising, Falling, Stable).
+
+### 2. Indicator Relationships (How to "Think")
+* **"Trend Strength" vs "Volatility"**: Strong negative (-) correlation. High Trend Strength (consistency) implies low Volatility.
+* **"12-month returns (Avg)" vs "Z-score"**: Strong positive (+) correlation. High recent returns (Avg) often leads to an Overbought (Positive Z-score) state.
+* **"Momentum" vs "Valuation"**: (Stage 2) Good momentum (Stage 1) combined with cheap valuation (Stage 2) is a very strong Long signal.
+* **"Interest Rates" vs "Sectors"**: (Stage 3) Rising rates tend to hurt sectors like Real Estate and Information Technology, but may help Financials.
+
+### 3. Long/Short Selection Rules (Your Action)
+* **Stage 1 Action:**
+    1.  **Long (Outperform) Candidates:** Find sectors with strong "3-year CAGR", "12-month returns (Avg)", AND "12-month trend strength". Check for low "volatility" and a neutral/negative "z-score" to increase confidence.
+    2.  **Short (Underperform) Candidates:** Find sectors with weak "3-year CAGR", "12-month returns (Avg)", AND "12-month trend strength". Check for high "volatility" or a strongly positive "z-score" to increase confidence.
+
+* **Stage 2 Action (Integration):**
+    * **Refine Stage 1 Views:** Use Accounting data (e.g., P/E, ROE) to confirm or deny the Stage 1 views.
+    * **Example (Long):** A strong Stage 1 Long candidate (good momentum) becomes *even stronger* if it also has high ROE and a low P/E.
+    * **Example (Short):** A strong Stage 1 Short candidate (weak momentum) becomes *even stronger* if it also has low ROE (poor quality).
+
+* **Stage 3 Action (Final Overlay):**
+    * **Refine Stage 2 Views:** Use Macro data as a final overlay.
+    * **Example:** A Stage 2 Long view on "Real Estate" might be downgraded or removed if the Macro data shows "Interest Rate Trend: Rising".
+    * **Example:** A Stage 2 Long view on "Energy" might be upgraded if Macro data shows "Inflation Trend: Rising".
+
+---
+
+[Reasoning Request]
+Important: After you provide the main JSON output (as required by the system prompt), add a section starting with "## Reasoning" and briefly explain (in Korean) *only* the key factors and step-by-step logic (based on the Guidelines **for the highest stage you just analyzed**) that led you to select the top 5 pairs.
+
+This entire reasoning part must be separate from and come *after* the JSON block.
