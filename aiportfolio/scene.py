@@ -11,16 +11,17 @@ def scene(simul_name, Tier, tau, forecast_period):
     forecast_period = forecast_period
     forecast_date = get_rolling_dates(forecast_period)
 
-    # 결과를 저장한 디렉토리 생성
+    # 결과를 저장할 디렉토리 생성
     base_dir = os.path.join("database", "logs")
-    current_time_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-    log_path = os.path.join(base_dir, f'result of {current_time_str}')
-    bl_result_path = os.path.join(log_path, "BL_result")
-    llm_view_path = os.path.join(log_path, "LLM_view")
-
-    os.makedirs(bl_result_path, exist_ok=True)
-    os.makedirs(llm_view_path, exist_ok=True)
+    os.makedirs(base_dir, exist_ok=True)
+    tier_dirs = ['Tier1', 'Tier2', 'Tier3']
+    subdirs = ['result_of_BL-MVO', 'LLM-view', 'result_of_test']
+    for tier in tier_dirs:
+        path = os.path.join(base_dir, tier)
+        os.makedirs(path, exist_ok=True)
+        for subdir in subdirs:
+            sub_path = os.path.join(path, subdir)
+            os.makedirs(sub_path, exist_ok=True)
 
     results = []
 
