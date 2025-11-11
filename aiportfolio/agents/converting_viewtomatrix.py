@@ -43,7 +43,6 @@ def open_file():
             return None
 
         latest_file = max(json_files, key=os.path.getmtime)
-        print(f"파일 로드 중: {latest_file}")
 
         # ---
         # 💡 [핵심] 2단계 파싱 (Load -> Loads)

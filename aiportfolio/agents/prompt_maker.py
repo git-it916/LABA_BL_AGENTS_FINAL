@@ -104,7 +104,7 @@ def making_INPUT(end_date):
 
 def making_user_prompt(end_date):
     base_path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(base_path, 'prompt_template', 'user_prompt.txt')
+    file_path = os.path.join(base_path, 'prompt_template', 'user_prompt_1.txt')
 
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -124,7 +124,7 @@ def making_user_prompt(end_date):
 
 def making_system_prompt():
     base_path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(base_path, 'prompt_template', 'system_prompt.txt')
+    file_path = os.path.join(base_path, 'prompt_template', 'system_prompt_1.txt')
 
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
