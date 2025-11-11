@@ -6,7 +6,7 @@ from datetime import datetime
 
 # 1. data_prepare 및 preprocessing 모듈에서 실제 함수 임포트
 try:
-    from aiportfolio.backtest.data_prepare_수정중 import calculate_monthly_mvo_weights, open_log
+    from potato_trial.data_prepare_수정중 import calculate_monthly_mvo_weights, open_log
 except ImportError:
     print("오류: data_prepare 모듈(calculate_monthly_mvo_weights, open_log)을 임포트할 수 없습니다.")
     print("aiportfolio/backtest/data_prepare.py 파일이 올바른 위치에 있는지 확인하세요.")
