@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-from aiportfolio.util.data_cleanse.open_DTB3 import open_rf_rate
-from aiportfolio.util.data_cleanse.open_final_stock_daily import open_final_stock_daily
-from aiportfolio.util.data_cleanse.open_final_stock_months import open_final_stock_months
+from aiportfolio.util.data_load.open_DTB3 import open_rf_rate
+from aiportfolio.util.data_load.open_final_stock_daily import open_final_stock_daily
+from aiportfolio.util.data_load.open_final_stock_months import open_final_stock_months
 
 # python -m aiportfolio.backtest.preprocessing_수정중
 

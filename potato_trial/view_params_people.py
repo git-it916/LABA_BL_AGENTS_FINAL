@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from aiportfolio.agents.generator_people import generated_view
+from potato_trial.generator_people import generated_view
 
 def get_view_params(sigma, tau, end_date):
     """

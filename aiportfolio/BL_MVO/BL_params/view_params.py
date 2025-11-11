@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 from aiportfolio.agents.Llama_config import prepare_pipeline_obj
-from aiportfolio.agents.Llama_view_수정중 import generate_sector_views
+from aiportfolio.agents.Llama_view_generator import generate_sector_views
 from aiportfolio.agents.converting_viewtomatrix import open_file, create_Q_vector, create_P_matrix
 
 def get_view_params(sigma, tau, end_date):

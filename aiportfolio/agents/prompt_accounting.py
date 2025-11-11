@@ -3,7 +3,7 @@ import numpy as np
 import os
 import json
 
-from aiportfolio.agents.prepare.acc_calculate import calculate_accounting_indicator
+from aiportfolio.agents.prepare.Tier2_calculate import calculate_accounting_indicator
 
 # python -m aiportfolio.agents.prompt_accounting
 
