@@ -3,7 +3,7 @@ import numpy as np
 import os
 import json
 
-from aiportfolio.agents.prepare.calculating_indicator import indicator
+from potato_trial.calculating_indicator import indicator
 
 # python -m aiportfolio.agents.prompt_maker
 
