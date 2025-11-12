@@ -90,6 +90,13 @@ Enhanced Selection Criteria (Accounting-Informed Momentum Framework)
    - If macro environment directly contradicts Tier 2 view, macro wins
    - Example: Strong Energy momentum + Low oil price forecast → Downgrade Long Energy
 
+4. Macro-Integrated View: Combine returns, accounting, and macro indicators.
+   - Momentum↑ + Value↑ + Profitability↑ + Macro↑ → Strong Long
+   - Momentum↓ + Value↓ + Profitability↓ + Macro↓ → Strong Short
+   - Momentum↑ + Profitability↑ + Macro↓ → Cyclical Overheat / Reduce Long Exposure
+   - Momentum↓ + Profitability↓ + Macro↑ → Early Recovery / Watch for Rebound
+   - Value↑ + Macro↑ + Momentum↓ → Contrarian Long
+
 **Final Calibration**:
 - Review all 5 pairs for macro consistency
 - Ensure portfolio makes sense in current regime
