@@ -1,0 +1,100 @@
+{
+    "simulation_name": "batch2",
+    "tier": 1,
+    "tau": 0.025,
+    "num_periods": 8,
+    "period_range": {
+        "start": "2024-04-30",
+        "end": "2024-11-30"
+    },
+    "average_performance": {
+        "mvo_mean_return": 0.07226403180448794,
+        "mvo_std_return": 0.046414232786013206,
+        "bl_mean_return": 0.047917120220771006,
+        "bl_std_return": 0.07567914191336084,
+        "mean_outperformance": -0.024346911583716935,
+        "win_rate": 37.5
+    },
+    "detailed_results": [
+        {
+            "forecast_date": "2024-04-30",
+            "backtest_period": {
+                "start": "2024-05-01",
+                "end": "2024-12-17"
+            },
+            "mvo_final_return": 0.14045940268395607,
+            "bl_final_return": 0.1557025817971358,
+            "outperformance": 0.015243179113179739
+        },
+        {
+            "forecast_date": "2024-05-31",
+            "backtest_period": {
+                "start": "2024-06-01",
+                "end": "2025-01-17"
+            },
+            "mvo_final_return": 0.11056798366869058,
+            "bl_final_return": 0.11450583265011782,
+            "outperformance": 0.003937848981427239
+        },
+        {
+            "forecast_date": "2024-06-30",
+            "backtest_period": {
+                "start": "2024-07-01",
+                "end": "2025-02-16"
+            },
+            "mvo_final_return": 0.09490808461140965,
+            "bl_final_return": 0.07262369091704768,
+            "outperformance": -0.02228439369436197
+        },
+        {
+            "forecast_date": "2024-07-31",
+            "backtest_period": {
+                "start": "2024-08-01",
+                "end": "2025-03-19"
+            },
+            "mvo_final_return": 0.08457779815663757,
+            "bl_final_return": 0.13503041754010048,
+            "outperformance": 0.050452619383462904
+        },
+        {
+            "forecast_date": "2024-08-31",
+            "backtest_period": {
+                "start": "2024-09-01",
+                "end": "2025-04-19"
+            },
+            "mvo_final_return": 0.07277876343344492,
+            "bl_final_return": -0.01648407245082273,
+            "outperformance": -0.08926283588426764
+        },
+        {
+            "forecast_date": "2024-09-30",
+            "backtest_period": {
+                "start": "2024-10-01",
+                "end": "2025-05-19"
+            },
+            "mvo_final_return": 0.05055471189907479,
+            "bl_final_return": -0.026629138568840305,
+            "outperformance": -0.0771838504679151
+        },
+        {
+            "forecast_date": "2024-10-31",
+            "backtest_period": {
+                "start": "2024-11-01",
+                "end": "2025-06-19"
+            },
+            "mvo_final_return": 0.04920676416252423,
+            "bl_final_return": -0.0030973374348471916,
+            "outperformance": -0.05230410159737142
+        },
+        {
+            "forecast_date": "2024-11-30",
+            "backtest_period": {
+                "start": "2024-12-01",
+                "end": "2025-07-19"
+            },
+            "mvo_final_return": -0.024941254179834282,
+            "bl_final_return": -0.04831501268372351,
+            "outperformance": -0.02337375850388923
+        }
+    ]
+}

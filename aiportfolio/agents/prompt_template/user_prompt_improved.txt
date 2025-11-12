@@ -1,0 +1,8 @@
+[Task]
+Analyze the provided sector data and generate exactly 5 Long-Short relative views following your system prompt guidelines for Tier {{TIER}}.
+
+[Sector Data - Tier {{TIER}}]
+{{DATA_BLOCKS}}
+
+[Output Format]
+Respond with ONLY the JSON array as specified in your system prompt. No additional text.

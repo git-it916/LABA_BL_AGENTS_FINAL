@@ -24,7 +24,11 @@ Your analysis must be progressive:
 
 
 ---
-[Reasoning Request]
-Important: After you provide the main JSON output (as required by the system prompt), add a section starting with "## Reasoning" and briefly explain (in Korean) *only* the key factors and step-by-step logic (based on the Guidelines **for the highest stage you just analyzed**) that led you to select the top 5 pairs.
+[Output Reminder]
+Remember: Your response must be ONLY the JSON array with the 5 views, each containing:
+- "sector_1": "Sector Name (Long)"
+- "sector_2": "Sector Name (Short)"
+- "relative_return_view": decimal value
+- "reasoning": Brief rationale in 1-2 sentences
 
-This entire reasoning part must be separate from and come *after* the JSON block.
+Do not include any text before or after the JSON array.

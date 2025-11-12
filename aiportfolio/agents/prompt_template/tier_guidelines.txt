@@ -1,0 +1,104 @@
+### TIER 1 GUIDELINES (Technical Indicators Only)
+
+**Available Data**:
+- 3-year CAGR: Long-term structural growth trend (higher = better)
+- Recent 12-month returns: Short-term momentum (higher = better)
+- 12-month trend strength (R²): Trend consistency (closer to 1.0 = better)
+- 12-month volatility: Risk/instability (lower = better)
+- Mean reversion signal (z-score): Overbought/oversold indicator
+  - z > 1.5: Overbought (potential pullback → Short signal)
+  - z < -1.5: Oversold (potential bounce → Long signal)
+
+**Selection Strategy**:
+1. **Long Candidates**: Sectors with strong momentum cluster:
+   - High 3-year CAGR (structural tailwind)
+   - High 12-month avg returns (current momentum)
+   - High trend strength R² (quality trend)
+   - Bonus: Low volatility OR negative z-score (not overbought)
+
+2. **Short Candidates**: Sectors with weak momentum cluster:
+   - Low/negative 3-year CAGR
+   - Low/negative 12-month avg returns
+   - Bonus: High volatility OR z-score > 1.5 (overbought)
+
+**Confidence Calibration**:
+- Strong conviction (relative_return_view ≥ 0.03): All 3 core signals align + bonus factors
+- Moderate conviction (0.01-0.03): 2 of 3 core signals align
+- Low conviction (< 0.01): Only 1 signal, use as tiebreaker
+
+---
+
+### TIER 2 GUIDELINES (Technical + Accounting Indicators)
+
+**Additional Data**:
+- P/E (Price-to-Earnings): Valuation (lower = cheaper)
+- ROE (Return on Equity): Profitability quality (higher = better)
+- P/B (Price-to-Book): Book value multiple (lower = cheaper)
+- Debt-to-Equity: Financial leverage (context-dependent)
+- Operating Margin: Operational efficiency (higher = better)
+
+**Enhanced Strategy** (builds on Tier 1):
+1. **Upgrade Long Confidence**: Tier 1 Long + Low P/E + High ROE
+   - Interpretation: Strong momentum with cheap valuation = "Quality at a discount"
+   - Action: Increase relative_return_view by 0.01-0.02
+
+2. **Downgrade Long Confidence**: Tier 1 Long + High P/E + Low ROE
+   - Interpretation: Momentum driven by speculation, not fundamentals
+   - Action: Reduce confidence or remove view
+
+3. **Upgrade Short Confidence**: Tier 1 Short + High P/E + Low ROE
+   - Interpretation: Weak momentum + expensive valuation = "Priced for perfection it can't deliver"
+   - Action: Increase relative_return_view magnitude
+
+4. **Challenge Views**: If accounting contradicts momentum, investigate:
+   - Strong momentum + deteriorating ROE trend → Reduce Long
+   - Weak momentum + improving margins → Reconsider Short
+
+**Key Principle**: Momentum + Valuation alignment creates highest conviction
+
+---
+
+### TIER 3 GUIDELINES (Full Integration: Technical + Accounting + Macro)
+
+**Additional Data** (when available):
+- Interest rate trend (Rising/Falling/Stable)
+- Inflation trend (Rising/Falling/Stable)
+- GDP growth trend
+- Credit spread trends
+- Sector-specific macro drivers
+
+**Macro Overlay Strategy** (final filter on Tier 2 views):
+1. **Macro Tailwinds** (strengthen conviction):
+   - Rising rates + Long Financials → Banks benefit from higher NIM
+   - Rising inflation + Long Energy/Materials → Pricing power
+   - Falling rates + Long Real Estate/Utilities → Lower cost of capital
+   - Strong GDP + Long Industrials/Discretionary → Economic sensitivity
+
+2. **Macro Headwinds** (weaken or flip views):
+   - Rising rates + Long Real Estate → REMOVE or flip to Short
+   - Rising inflation + Long Consumer Staples → Margin compression
+   - Recession risk + Long Discretionary → Reduce exposure
+
+3. **Macro Veto Power**:
+   - If macro environment directly contradicts Tier 2 view, macro wins
+   - Example: Strong Energy momentum + Low oil price forecast → Downgrade Long Energy
+
+**Final Calibration**:
+- Review all 5 pairs for macro consistency
+- Ensure portfolio makes sense in current regime
+- Adjust relative_return_view to reflect macro amplification (+0.005 to +0.015)
+
+---
+
+### COMMON RULES (All Tiers)
+
+**View Construction**:
+- Exactly 5 pairs, no duplicates
+- Each sector can appear max 2 times across all pairs
+- relative_return_view range: -0.05 to +0.05 (realistic)
+- Rank pairs by conviction (highest first)
+
+**Quality Checks**:
+- Avoid contradiction (same sector both Long and Short)
+- Ensure views are actionable (not too small, not too large)
+- Consider sector correlations (avoid redundant pairs like Energy Long + Materials Long vs same Short)

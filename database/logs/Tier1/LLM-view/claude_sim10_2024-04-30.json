@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Energy (Long)",
+            "sector_2": "Materials (Short)",
+            "relative_return_view": 0.025,
+            "reasoning": "Energy shows strong structural growth with 3Y CAGR of 0.2933 and is undervalued with z-score -0.2684. Materials has weak momentum and poor profitability with 3Y CAGR of 0.0438 and ROE 0.0438."
+        },
+        {
+            "sector_1": "Information Technology (Long)",
+            "sector_2": "Real Estate (Short)",
+            "relative_return_view": 0.035,
+            "reasoning": "Information Technology shows strong momentum with 12-month returns of 0.094 and is undervalued with z-score -1.0013. Real Estate has weak momentum and poor profitability with 3Y CAGR of -0.0199 and ROE -0.2114."
+        },
+        {
+            "sector_1": "Financials (Long)",
+            "sector_2": "Utilities (Short)",
+            "relative_return_view": 0.015,
+            "reasoning": "Financials shows strong momentum with 12-month returns of 0.0668 and is undervalued with z-score -0.7762. Utilities has weak momentum and poor profitability with 3Y CAGR of 0.031 and ROE 0.031."
+        },
+        {
+            "sector_1": "Communication Services (Long)",
+            "sector_2": "Health Care (Short)",
+            "relative_return_view": 0.02,
+            "reasoning": "Communication Services shows strong momentum with 12-month returns of 0.0468 and is undervalued with z-score -0.9741. Health Care has weak momentum and poor profitability with 3Y CAGR of 0.0682 and ROE 0.0682."
+        },
+        {
+            "sector_1": "Industrials (Long)",
+            "sector_2": "Consumer Discretionary (Short)",
+            "relative_return_view": 0.01,
+            "reasoning": "Industrials shows strong momentum with 12-month returns of 0.1131 and is undervalued with z-score -0.7829. Consumer Discretionary has weak momentum and poor profitability with 3Y CAGR of 0.0007 and ROE 0.0007."
+        }
+    ]
+]

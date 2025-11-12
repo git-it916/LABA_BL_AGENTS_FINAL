@@ -8,96 +8,126 @@ from aiportfolio.agents.prepare.Tier1_calculate import indicator
 # python -m aiportfolio.agents.prompt_maker
 
 def making_INPUT(end_date):
+    """
+    지정된 날짜의 섹터별 지표 데이터를 가져옵니다.
+
+    Args:
+        end_date: 데이터를 가져올 기준 날짜
+
+    Returns:
+        list: 11개 섹터의 지표 데이터 리스트
+    """
     data = indicator()
-    
+
+    # 헬퍼 함수: 안전하게 데이터 가져오기 + 소수점 4자리 반올림
+    def safe_get_value(sector, column):
+        """섹터와 컬럼에 대한 값을 안전하게 가져오고 소수점 4자리로 반올림합니다."""
+        filtered = data.loc[(data['date'] == end_date) & (data['gsector'] == sector), column]
+        if len(filtered) == 0:
+            print(f"[경고] {sector} 섹터의 {column} 데이터가 {end_date}에 없습니다. 'N/A'로 대체합니다.")
+            return "N/A"
+
+        value = filtered.iloc[0]
+
+        # 리스트인 경우 (return_list)
+        if isinstance(value, list):
+            # return_list는 이미 소수점 단위 (0.0659 = 6.59%) → 그대로 반올림만
+            return [round(float(x), 4) for x in value]
+        # 숫자인 경우
+        elif isinstance(value, (int, float, np.number)):
+            # 모든 지표를 소수점 4자리로 반올림 (0.0001 = 0.01%)
+            return round(float(value), 4)
+        else:
+            return value
+
     sector_data_list = [
         {
             "sector": "Energy",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Energy'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Energy'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Energy'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Energy'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Energy'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Energy', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Energy', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Energy', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Energy', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Energy', 'CAGR')}"
         },
         {
             "sector": "Materials",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Materials'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Materials'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Materials'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Materials'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Materials'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Materials', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Materials', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Materials', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Materials', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Materials', 'CAGR')}"
         },
         {
             "sector": "Industrials",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Industrials'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Industrials'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Industrials'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Industrials'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Industrials'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Industrials', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Industrials', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Industrials', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Industrials', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Industrials', 'CAGR')}"
         },
         {
             "sector": "Consumer Discretionary",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Discretionary'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Discretionary'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Discretionary'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Discretionary'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Discretionary'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Consumer Discretionary', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Consumer Discretionary', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Consumer Discretionary', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Consumer Discretionary', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Consumer Discretionary', 'CAGR')}"
         },
         {
             "sector": "Consumer Staples",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Staples'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Staples'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Staples'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Staples'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Consumer Staples'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Consumer Staples', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Consumer Staples', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Consumer Staples', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Consumer Staples', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Consumer Staples', 'CAGR')}"
         },
         {
             "sector": "Health Care",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Health Care'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Health Care'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Health Care'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Health Care'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Health Care'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Health Care', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Health Care', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Health Care', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Health Care', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Health Care', 'CAGR')}"
         },
         {
             "sector": "Financials",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Financials'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Financials'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Financials'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Financials'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Financials'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Financials', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Financials', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Financials', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Financials', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Financials', 'CAGR')}"
         },
         {
             "sector": "Information Technology",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Information Technology'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Information Technology'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Information Technology'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Information Technology'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Information Technology'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Information Technology', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Information Technology', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Information Technology', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Information Technology', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Information Technology', 'CAGR')}"
         },
         {
             "sector": "Communication Services",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Communication Services'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Communication Services'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Communication Services'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Communication Services'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Communication Services'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Communication Services', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Communication Services', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Communication Services', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Communication Services', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Communication Services', 'CAGR')}"
         },
         {
             "sector": "Utilities",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Utilities'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Utilities'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Utilities'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Utilities'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Utilities'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Utilities', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Utilities', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Utilities', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Utilities', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Utilities', 'CAGR')}"
         },
         {
             "sector": "Real Estate",
-            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Real Estate'), 'return_list'].iloc[0]}",
-            "Mean reversion signal (12-month z-score)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Real Estate'), 'z-score'].iloc[0]}",
-            "12-month volatility (or Trailing 12-month volatility)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Real Estate'), 'volatility'].iloc[0]}",
-            "12-month trend strength": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Real Estate'), 'trend_strength'].iloc[0]}",
-            "3-year CAGR (Compound Annual Growth Rate)": f"{data.loc[(data['date'] == end_date) & (data['gsector'] == 'Real Estate'), 'CAGR'].iloc[0]}"
+            "Recent 12-month monthly returns (or Trailing 12-month (TTM) monthly returns)": f"{safe_get_value('Real Estate', 'return_list')}",
+            "Mean reversion signal (12-month z-score)": f"{safe_get_value('Real Estate', 'z-score')}",
+            "12-month volatility (or Trailing 12-month volatility)": f"{safe_get_value('Real Estate', 'volatility')}",
+            "12-month trend strength": f"{safe_get_value('Real Estate', 'trend_strength')}",
+            "3-year CAGR (Compound Annual Growth Rate)": f"{safe_get_value('Real Estate', 'CAGR')}"
         }
         ]
     return sector_data_list

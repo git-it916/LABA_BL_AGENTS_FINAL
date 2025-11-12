@@ -10,8 +10,8 @@ def prepare_pipeline_obj():
             "text-generation",
             model="meta-llama/Meta-Llama-3-8B-Instruct",
             model_kwargs={
-                "torch_dtype": torch.bfloat16,
-                "load_in_4bit":True,
+                "dtype": torch.bfloat16,  # torch_dtype -> dtype (deprecated 경고 수정)
+                "load_in_4bit": True,
                 }, # 모델의 숫자 정밀도를 조정하여 메모리를 아낍니다.
             device_map="auto", # GPU가 있으면 자동으로 GPU를 사용하도록 설정합니다.
         )
@@ -44,7 +44,7 @@ def chat_with_llama3(pipeline_obj, system_prompt, user_prompt):
     
     outputs = pipeline_obj(
         prompt,
-        max_new_tokens=1024, # 최대 생성 토큰
+        max_new_tokens=1024, # 5개 뷰 JSON 생성을 위해 충분한 토큰 할당
         do_sample=True, # 보다 창의적인 답변(temperature와 do_sample 값들을 변화시켜서 조절)
         temperature=0.3, # 금융 분석이므로 낮게 설정
         top_p=0.8, # 80% 확률 내의 값들만 샘플링

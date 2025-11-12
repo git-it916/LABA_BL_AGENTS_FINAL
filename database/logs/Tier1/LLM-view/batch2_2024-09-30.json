@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Energy (Long)",
+            "sector_2": "Real Estate (Short)",
+            "relative_return_view": 0.025,
+            "reasoning": "Energy shows strong structural growth with 3Y CAGR of 0.2399 and is undervalued with z-score -0.5866. Real Estate has high volatility and negative CAGR indicating weakness."
+        },
+        {
+            "sector_1": "Materials (Long)",
+            "sector_2": "Health Care (Short)",
+            "relative_return_view": 0.018,
+            "reasoning": "Materials show strong momentum with 12-month returns of 0.0644 and a high trend strength of 0.8239. Health Care has a weak mean reversion signal and a negative 3Y CAGR of 0.0859."
+        },
+        {
+            "sector_1": "Industrials (Long)",
+            "sector_2": "Financials (Short)",
+            "relative_return_view": 0.015,
+            "reasoning": "Industrials show strong momentum with 12-month returns of 0.0716 and a high trend strength of 0.875. Financials have a weak mean reversion signal and a negative 3Y CAGR of 0.0685."
+        },
+        {
+            "sector_1": "Consumer Discretionary (Long)",
+            "sector_2": "Utilities (Short)",
+            "relative_return_view": 0.012,
+            "reasoning": "Consumer Discretionary shows strong momentum with 12-month returns of 0.0892 and a high trend strength of 0.7395. Utilities have a strong mean reversion signal and a positive 3Y CAGR of 0.1156."
+        },
+        {
+            "sector_1": "Information Technology (Long)",
+            "sector_2": "Communication Services (Short)",
+            "relative_return_view": 0.008,
+            "reasoning": "Information Technology shows strong momentum with 12-month returns of 0.0613 and a high trend strength of 0.9265. Communication Services have a weak mean reversion signal and a negative 3Y CAGR of 0.1101."
+        }
+    ]
+]

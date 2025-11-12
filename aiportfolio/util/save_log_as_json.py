@@ -11,33 +11,14 @@ def save_BL_as_json(results, simul_name, Tier):
     # 1. 기본 로그 디렉토리 설정
     base_log_dir = os.path.join("database", "logs")
 
-    try:
-        # 2. 'database.logs' 내의 모든 항목(파일/디렉토리) 목록을 가져옴
-        all_entries = os.listdir(base_log_dir)
-        
-        # 3. 이 중에서 '디렉토리'만 필터링 (전체 경로로 변환)
-        tier_dirs = [
-            os.path.join(base_log_dir, d) 
-            for d in all_entries 
-            if os.path.isdir(os.path.join(base_log_dir, d))
-        ]
+    # 2. Tier에 해당하는 디렉토리 직접 찾기
+    tier_dir_name = f"Tier{Tier}"
+    target_dir = os.path.join(base_log_dir, tier_dir_name)
 
-        if not tier_dirs:
-            print("result_of_BL-MVO를 저장하던 도중 오류가 발생했습니다.")
-            print(f"[오류] '{base_log_dir}' 디렉토리 안에 하위 디렉토리가 없습니다.")
-            return
-
-    except FileNotFoundError:
+    if not os.path.isdir(target_dir):
         print("result_of_BL-MVO를 저장하던 도중 오류가 발생했습니다.")
-        print(f"[오류] 기본 로그 디렉토리를 찾을 수 없습니다: {base_log_dir}")
+        print(f"[오류] '{target_dir}' 디렉토리를 찾을 수 없습니다.")
         return
-    
-    # 4. Tier에 해당하는 디렉토리 찾기
-    if 1 <= Tier <= len(tier_dirs):
-        target_dir = tier_dirs[Tier - 1]
-    else:
-        print("result_of_BL-MVO를 저장하던 도중 오류가 발생했습니다.")
-        print("Tier 변수에 유효하지 않은 입력값입니다.")
 
     # 5. 최종 저장 경로 설정
     save_dir = os.path.join(target_dir, 'result_of_BL-MVO')
@@ -75,40 +56,26 @@ def save_view_as_json(results, simul_name, Tier, end_date):
     # 1. 기본 로그 디렉토리 설정
     base_log_dir = os.path.join("database", "logs")
 
-    try:
-        # 2. 'database.logs' 내의 모든 항목(파일/디렉토리) 목록을 가져옴
-        all_entries = os.listdir(base_log_dir)
-        
-        # 3. 이 중에서 '디렉토리'만 필터링 (전체 경로로 변환)
-        tier_dirs = [
-            os.path.join(base_log_dir, d) 
-            for d in all_entries 
-            if os.path.isdir(os.path.join(base_log_dir, d))
-        ]
+    # 2. Tier에 해당하는 디렉토리 직접 찾기
+    tier_dir_name = f"Tier{Tier}"
+    target_dir = os.path.join(base_log_dir, tier_dir_name)
 
-        if not tier_dirs:
-            print("LLM_view를 저장하던 도중 오류가 발생했습니다.")
-            print(f"[오류] '{base_log_dir}' 디렉토리 안에 하위 디렉토리가 없습니다.")
-            return
-
-    except FileNotFoundError:
+    if not os.path.isdir(target_dir):
         print("LLM_view를 저장하던 도중 오류가 발생했습니다.")
-        print(f"[오류] 기본 로그 디렉토리를 찾을 수 없습니다: {base_log_dir}")
-        return
-    
-    # 4. Tier에 해당하는 디렉토리 찾기
-    if 1 <= Tier <= len(tier_dirs):
-        target_dir = tier_dirs[Tier - 1]
-    else:
-        print("LLM_view를 저장하던 도중 오류가 발생했습니다.")
-        print("Tier 변수에 유효하지 않은 입력값입니다.")
+        print(f"[오류] '{target_dir}' 디렉토리를 찾을 수 없습니다.")
         return
 
     # 5. 최종 저장 경로 설정
-    save_dir = os.path.join(target_dir, 'LLM_view')
+    save_dir = os.path.join(target_dir, 'LLM-view')
 
     # 6. 파일명 설정
-    filename = f'{simul_name}_{end_date}.json'
+    # datetime 객체를 Windows 파일명에 안전한 형식으로 변환
+    if isinstance(end_date, str):
+        end_date_str = end_date
+    else:
+        end_date_str = end_date.strftime('%Y-%m-%d')
+
+    filename = f'{simul_name}_{end_date_str}.json'
     filepath = os.path.join(save_dir, filename)
 
     try:
@@ -156,33 +123,14 @@ def save_performance_as_json(results, simul_name, Tier):
     # 1. 기본 로그 디렉토리 설정
     base_log_dir = os.path.join("database", "logs")
 
-    try:
-        # 2. 'database.logs' 내의 모든 항목(파일/디렉토리) 목록을 가져옴
-        all_entries = os.listdir(base_log_dir)
-        
-        # 3. 이 중에서 '디렉토리'만 필터링 (전체 경로로 변환)
-        tier_dirs = [
-            os.path.join(base_log_dir, d) 
-            for d in all_entries 
-            if os.path.isdir(os.path.join(base_log_dir, d))
-        ]
+    # 2. Tier에 해당하는 디렉토리 직접 찾기
+    tier_dir_name = f"Tier{Tier}"
+    target_dir = os.path.join(base_log_dir, tier_dir_name)
 
-        if not tier_dirs:
-            print("result_of_test를 저장하던 도중 오류가 발생했습니다.")
-            print(f"[오류] '{base_log_dir}' 디렉토리 안에 하위 디렉토리가 없습니다.")
-            return
-
-    except FileNotFoundError:
+    if not os.path.isdir(target_dir):
         print("result_of_test를 저장하던 도중 오류가 발생했습니다.")
-        print(f"[오류] 기본 로그 디렉토리를 찾을 수 없습니다: {base_log_dir}")
+        print(f"[오류] '{target_dir}' 디렉토리를 찾을 수 없습니다.")
         return
-    # 4. Tier에 해당하는 디렉토리 찾기
-    if 1 <= Tier <= len(tier_dirs):
-        target_dir = tier_dirs[Tier - 1]
-        
-    else:
-        print("result_of_test를 저장하던 도중 오류가 발생했습니다.")
-        print("Tier 변수에 유효하지 않은 입력값입니다.")
 
     # 5. 최종 저장 경로 설정
     save_dir = os.path.join(target_dir, 'result_of_test')

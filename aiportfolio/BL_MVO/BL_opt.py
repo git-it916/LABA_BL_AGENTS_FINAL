@@ -6,17 +6,37 @@ from datetime import datetime
 from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
 from aiportfolio.BL_MVO.BL_params.view_params import get_view_params
 
-def get_bl_outputs(tau, start_date, end_date):
+def get_bl_outputs(tau, start_date, end_date, simul_name=None, Tier=None):
     """
-    This function runs the full Black-Litterman model by fetching market and view
-    parameters and then returns the new combined expected returns.
+    Execute the Black-Litterman model to compute posterior expected returns and covariance.
+
+    Theoretical Foundation:
+        Black & Litterman (1992) "Global Portfolio Optimization"
+        He & Litterman (1999) "The Intuition Behind Black-Litterman Model Portfolios"
+
+    Formula:
+        μ_BL = [(τΣ)^(-1) + P^T·Ω^(-1)·P]^(-1) × [(τΣ)^(-1)·π + P^T·Ω^(-1)·Q]
+        Σ_BL = [(τΣ)^(-1) + P^T·Ω^(-1)·P]^(-1)
+
+    Args:
+        tau (float): Black-Litterman 불확실성 계수 (일반적으로 0.01~0.05)
+        start_date (datetime): 시작 날짜
+        end_date (datetime): 종료 날짜 (예측 기준일)
+        simul_name (str, optional): 시뮬레이션 이름
+        Tier (int, optional): 분석 단계 (1, 2, 3)
+
+    Returns:
+        tuple: (mu_BL, Sigma_BL, sectors)
+            - mu_BL (np.ndarray): 사후 기대수익률 벡터 (N×1)
+            - Sigma_BL (pd.DataFrame): 사후 공분산 행렬 (N×N)
+            - sectors (list): 섹터 리스트
     """
     # BL 변수 생성
     market_params = Market_Params(start_date, end_date)
-    Pi = market_params.making_pi()      # Equilibrium excess returns (pi)
-    sigma = market_params.making_sigma()  # Covariance matrix (Sigma)
+    Pi = market_params.making_pi()      # Equilibrium excess returns (π)
+    sigma = market_params.making_sigma()  # Covariance matrix (Σ)
 
-    P, Q, Omega = get_view_params(sigma[0], tau, end_date)
+    P, Q, Omega = get_view_params(sigma[0], tau, end_date, simul_name, Tier)
 
     # --- Execute the Black-Litterman formula ---
     pi_np = (Pi.values.flatten() if isinstance(Pi, pd.DataFrame) else Pi.flatten()).reshape(-1, 1)
@@ -27,28 +47,34 @@ def get_bl_outputs(tau, start_date, end_date):
     omega_inv = np.linalg.inv(Omega)
     PT_omega_inv = P.T @ omega_inv
 
-    # Term A: [ (tau*Sigma)^-1 + P.T * Omega^-1 * P ]
+    # Term A: [ (τΣ)^(-1) + P^T·Ω^(-1)·P ]
     term_A = tau_sigma_inv + PT_omega_inv @ P
 
-    # Term B: [ (tau*Sigma)^-1 * Pi + P.T * Omega^-1 * Q ]
+    # Term B: [ (τΣ)^(-1)·π + P^T·Ω^(-1)·Q ]
     term_B_part1 = tau_sigma_inv @ pi_np
     term_B_part2 = PT_omega_inv @ Q
     term_B = term_B_part1 + term_B_part2
 
-    # Calculate new posterior expected returns (Pi_new)
+    # Calculate posterior expected returns (μ_BL)
     mu_BL = np.linalg.inv(term_A) @ term_B
+
+    # Calculate posterior covariance matrix (Σ_BL)
+    # 이론적으로 정확한 사후 공분산 행렬
+    Sigma_BL = np.linalg.inv(term_A)
 
     # --- Return the outputs for the MVO script ---
     sectors = sigma[1]
-    tausigma = tau * sigma[0]
-    print('P')
+
+    # Sigma_BL을 DataFrame으로 변환 (인덱스 유지)
+    Sigma_BL_df = pd.DataFrame(Sigma_BL, index=sigma[0].index, columns=sigma[0].columns)
+
+    print('P (Picking Matrix)')
     print(P)
-    print('Q')
+    print('\nQ (View Vector)')
     print(Q)
-    print('pi')
+    print('\nπ (Equilibrium Excess Returns)')
     print(Pi)
-    print('pi_np')
-    print(pi_np)
-    print('mu_BL')
+    print('\nμ_BL (Posterior Expected Returns)')
     print(mu_BL)
-    return mu_BL.reshape(-1, 1), tausigma, sectors
+
+    return mu_BL.reshape(-1, 1), Sigma_BL_df, sectors
