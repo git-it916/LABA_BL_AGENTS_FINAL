@@ -7,6 +7,7 @@
 3. 불필요한 메타데이터 제거
 4. 더 깔끔한 JSON 출력
 """
+# python -m aiportfolio.agents.prompt_maker_improved
 
 import pandas as pd
 import numpy as np
@@ -332,6 +333,16 @@ def making_user_prompt(end_date, tier):
 # 테스트 코드
 if __name__ == "__main__":
     test_date = pd.Timestamp('2024-05-31')
+
+    tier_guidelines1 = load_tier_guidelines(tier=1)
+    tier_guidelines2 = load_tier_guidelines(tier=2)
+    tier_guidelines3 = load_tier_guidelines(tier=3)
+    print('### tier1 ###')
+    print(tier_guidelines1)
+    print('### tier2 ###')
+    print(tier_guidelines2)
+    print('### tier3 ###')
+    print(tier_guidelines3)
 
     print("="*80)
     print("Tier 1 시스템 프롬프트 테스트")
