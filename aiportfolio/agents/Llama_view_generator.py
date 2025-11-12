@@ -63,16 +63,43 @@ def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
                     start_index = -1
 
         if start_index == -1:
-            raise ValueError("JSON 배열 시작을 찾을 수 없습니다.")
+            raise ValueError("JSON 배열 시작을 찾을 수 없습니다. LLM이 JSON 형식으로 응답하지 않았습니다.")
 
-        # '}]'로 끝나는 위치 찾기
+        # JSON 끝 찾기: 여러 방법 시도
+        # 1차: '}]' 패턴 찾기 (정상적인 JSON 배열 종료)
         end_index = generated_text.rfind('}]')
+
         if end_index == -1:
+            # 2차: 마지막 '}' 다음에 ']'가 있는지 찾기 (공백이 있을 수 있음)
+            last_brace = generated_text.rfind('}')
+            if last_brace != -1:
+                # '}' 이후 텍스트에서 ']' 찾기
+                remaining = generated_text[last_brace:]
+                bracket_pos = remaining.find(']')
+                if bracket_pos != -1:
+                    end_index = last_brace + bracket_pos
+                    print(f"[알림] JSON 끝을 찾음 ('}' 이후 ']' 패턴)")
+
+        if end_index == -1:
+            # 3차: 독립된 ']' 찾기 (마지막 수단)
             end_index = generated_text.rfind(']')
-            if end_index == -1:
-                raise ValueError("JSON 배열 끝을 찾을 수 없습니다.")
+            if end_index != -1:
+                print(f"[경고] JSON 끝을 독립된 ']'로 찾음. 불완전한 JSON일 수 있습니다.")
+
+        if end_index == -1:
+            # JSON이 완전히 생성되지 않음
+            raise ValueError(
+                f"JSON 배열 끝을 찾을 수 없습니다. "
+                f"LLM이 토큰 제한에 도달했거나 출력이 중단되었을 수 있습니다.\n"
+                f"생성된 텍스트 길이: {len(generated_text)} 문자\n"
+                f"마지막 200자: ...{generated_text[-200:]}"
+            )
         else:
-            end_index = end_index + 1  # '}]'의 ']' 포함
+            # '}]'의 경우 +1, '}'나 ']'의 경우 그대로
+            if generated_text[end_index-1:end_index+1] == '}]':
+                pass  # end_index는 이미 ']' 위치를 가리킴
+            else:
+                pass  # end_index는 이미 ']' 위치를 가리킴
 
         # JSON 문자열 추출
         json_string = generated_text[start_index : end_index + 1]
@@ -82,7 +109,9 @@ def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
         cleaned_lines = [line.strip() for line in lines]
         json_string_clean = ''.join(cleaned_lines)
 
+        print(f"[디버그] 추출된 JSON 길이: {len(json_string_clean)} 문자")
         print(f"[디버그] 추출된 JSON (앞 300자):\n{json_string_clean[:300]}\n")
+        print(f"[디버그] 추출된 JSON (뒤 300자):\n...{json_string_clean[-300:]}\n")
 
         # JSON 파싱
         views_data = json.loads(json_string_clean)
@@ -92,9 +121,18 @@ def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
 
         print(f"[성공] {len(views_data)}개 뷰 파싱 완료")
 
+        # 각 뷰의 유효성 검증
+        for i, view in enumerate(views_data, 1):
+            required_keys = ['sector_1', 'sector_2', 'relative_return_view']
+            missing_keys = [k for k in required_keys if k not in view]
+            if missing_keys:
+                print(f"[경고] 뷰 {i}에 필수 키가 누락됨: {missing_keys}")
+
     except (ValueError, json.JSONDecodeError) as e:
         print(f"\n[오류] LLM 출력에서 JSON 파싱 실패: {e}")
-        print(f"원본 텍스트:\n{generated_text}\n")
+        print(f"\n원본 텍스트 길이: {len(generated_text)} 문자")
+        print(f"원본 텍스트 (앞 500자):\n{generated_text[:500]}\n")
+        print(f"원본 텍스트 (뒤 500자):\n...{generated_text[-500:]}\n")
         raise RuntimeError(f"LLM JSON 파싱 실패: {e}")
 
     # 5. 파싱된 데이터를 저장 (문자열이 아닌 객체로 저장)
