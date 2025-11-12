@@ -58,7 +58,7 @@ Enhanced Selection Criteria (Accounting-Informed Momentum Framework)
 - High leverage with falling margins = fragility; increases short bias.
 - Low leverage = stability; enhances resilience under volatility.
 
-4. Integrated Momentum View: Combine accounting with momentum (CAGR, trend R², z-score, volatility).
+4. Integrated Momentum View: Combine accounting with momentum (CAGR, trend R², z-score, volatility)
 - Momentum↑ + Value↑ + Profitability↑ → Strong Long
 - Momentum↓ + Value↓ + Profitability↓ → Strong Short
 - Momentum↑ + Profitability↓ → reduce conviction
