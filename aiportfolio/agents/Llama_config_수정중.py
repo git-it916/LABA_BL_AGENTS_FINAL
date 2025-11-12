@@ -128,21 +128,21 @@ def chat_with_llama3(pipeline_obj, system_prompt, user_prompt):
         add_generation_prompt=True
     )
 
+    # EOS 토큰: 모델의 기본 EOS 토큰만 사용
+    # "]", "}" 등을 EOS로 설정하면 JSON 배열이 완성되기 전에 중단될 수 있음
     eos_tokens = [
         pipeline_obj.tokenizer.eos_token_id,
-        pipeline_obj.tokenizer.convert_tokens_to_ids("```"),
-        pipeline_obj.tokenizer.convert_tokens_to_ids("]"),
-        pipeline_obj.tokenizer.convert_tokens_to_ids("}")
+        pipeline_obj.tokenizer.convert_tokens_to_ids("<|eot_id|>")  # Llama 3의 공식 종료 토큰
     ]
 
     # torch.no_grad()는 pipeline 내부에서 이미 처리되므로 제거 가능
     # 하지만 명시적으로 사용해도 문제 없음
     outputs = pipeline_obj(
         prompt,
-        max_new_tokens=10000,  # 5개 뷰 JSON 생성을 위해 충분한 토큰 할당
+        max_new_tokens=2048,  # 5개 뷰 JSON 생성 (각 뷰당 약 400 토큰)
         do_sample=True,
-        temperature=0.3,
-        top_p=0.8,
+        temperature=0.6,  # 0.3 → 0.6 (다양성 증가)
+        top_p=0.9,        # 0.8 → 0.9 (더 넓은 토큰 선택 범위)
         return_full_text=False,
         eos_token_id=eos_tokens,
         pad_token_id=pipeline_obj.tokenizer.eos_token_id
