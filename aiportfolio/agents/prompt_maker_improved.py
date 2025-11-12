@@ -14,7 +14,7 @@ import os
 import json
 from aiportfolio.agents.prepare.Tier1_calculate import indicator
 from aiportfolio.agents.prepare.Tier2_calculate import calculate_accounting_indicator
-
+from aiportfolio.agents.prepare.Tier3_calculate import calculate_macro_indicator
 
 def round_numeric_values(data, decimals=2):
     """
@@ -147,6 +147,43 @@ def making_tier2_INPUT(end_date):
 
     return sector_data_list
 
+def making_tier3_INPUT(end_date):
+    """
+    Tier 3 (거시 지표) 데이터 생성
+
+    Args:
+        end_date: 데이터 기준 날짜
+    
+    Returns:
+        dict: 거시경제 지표 데이터
+    """
+    data = calculate_macro_indicator()
+
+    def safe_get_value(column):
+        """컬럼에 대한 값을 안전하게 가져옵니다."""
+        filtered = data.loc[(data['date'] == end_date), column]
+        if len(filtered) == 0:
+            print(f"[경고] {column} 데이터가 {end_date}에 없습니다. 'N/A'로 대체합니다.")
+            return "N/A"
+        value = filtered.iloc[0]
+
+        # 숫자인 경우 반올림
+        if isinstance(value, (int, float, np.number)):
+            return round(float(value), 2)
+        else:
+            return value
+
+    macro_data = {
+        "date": end_date,
+        "FEDFUNDS": safe_get_value('FEDFUNDS'),
+        "CPI": safe_get_value('CPI'),
+        "CA0_CLI": safe_get_value('CA0_CLI(Amplitude adjusted, Long-term average = 100)'),
+        "T10Y2Y": safe_get_value('T10Y2Y'),
+        "GPDIC1_PCA": safe_get_value('GPDIC1_PCA')
+    }
+
+    return macro_data
+
 
 def load_tier_guidelines(tier):
     """
@@ -267,10 +304,11 @@ def making_user_prompt(end_date, tier):
             tier2_json = json.dumps(tier2_data, indent=2, ensure_ascii=False)
             data_blocks.append(f"\n=== Accounting Indicators (Tier 2) ===\n{tier2_json}")
 
-        # Tier 3: 거시 지표 추가 (향후 구현)
+        # Tier 3: 거시 지표 추가
         if tier >= 3:
-            # TODO: Tier3_calculate 구현 후 추가
-            data_blocks.append(f"\n=== Macro Indicators (Tier 3) ===\n[Not yet implemented]")
+            tier3_data = making_tier3_INPUT(end_date)
+            tier3_json = json.dumps(tier3_data, indent=2, ensure_ascii=False)
+            data_blocks.append(f"\n=== Macro Indicators (Tier 3) ===\n{tier3_json}")
 
         # 데이터 블록 결합
         combined_data = '\n'.join(data_blocks)
@@ -315,3 +353,10 @@ if __name__ == "__main__":
     user_prompt_2 = making_user_prompt(end_date=test_date, tier=2)
     if user_prompt_2:
         print(user_prompt_2[:500] + "...\n")
+
+    print("="*80)
+    print("Tier 3 사용자 프롬프트 테스트")
+    print("="*80)
+    user_prompt_3 = making_user_prompt(end_date=test_date, tier=3)
+    if user_prompt_3:
+        print(user_prompt_3[:500] + "...\n")

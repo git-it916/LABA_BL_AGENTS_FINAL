@@ -5,7 +5,8 @@
       "Bash(findstr:*)",
       "Bash(ping:*)",
       "Bash(nul)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(nvidia-smi:*)"
     ],
     "deny": [],
     "ask": []
