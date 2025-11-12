@@ -40,29 +40,25 @@ Available Data (from Accounting layer):
 - Total Debt / Invested Capital (totdebt_invcap): Leverage (Higher = more financial risk; context-dependent)
 - Enhanced Strategy (Building on Tier 1 Momentum Framework)
 
-Selection Strategy:
-Enhanced Selection Criteria (Accounting-Informed Momentum Framework)
+Upgrade Long Confidence:
+Condition: Tier 1 Long + High bm + High ROE + Low CAPE
+Interpretation: Momentum aligns with “value at a discount” — quality growth at attractive price.
+Action: Increase relative_return_view by +0.01 ~ +0.02.
+- **Note**: Use decimal format. (e.g., a +2.5% expected relative return = `0.025`)
+Downgrade Long Confidence:
+Condition: Tier 1 Long + Low bm + Low ROE + High CAPE
+Interpretation: Momentum likely speculative; weak fundamentals behind price trend.
+Action: Reduce relative_return_view by 0.01 or set confidence = neutral.
 
-1. Valuation Alignment (Book/Market, Shiller CAPE)
-- High Book/Market → undervalued; Low CAPE → attractive entry point.
-- When momentum aligns with value (bm↑ or CAPE↓), reinforce Long conviction (+0.01~+0.03).
-- When momentum diverges (bm↓ and CAPE↑), reduce Long bias or consider Short if profitability also weakens.
+Upgrade Short Confidence:
+Condition: Tier 1 Short + High CAPE + Low ROE + High Debt/Capital
+Interpretation: Weak momentum with expensive valuation and rising leverage → fragile fundamentals.
+Action: Increase short conviction (magnitude of relative_return_view).
 
-2. Profitability Alignment (gprof, npm, ROA, ROE)
-- High gprof = efficient asset use; npm = pricing power; ROA/ROE = profitability quality.
-- Improving profitability (↑) supports continuation of momentum; declining profitability (↓) suggests reversal risk.
-- Profitability changes confirm or challenge technical trends.
-
-3. Leverage Context (Total Debt / Invested Capital)
-- High leverage with strong profitability = effective capital use.
-- High leverage with falling margins = fragility; increases short bias.
-- Low leverage = stability; enhances resilience under volatility.
-
-4. Integrated Momentum View: Combine accounting with momentum (CAGR, trend R², z-score, volatility).
-- Momentum↑ + Value↑ + Profitability↑ → Strong Long
-- Momentum↓ + Value↓ + Profitability↓ → Strong Short
-- Momentum↑ + Profitability↓ → reduce conviction
-- Momentum↓ + Profitability↑ → watch for rebound
+Challenge or Rebalance Views:
+Case A: Momentum uptrend but ROE/ROA deteriorating → reduce Long exposure.
+Case B: Momentum downtrend but Margins (npm, gprof) improving → reconsider or reduce Short exposure.
+Case C: High leverage (totdebt_invcap ↑) with stable profitability → assess risk-adjusted return; avoid extremes.
 ---
 
 ### TIER 3 GUIDELINES (Full Integration: Technical + Accounting + Macro)
@@ -94,7 +90,7 @@ Enhanced Selection Criteria (Accounting-Informed Momentum Framework)
 - Review all 5 pairs for macro consistency
 - Ensure portfolio makes sense in current regime
 - Adjust relative_return_view to reflect macro amplification (+0.005 to +0.015)
-
+- **Note**: Use decimal format. (e.g., a +2.5% expected relative return = `0.025`)
 ---
 
 ### COMMON RULES (All Tiers)
@@ -103,6 +99,7 @@ Enhanced Selection Criteria (Accounting-Informed Momentum Framework)
 - Exactly 5 pairs, no duplicates
 - Each sector can appear max 2 times across all pairs
 - relative_return_view range: -0.05 to +0.05 (realistic)
+ - **Note**: Use decimal format. (e.g., a +2.5% expected relative return = `0.025`)
 - Rank pairs by conviction (highest first)
 
 **Quality Checks**:
