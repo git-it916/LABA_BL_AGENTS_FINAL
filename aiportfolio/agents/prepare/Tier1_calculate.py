@@ -155,7 +155,7 @@ def indicator():
     print("\n--- 최종 롤링 지표 데이터 (Head - 원본 MultiIndex) ---")
     print(rolling_indicator_data_multi_index.head())
 
-    # --- ▼▼▼ 사용자 요청 코드 추가 ▼▼▼ ---
+    
 
     # 4. [신규] MultiIndex를 풀고 'as_of_date'와 'sector'를 일반 열로 변환
     print("\n[알림] MultiIndex를 Long Format 테이블로 변환합니다...")
