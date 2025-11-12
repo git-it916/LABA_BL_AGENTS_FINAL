@@ -78,8 +78,13 @@ You must use the following definitions and selection principles to perform your 
     * `Strongly Negative` (e.g., < -1.5): Oversold/Depressed (Potential for mean reversion up, Long signal).
 
 #### Stage 2: Accounting Indicators (Example Definitions)
-* **"P/E (Price-to-Earnings)"**: Valuation (Lower is cheaper/better for Longs).
-* **"ROE (Return on Equity)"**: Profitability / Quality (Higher is better).
+* "Book/Market (bm)": Valuation (Higher indicates value stocks — cheaper relative to fundamentals).
+* "Shiller’s CAPE (capei)": Valuation (Lower suggests undervaluation; higher indicates potential overvaluation).
+* "Gross Profit / Total Assets (gprof)": Profitability / Quality (Higher means assets are efficiently generating gross profit).
+* "Net Profit Margin (npm)": Profitability (Higher margin indicates stronger cost control and operational efficiency).
+* "Return on Assets (roa)": Profitability (Higher implies better utilization of total assets to generate net income).
+* "Return on Equity (roe)": Profitability / Quality (Higher reflects superior shareholder return and capital efficiency).
+* "Total Debt / Invested Capital (totdebt_invcap)": Leverage (Higher indicates greater financial leverage and risk exposure).
 
 #### Stage 3: Macro Indicators (Example Definitions)
 * **"Interest Rate Trend"**: (e.g., Rising, Falling, Stable).
