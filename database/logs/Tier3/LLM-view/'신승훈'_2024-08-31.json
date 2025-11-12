@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Energy (Long)",
+            "sector_2": "Real Estate (Short)",
+            "relative_return_view": 0.0228,
+            "reasoning": "Energy shows strong momentum with a 3-year CAGR of 0.2884 and a positive mean reversion signal (z-score) of -0.4081, indicating a strong Long signal. Real Estate has a low mean reversion signal (z-score) of 0.8071 and a weak 12-month trend strength of 0.6215, making it a suitable Short candidate."
+        },
+        {
+            "sector_1": "Industrials (Long)",
+            "sector_2": "Consumer Discretionary (Short)",
+            "relative_return_view": 0.0165,
+            "reasoning": "Industrials exhibit strong momentum with a 3-year CAGR of 0.1003 and a positive mean reversion signal (z-score) of 0.2012, indicating a strong Long signal. Consumer Discretionary has a negative mean reversion signal (z-score) of -0.3596 and a relatively low 12-month trend strength of 0.7328, making it a suitable Short candidate."
+        },
+        {
+            "sector_1": "Health Care (Long)",
+            "sector_2": "Information Technology (Short)",
+            "relative_return_view": 0.0122,
+            "reasoning": "Health Care shows strong momentum with a 3-year CAGR of 0.0708 and a positive mean reversion signal (z-score) of 1.0918, indicating a strong Long signal. Information Technology has a negative mean reversion signal (z-score) of -0.2492 and a relatively low 12-month trend strength of 0.9344, making it a suitable Short candidate."
+        },
+        {
+            "sector_1": "Financials (Long)",
+            "sector_2": "Materials (Short)",
+            "relative_return_view": 0.0089,
+            "reasoning": "Financials exhibit strong momentum with a 3-year CAGR of 0.0605 and a positive mean reversion signal (z-score) of 0.3679, indicating a strong Long signal. Materials have a relatively low 12-month trend strength of 0.8214 and a negative mean reversion signal (z-score) of 0.1715, making it a suitable Short candidate."
+        },
+        {
+            "sector_1": "Consumer Staples (Long)",
+            "sector_2": "Utilities (Short)",
+            "relative_return_view": 0.0054,
+            "reasoning": "Consumer Staples show strong momentum with a 3-year CAGR of 0.0858 and a positive mean reversion signal (z-score) of 1.3669, indicating a strong Long signal. Utilities have a relatively low 12-month trend strength of 0.8923 and a positive mean reversion signal (z-score) of 0.8449, making it a suitable Short candidate."
+        }
+    ]
+]

@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Energy (Long)",
+            "sector_2": "Materials (Short)",
+            "relative_return_view": 0.035,
+            "reasoning": "Energy shows strong momentum with a 3-year CAGR of 0.2875 and a mean reversion signal of 0.1293, indicating a potential long-term growth trend. Materials, on the other hand, has a weak 3-year CAGR of 0.0522 and a mean reversion signal of 0.5682, indicating a potential reversal in its trend."
+        },
+        {
+            "sector_1": "Industrials (Long)",
+            "sector_2": "Consumer Discretionary (Short)",
+            "relative_return_view": 0.021,
+            "reasoning": "Industrials shows strong momentum with a 3-year CAGR of 0.0947 and a mean reversion signal of 0.5954, indicating a potential long-term growth trend. Consumer Discretionary has a weak 3-year CAGR of 0.0267 and a mean reversion signal of 0.1011, indicating a potential reversal in its trend."
+        },
+        {
+            "sector_1": "Health Care (Long)",
+            "sector_2": "Communication Services (Short)",
+            "relative_return_view": 0.035,
+            "reasoning": "Health Care shows strong momentum with a 3-year CAGR of 0.0606 and a mean reversion signal of 0.4056, indicating a potential long-term growth trend. Communication Services has a weak 3-year CAGR of 0.0744 and a mean reversion signal of -0.9334, indicating a potential reversal in its trend."
+        },
+        {
+            "sector_1": "Utilities (Long)",
+            "sector_2": "Real Estate (Short)",
+            "relative_return_view": 0.035,
+            "reasoning": "Utilities shows strong momentum with a 3-year CAGR of 0.066 and a mean reversion signal of 1.3489, indicating a potential long-term growth trend. Real Estate has a weak 3-year CAGR of -0.0037 and a mean reversion signal of 1.0863, indicating a potential reversal in its trend."
+        },
+        {
+            "sector_1": "Financials (Long)",
+            "sector_2": "Information Technology (Short)",
+            "relative_return_view": 0.021,
+            "reasoning": "Financials shows strong momentum with a 3-year CAGR of 0.0561 and a mean reversion signal of 0.7711, indicating a potential long-term growth trend. Information Technology has a weak 3-year CAGR of 0.1909 and a mean reversion signal of -0.6232, indicating a potential reversal in its trend."
+        }
+    ]
+]

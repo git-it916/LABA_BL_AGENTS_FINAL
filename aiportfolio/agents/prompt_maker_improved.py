@@ -115,12 +115,23 @@ def making_tier2_INPUT(end_date):
     """
     data = calculate_accounting_indicator()
 
-    def safe_get_value(sector, column):
-        """섹터와 컬럼에 대한 값을 안전하게 가져옵니다."""
-        filtered = data.loc[(data['date'] == end_date) & (data['gsector'] == sector), column]
+    def safe_get_metric_value(sector, metric_name):
+        """
+        섹터와 메트릭 이름에 대한 값을 안전하게 가져옵니다.
+        calculate_accounting_indicator()는 LONG 형식을 반환:
+        - columns: ['date', 'gsector', 'acct_level_lagged_avg', 'metric']
+        """
+        filtered = data.loc[
+            (data['date'] == end_date) &
+            (data['gsector'] == sector) &
+            (data['metric'] == metric_name),
+            'acct_level_lagged_avg'
+        ]
+
         if len(filtered) == 0:
-            print(f"[경고] {sector} 섹터의 {column} 데이터가 {end_date}에 없습니다. 'N/A'로 대체합니다.")
+            print(f"[경고] {sector} 섹터의 {metric_name} 데이터가 {end_date}에 없습니다. 'N/A'로 대체합니다.")
             return "N/A"
+
         value = filtered.iloc[0]
 
         # 숫자인 경우 반올림
@@ -139,11 +150,13 @@ def making_tier2_INPUT(end_date):
     for sector in sectors:
         sector_data_list.append({
             "sector": sector,
-            "pe_ratio": safe_get_value(sector, 'pe_ratio'),
-            "roe": safe_get_value(sector, 'roe_Mean'),
-            "pb_ratio": safe_get_value(sector, 'bm_Mean'),  # Book-to-Market의 역수
-            "debt_to_equity": safe_get_value(sector, 'totdebt_invcap_Mean'),
-            "operating_margin": safe_get_value(sector, 'npm_Mean')
+            "bm": safe_get_metric_value(sector, 'bm_Mean'),  # Book-to-Market 비율
+            "capei": safe_get_metric_value(sector, 'CAPEI_Mean'),  # 자본 효율성
+            "gprof": safe_get_metric_value(sector, 'GProf_Mean'),  # 총 이익률
+            "npm": safe_get_metric_value(sector, 'npm_Mean'),  # 순이익률
+            "roa": safe_get_metric_value(sector, 'roa_Mean'),  # 자산수익률 (ROA)
+            "roe": safe_get_metric_value(sector, 'roe_Mean'),  # 자본수익률 (ROE)
+            "totdebt_invcap": safe_get_metric_value(sector, 'totdebt_invcap_Mean')  # 부채 비율
         })
 
     return sector_data_list

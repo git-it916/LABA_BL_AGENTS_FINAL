@@ -78,7 +78,7 @@ def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
                 bracket_pos = remaining.find(']')
                 if bracket_pos != -1:
                     end_index = last_brace + bracket_pos
-                    print(f"[알림] JSON 끝을 찾음 ('}' 이후 ']' 패턴)")
+                    print(f"[알림] JSON 끝을 찾음 ('}}' 이후 ']' 패턴)")
 
         if end_index == -1:
             # 3차: 독립된 ']' 찾기 (마지막 수단)

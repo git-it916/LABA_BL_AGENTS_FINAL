@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Energy (Long)",
+            "sector_2": "Real Estate (Short)",
+            "relative_return_view": 0.0245,
+            "reasoning": "Energy shows strong momentum with a 3-year CAGR of 0.2933 and a mean reversion signal of -0.2684, indicating potential for continued growth. Real Estate has a weak 3-year CAGR of -0.0199 and a mean reversion signal of -1.2114, indicating potential for underperformance."
+        },
+        {
+            "sector_1": "Information Technology (Long)",
+            "sector_2": "Utilities (Short)",
+            "relative_return_view": 0.0314,
+            "reasoning": "Information Technology has a strong 3-year CAGR of 0.1665 and a mean reversion signal of -1.0013, indicating potential for continued growth. Utilities has a weak 3-year CAGR of 0.031 and a mean reversion signal of 0.3225, indicating potential for underperformance."
+        },
+        {
+            "sector_1": "Financials (Long)",
+            "sector_2": "Consumer Staples (Short)",
+            "relative_return_view": 0.0159,
+            "reasoning": "Financials has a strong 3-year CAGR of 0.0339 and a mean reversion signal of -0.7762, indicating potential for continued growth. Consumer Staples has a weak 3-year CAGR of 0.0667 and a mean reversion signal of -0.2857, indicating potential for underperformance."
+        },
+        {
+            "sector_1": "Communication Services (Long)",
+            "sector_2": "Health Care (Short)",
+            "relative_return_view": 0.0203,
+            "reasoning": "Communication Services has a strong 3-year CAGR of 0.0596 and a mean reversion signal of -0.9741, indicating potential for continued growth. Health Care has a weak 3-year CAGR of 0.0682 and a mean reversion signal of -1.3672, indicating potential for underperformance."
+        },
+        {
+            "sector_1": "Industrials (Long)",
+            "sector_2": "Materials (Short)",
+            "relative_return_view": 0.0194,
+            "reasoning": "Industrials has a strong 3-year CAGR of 0.0832 and a mean reversion signal of -0.7829, indicating potential for continued growth. Materials has a weak 3-year CAGR of 0.0438 and a mean reversion signal of -0.7539, indicating potential for underperformance."
+        }
+    ]
+]

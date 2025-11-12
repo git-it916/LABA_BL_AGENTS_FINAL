@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Energy (Long)",
+            "sector_2": "Consumer Staples (Short)",
+            "relative_return_view": 0.02,
+            "reasoning": "Energy shows strong momentum with a 3-year CAGR of 0.2996 and a mean reversion signal (12-month z-score) of 1.0048, indicating a strong trend. Consumer Staples has a lower mean reversion signal (12-month z-score) of 0.738 and a lower 3-year CAGR of 0.0782, making it a weaker candidate."
+        },
+        {
+            "sector_1": "Materials (Long)",
+            "sector_2": "Utilities (Short)",
+            "relative_return_view": 0.01,
+            "reasoning": "Materials shows a strong trend with a 12-month trend strength of 0.4557 and a mean reversion signal (12-month z-score) of 0.8422, indicating a strong momentum. Utilities has a lower 12-month trend strength of 0.0581 and a higher mean reversion signal (12-month z-score) of 1.3958, making it a weaker candidate."
+        },
+        {
+            "sector_1": "Industrials (Long)",
+            "sector_2": "Real Estate (Short)",
+            "relative_return_view": 0.015,
+            "reasoning": "Industrials shows a strong trend with a 12-month trend strength of 0.6551 and a mean reversion signal (12-month z-score) of 0.5067, indicating a strong momentum. Real Estate has a lower 12-month trend strength of 0.2867 and a lower mean reversion signal (12-month z-score) of 0.3129, making it a weaker candidate."
+        },
+        {
+            "sector_1": "Information Technology (Long)",
+            "sector_2": "Communication Services (Short)",
+            "relative_return_view": 0.005,
+            "reasoning": "Information Technology shows a strong trend with a 12-month trend strength of 0.7851 and a mean reversion signal (12-month z-score) of 0.0484, indicating a strong momentum. Communication Services has a lower 12-month trend strength of 0.8452 and a higher mean reversion signal (12-month z-score) of 0.2593, making it a weaker candidate."
+        },
+        {
+            "sector_1": "Financials (Long)",
+            "sector_2": "Health Care (Short)",
+            "relative_return_view": 0.01,
+            "reasoning": "Financials shows a strong trend with a 12-month trend strength of 0.7476 and a mean reversion signal (12-month z-score) of 0.6345, indicating a strong momentum. Health Care has a lower 12-month trend strength of 0.5501 and a lower mean reversion signal (12-month z-score) of 0.4561, making it a weaker candidate."
+        }
+    ]
+]

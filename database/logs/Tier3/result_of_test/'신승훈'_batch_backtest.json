@@ -1,0 +1,100 @@
+{
+    "simulation_name": "'신승훈'",
+    "tier": 3,
+    "tau": 0.025,
+    "num_periods": 8,
+    "period_range": {
+        "start": "2024-04-30",
+        "end": "2024-11-30"
+    },
+    "average_performance": {
+        "mvo_mean_return": 0.02770655950176769,
+        "mvo_std_return": 0.03347468534566021,
+        "bl_mean_return": 0.028466549050387785,
+        "bl_std_return": 0.016104070782694314,
+        "mean_outperformance": 0.0007599895486200964,
+        "win_rate": 62.5
+    },
+    "detailed_results": [
+        {
+            "forecast_date": "2024-04-30",
+            "backtest_period": {
+                "start": "2024-05-01",
+                "end": "2024-07-08"
+            },
+            "mvo_final_return": 0.07648631271820228,
+            "bl_final_return": 0.03821958651338231,
+            "outperformance": -0.03826672620481997
+        },
+        {
+            "forecast_date": "2024-05-31",
+            "backtest_period": {
+                "start": "2024-06-01",
+                "end": "2024-08-08"
+            },
+            "mvo_final_return": 0.05887820943623079,
+            "bl_final_return": 0.04873711966791494,
+            "outperformance": -0.010141089768315847
+        },
+        {
+            "forecast_date": "2024-06-30",
+            "backtest_period": {
+                "start": "2024-07-01",
+                "end": "2024-09-07"
+            },
+            "mvo_final_return": -0.01117345333875397,
+            "bl_final_return": 0.01868166012273309,
+            "outperformance": 0.02985511346148706
+        },
+        {
+            "forecast_date": "2024-07-31",
+            "backtest_period": {
+                "start": "2024-08-01",
+                "end": "2024-10-08"
+            },
+            "mvo_final_return": 0.01051681141769567,
+            "bl_final_return": 0.020979127892459815,
+            "outperformance": 0.010462316474764144
+        },
+        {
+            "forecast_date": "2024-08-31",
+            "backtest_period": {
+                "start": "2024-09-01",
+                "end": "2024-11-08"
+            },
+            "mvo_final_return": 0.010597505175732325,
+            "bl_final_return": 0.012685025754383572,
+            "outperformance": 0.0020875205786512474
+        },
+        {
+            "forecast_date": "2024-09-30",
+            "backtest_period": {
+                "start": "2024-10-01",
+                "end": "2024-12-08"
+            },
+            "mvo_final_return": 0.026849649694158817,
+            "bl_final_return": 0.028465370694541026,
+            "outperformance": 0.0016157210003822087
+        },
+        {
+            "forecast_date": "2024-10-31",
+            "backtest_period": {
+                "start": "2024-11-01",
+                "end": "2025-01-08"
+            },
+            "mvo_final_return": 0.06655306169390318,
+            "bl_final_return": 0.05409919806705932,
+            "outperformance": -0.012453863626843864
+        },
+        {
+            "forecast_date": "2024-11-30",
+            "backtest_period": {
+                "start": "2024-12-01",
+                "end": "2025-02-07"
+            },
+            "mvo_final_return": -0.01705562078302758,
+            "bl_final_return": 0.00586530369062821,
+            "outperformance": 0.02292092447365579
+        }
+    ]
+}

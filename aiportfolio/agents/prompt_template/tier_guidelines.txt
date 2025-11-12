@@ -55,7 +55,6 @@ Condition: Tier 1 Short + High CAPE + Low ROE + High Debt/Capital
 Interpretation: Weak momentum with expensive valuation and rising leverage → fragile fundamentals.
 Action: Increase short conviction (magnitude of relative_return_view).
 
-<<<<<<< HEAD
 2. Profitability Alignment (gprof, npm, ROA, ROE)
 - High gprof = efficient asset use; npm = pricing power; ROA/ROE = profitability quality.
 - Improving profitability (↑) supports continuation of momentum; declining profitability (↓) suggests reversal risk.
@@ -71,12 +70,11 @@ Action: Increase short conviction (magnitude of relative_return_view).
 - Momentum↓ + Value↓ + Profitability↓ → Strong Short
 - Momentum↑ + Profitability↓ → reduce conviction
 - Momentum↓ + Profitability↑ → watch for rebound
-=======
+
 Challenge or Rebalance Views:
 Case A: Momentum uptrend but ROE/ROA deteriorating → reduce Long exposure.
 Case B: Momentum downtrend but Margins (npm, gprof) improving → reconsider or reduce Short exposure.
 Case C: High leverage (totdebt_invcap ↑) with stable profitability → assess risk-adjusted return; avoid extremes.
->>>>>>> 0b57eb82449391b16532d403888b944160c41822
 ---
 
 ### TIER 3 GUIDELINES (Full Integration: Technical + Accounting + Macro)
