@@ -30,32 +30,34 @@
 
 ### TIER 2 GUIDELINES (Technical + Accounting Indicators)
 
-**Additional Data**:
-- P/E (Price-to-Earnings): Valuation (lower = cheaper)
-- ROE (Return on Equity): Profitability quality (higher = better)
-- P/B (Price-to-Book): Book value multiple (lower = cheaper)
-- Debt-to-Equity: Financial leverage (context-dependent)
-- Operating Margin: Operational efficiency (higher = better)
+Available Data (from Accounting layer):
+- Book/Market (bm): Valuation (Higher = cheaper; indicates value orientation)
+- Shiller CAPE (capei): Valuation (Lower = cheaper; high CAPE → potentially overvalued sector)
+- Gross Profit / Total Assets (gprof): Efficiency (Higher = assets generate profit efficiently)
+- Net Profit Margin (npm): Profitability (Higher = better cost control and pricing power)
+- Return on Assets (ROA): Profitability (Higher = stronger overall asset utilization)
+- Return on Equity (ROE): Profitability / Quality (Higher = stronger shareholder return efficiency)
+- Total Debt / Invested Capital (totdebt_invcap): Leverage (Higher = more financial risk; context-dependent)
+- Enhanced Strategy (Building on Tier 1 Momentum Framework)
 
-**Enhanced Strategy** (builds on Tier 1):
-1. **Upgrade Long Confidence**: Tier 1 Long + Low P/E + High ROE
-   - Interpretation: Strong momentum with cheap valuation = "Quality at a discount"
-   - Action: Increase relative_return_view by 0.01-0.02
+Upgrade Long Confidence:
+Condition: Tier 1 Long + High bm + High ROE + Low CAPE
+Interpretation: Momentum aligns with “value at a discount” — quality growth at attractive price.
+Action: Increase relative_return_view by +0.01 ~ +0.02.
+Downgrade Long Confidence:
+Condition: Tier 1 Long + Low bm + Low ROE + High CAPE
+Interpretation: Momentum likely speculative; weak fundamentals behind price trend.
+Action: Reduce relative_return_view by 0.01 or set confidence = neutral.
 
-2. **Downgrade Long Confidence**: Tier 1 Long + High P/E + Low ROE
-   - Interpretation: Momentum driven by speculation, not fundamentals
-   - Action: Reduce confidence or remove view
+Upgrade Short Confidence:
+Condition: Tier 1 Short + High CAPE + Low ROE + High Debt/Capital
+Interpretation: Weak momentum with expensive valuation and rising leverage → fragile fundamentals.
+Action: Increase short conviction (magnitude of relative_return_view).
 
-3. **Upgrade Short Confidence**: Tier 1 Short + High P/E + Low ROE
-   - Interpretation: Weak momentum + expensive valuation = "Priced for perfection it can't deliver"
-   - Action: Increase relative_return_view magnitude
-
-4. **Challenge Views**: If accounting contradicts momentum, investigate:
-   - Strong momentum + deteriorating ROE trend → Reduce Long
-   - Weak momentum + improving margins → Reconsider Short
-
-**Key Principle**: Momentum + Valuation alignment creates highest conviction
-
+Challenge or Rebalance Views:
+Case A: Momentum uptrend but ROE/ROA deteriorating → reduce Long exposure.
+Case B: Momentum downtrend but Margins (npm, gprof) improving → reconsider or reduce Short exposure.
+Case C: High leverage (totdebt_invcap ↑) with stable profitability → assess risk-adjusted return; avoid extremes.
 ---
 
 ### TIER 3 GUIDELINES (Full Integration: Technical + Accounting + Macro)
