@@ -171,9 +171,9 @@ def match_sp500_by_date(filtered_file, sp500_file, output_file,
 # 사용 예시
 if __name__ == "__main__":
     # 설정
-    filtered_file = r"C:\Users\shins\OneDrive\문서\필터링결과.csv"
+    filtered_file = r"C:\Users\shins\OneDrive\문서\필터링결과_11.14.csv"
     sp500_file = r"C:\Users\shins\OneDrive\문서\sp500_ticker_start_end.csv"
-    output_file = r"C:\Users\shins\OneDrive\문서\SP500매칭결과.csv"
+    output_file = r"C:\Users\shins\OneDrive\문서\SP500매칭결과_11.14.csv"
     ticker_column = "Ticker"      # 필터링결과 파일의 ticker 열 이름
     date_column = "DlyCalDt"      # 필터링결과 파일의 날짜 열 이름
     
@@ -188,41 +188,3 @@ if __name__ == "__main__":
         print(f"\n✗ 오류 발생: {e}")
         import traceback
         traceback.print_exc()
-
-'''
-✓ 매칭 완료!
-  SP500 포함 (sp500=1): 85,118개 (7.9%)
-  SP500 미포함 (sp500=0): 993,143개 (92.1%)
-
-[5단계] 결과 저장 중: C:\Users\shins\OneDrive\문서\SP500매칭결과.csv
-✓ 저장 완료! (파일 크기: 40.74 MB)
-
-[6단계] 결과 미리보기:
-----------------------------------------------------------------------
-
-✓ SP500 포함 예시:
-  ORCL   | 2024-05-01 00:00:00 | sp500 = 1
-  MSFT   | 2024-05-01 00:00:00 | sp500 = 1
-  TROW   | 2024-05-01 00:00:00 | sp500 = 1
-  HON    | 2024-05-01 00:00:00 | sp500 = 1
-  ADM    | 2024-05-01 00:00:00 | sp500 = 1
-
-✓ SP500 미포함 예시:
-  JJSF   | 2024-05-01 00:00:00 | sp500 = 0
-  PLXS   | 2024-05-01 00:00:00 | sp500 = 0
-  RMCF   | 2024-05-01 00:00:00 | sp500 = 0
-  ADX    | 2024-05-01 00:00:00 | sp500 = 0
-  FKWL   | 2024-05-01 00:00:00 | sp500 = 0
-
-======================================================================
-상세 통계
-======================================================================
-
-전체 통계:
-  총 레코드: 1,078,261개
-  고유 ticker 수: 6,853개
-  SP500 포함 레코드: 85,118개 (7.9%)
-  SP500 포함 ticker 수: 513개
-  날짜 범위: 2024-05-01 ~ 2024-12-31
-
-✅ 작업 완료! 'sp500' 열이 추가되었습니다.'''

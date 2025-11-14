@@ -157,8 +157,8 @@ def filter_excel_with_progress(input_file, output_file, column_name, keep_values
 # 사용 예시
 if __name__ == "__main__":
     # 설정
-    input_file = r"C:\Users\shins\OneDrive\문서\crsp_20240501_daily.csv"  # 전체 경로
-    output_file = r"C:\Users\shins\OneDrive\문서\필터링결과.csv"          # 출력 파일 전체 경로
+    input_file = r"C:\Users\shins\OneDrive\문서\crsp_20240501_daily_11.14.csv"  # 전체 경로
+    output_file = r"C:\Users\shins\OneDrive\문서\필터링결과_11.14.csv"          # 출력 파일 전체 경로
     column_name = "PrimaryExch"   # 필터링할 열 이름
     keep_values = ['N', 'Q']          # 남길 값들
     columns_to_delete = ['PERMNO', 'HdrCUSIP', 'PERMCO', 'vwretd']  # 삭제할 열들

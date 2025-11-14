@@ -220,9 +220,9 @@ def match_gics_sector(input_file, gics_file, output_file, ticker_column='Ticker'
 
 # 사용 예시
 if __name__ == "__main__":
-    input_file  = r"C:\Users\shins\OneDrive\문서\SP500매칭결과.csv"
+    input_file  = r"C:\Users\shins\OneDrive\문서\SP500매칭결과_11.14.csv"
     gics_file   = r"C:\Users\shins\OneDrive\문서\ticker_GICS.csv"
-    output_file = r"C:\Users\shins\OneDrive\문서\최종결과.csv"
+    output_file = r"C:\Users\shins\OneDrive\문서\최종결과_11.14.csv"
     ticker_column = "Ticker"
 
     try:
@@ -232,7 +232,7 @@ if __name__ == "__main__":
         # Parquet 저장
         parquet_dir = Path(output_file).parent / "database"
         parquet_dir.mkdir(exist_ok=True)
-        parquet_path = parquet_dir / f"final_stock_daily.parquet"
+        parquet_path = parquet_dir / f"final_stock_daily_11.14.parquet"
         # pyarrow 또는 fastparquet 필요 (권장: pyarrow)
         df_final.to_parquet(parquet_path, index=False)
         print(f"✓ Parquet 파일 저장 완료: {parquet_path}")
