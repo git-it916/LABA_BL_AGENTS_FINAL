@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": 0.0125,
+            "reasoning": "Industrials' strong momentum and trend strength, combined with Consumer Staples' relatively weak technicals and accounting indicators, suggest a Long-Short pair with Industrials outperforming Consumer Staples."
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.015,
+            "reasoning": "Information Technology's strong technicals, accounting indicators, and macro environment (rising interest rates) support a Long view, while Utilities' weak technicals and accounting indicators suggest a Short view, leading to a Long-Short pair with Information Technology outperforming Utilities."
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.008,
+            "reasoning": "Financials' strong technicals, accounting indicators, and macro environment (rising interest rates) support a Long view, while Real Estate's weak technicals and accounting indicators suggest a Short view, leading to a Long-Short pair with Financials outperforming Real Estate."
+        },
+        {
+            "sector_1": "Energy",
+            "sector_2": "Materials",
+            "relative_return_view": -0.005,
+            "reasoning": "Energy's relatively strong technicals and accounting indicators, combined with Materials' weak technicals and accounting indicators, suggest a Long-Short pair with Energy underperforming Materials."
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.006,
+            "reasoning": "Communication Services' strong technicals, accounting indicators, and macro environment (rising interest rates) support a Long view, while Health Care's weak technicals and accounting indicators suggest a Short view, leading to a Long-Short pair with Communication Services outperforming Health Care."
+        }
+    ]
+]

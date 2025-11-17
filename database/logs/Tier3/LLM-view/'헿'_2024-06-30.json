@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Materials",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong momentum in Information Technology and high trend strength, while Materials is weak with a negative z-score and low trend strength, making it a good short candidate"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.015,
+            "reasoning": "Financials have a strong trend strength and high profitability, while Utilities have a weak trend strength and low profitability, making Financials a good long candidate"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.02,
+            "reasoning": "Communication Services have a strong trend strength and high profitability, while Real Estate has a weak trend strength and low profitability, making Communication Services a good long candidate"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": 0.01,
+            "reasoning": "Industrials have a strong trend strength and high profitability, while Consumer Staples have a weak trend strength and low profitability, making Industrials a good long candidate"
+        },
+        {
+            "sector_1": "Health Care",
+            "sector_2": "Energy",
+            "relative_return_view": 0.015,
+            "reasoning": "Health Care has a strong trend strength and high profitability, while Energy has a weak trend strength and low profitability, making Health Care a good long candidate"
+        }
+    ]
+]

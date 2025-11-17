@@ -9,9 +9,10 @@ def calculate_macro_indicator():
     data = pd.read_csv(file_path)
 
     # 컬럼명 변경
-    data = data.rename(columns=
-                    {'observation_date': 'date', 
-                        'G20 CLI': 'G20_CLI'})
+    data = data.rename(columns={
+        'observation_date': 'date',
+        'G20 CLI(Amplitude adjusted, Long-term average = 100)': 'G20_CLI'
+    })
 
     # datetime 형식으로 변환
     data['date'] = pd.to_datetime(data['date'])

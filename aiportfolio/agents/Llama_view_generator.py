@@ -1,7 +1,7 @@
 import json
 from aiportfolio.agents.Llama_config_수정중 import chat_with_llama3
-from aiportfolio.agents.prompt_maker import making_system_prompt
-from aiportfolio.agents.prompt_maker import making_user_prompt
+from aiportfolio.agents.prompt_maker_improved import making_system_prompt
+from aiportfolio.agents.prompt_maker_improved import making_user_prompt
 from aiportfolio.util.save_log_as_json import save_view_as_json
 
 def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
@@ -18,10 +18,11 @@ def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
         list: 파싱된 뷰 데이터 (Python 리스트)
     """
     # 1. 시스템 프롬프트 정의 (LLM의 역할, 규칙, 최종 출력 형식)
-    system_prompt = making_system_prompt()
+    system_prompt = making_system_prompt(tier=Tier)
 
     # 2. 사용자 프롬프트 정의 (실제 데이터 + 실행 명령)
-    user_prompt = making_user_prompt(end_date=end_date)
+    # Tier 인자를 전달하여 단계별 데이터 포함
+    user_prompt = making_user_prompt(end_date=end_date, tier=Tier)
 
     # 프롬프트 출력
     print("\n" + "="*80)

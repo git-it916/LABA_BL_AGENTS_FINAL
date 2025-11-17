@@ -188,10 +188,10 @@ def making_tier3_INPUT(end_date):
             return value
 
     macro_data = {
-        "date": end_date,
+        "date": str(end_date.date()) if hasattr(end_date, 'date') else str(end_date),
         "FEDFUNDS": safe_get_value('FEDFUNDS'),
         "CPI": safe_get_value('CPI'),
-        "CA0_CLI": safe_get_value('CA0_CLI(Amplitude adjusted, Long-term average = 100)'),
+        "G20_CLI": safe_get_value('G20_CLI'),  # Tier3_calculate.py에서 rename됨
         "T10Y2Y": safe_get_value('T10Y2Y'),
         "GPDIC1_PCA": safe_get_value('GPDIC1_PCA')
     }
@@ -203,11 +203,16 @@ def load_tier_guidelines(tier):
     """
     Tier별 분석 가이드라인 로드
 
+    중요: Tier는 누적 방식입니다.
+    - Tier 1: Tier 1 가이드라인만
+    - Tier 2: Tier 1 + Tier 2 가이드라인
+    - Tier 3: Tier 1 + Tier 2 + Tier 3 가이드라인
+
     Args:
         tier (int): 1, 2, 또는 3
 
     Returns:
-        str: 해당 Tier의 가이드라인 텍스트
+        str: 해당 Tier까지의 모든 가이드라인 텍스트 (누적)
     """
     base_path = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(base_path, 'prompt_template', 'tier_guidelines.txt')
@@ -218,35 +223,48 @@ def load_tier_guidelines(tier):
 
         # Tier별 섹션 추출
         sections = content.split('### TIER ')
-        tier_section = None
 
-        for section in sections:
-            if section.startswith(f'{tier} GUIDELINES'):
-                tier_section = section
-                break
+        # Tier에 따라 누적으로 가이드라인 포함
+        included_tiers = list(range(1, tier + 1))  # Tier 3이면 [1, 2, 3]
+        tier_sections = []
 
-        if tier_section:
-            # 다음 Tier 섹션 전까지만 추출
-            end_marker = '\n### TIER '
-            if end_marker in tier_section:
-                tier_section = tier_section[:tier_section.index(end_marker)]
+        for target_tier in included_tiers:
+            for section in sections:
+                if section.startswith(f'{target_tier} GUIDELINES'):
+                    # 다음 Tier 섹션 전까지만 추출
+                    end_marker = '\n### TIER '
+                    if end_marker in section:
+                        section = section[:section.index(end_marker)]
 
-            # COMMON RULES 추가
-            if '### COMMON RULES' in content:
-                common_start = content.index('### COMMON RULES')
-                common_section = content[common_start:]
-                tier_section += '\n\n' + common_section
+                    # COMMON RULES 제외 (마지막에 한번만 추가)
+                    if '### COMMON RULES' in section:
+                        section = section[:section.index('### COMMON RULES')]
 
-            return f'### TIER {tier_section.strip()}'
-        else:
+                    tier_sections.append(f'### TIER {section.strip()}')
+                    break
+
+        if not tier_sections:
             print(f"[경고] Tier {tier} 가이드라인을 찾을 수 없습니다.")
             return f"[Tier {tier} analysis guidelines not found]"
+
+        # 모든 Tier 섹션 결합
+        combined_guidelines = '\n\n---\n\n'.join(tier_sections)
+
+        # COMMON RULES 추가 (마지막에 한번만)
+        if '### COMMON RULES' in content:
+            common_start = content.index('### COMMON RULES')
+            common_section = content[common_start:]
+            combined_guidelines += '\n\n---\n\n' + common_section
+
+        return combined_guidelines
 
     except FileNotFoundError:
         print(f"[오류] 가이드라인 파일을 찾을 수 없습니다: {file_path}")
         return f"[Tier {tier} guidelines file not found]"
     except Exception as e:
         print(f"[오류] 가이드라인 로드 중 오류 발생: {e}")
+        import traceback
+        traceback.print_exc()
         return f"[Error loading Tier {tier} guidelines]"
 
 
@@ -297,6 +315,9 @@ def making_user_prompt(end_date, tier):
     Returns:
         str: 완성된 사용자 프롬프트
     """
+    # 날짜 타입 디버깅
+    print(f"[디버그] making_user_prompt: end_date={end_date}, type={type(end_date)}, tier={tier}")
+
     base_path = os.path.dirname(os.path.abspath(__file__))
     template_path = os.path.join(base_path, 'prompt_template', 'user_prompt_improved.txt')
 
@@ -308,7 +329,9 @@ def making_user_prompt(end_date, tier):
         data_blocks = []
 
         # Tier 1: 기술적 지표 (항상 포함)
+        print(f"[디버그] Calling making_tier1_INPUT with end_date={end_date}")
         tier1_data = making_tier1_INPUT(end_date)
+        print(f"[디버그] tier1_data length: {len(tier1_data) if tier1_data else 0}")
         tier1_json = json.dumps(tier1_data, indent=2, ensure_ascii=False)
         data_blocks.append(f"=== Technical Indicators (Tier 1) ===\n{tier1_json}")
 

@@ -128,4 +128,4 @@ Case C: High leverage (totdebt_invcap ↑) with stable profitability → assess 
 **Quality Checks**:
 - Avoid contradiction (same sector both Long and Short)
 - Ensure views are actionable (not too small, not too large)
-- Consider sector correlations (avoid redundant pairs like Energy Long + Materials Long vs same Short)
+- Consider sector correlations (avoid redundant pairs like Energy Long + Materials Long vs same Short) /
