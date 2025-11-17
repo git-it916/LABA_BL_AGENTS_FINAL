@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Energy",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": 0.025,
+            "reasoning": "Energy sector is oversold with low momentum and low trend strength, while Consumer Staples sector has strong momentum and profitability."
+        },
+        {
+            "sector_1": "Materials",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.015,
+            "reasoning": "Materials sector has strong momentum and profitability, while Health Care sector has weak momentum and profitability."
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.01,
+            "reasoning": "Industrials sector has strong momentum and profitability, while Real Estate sector has weak momentum and profitability."
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Financials",
+            "relative_return_view": 0.02,
+            "reasoning": "Communication Services sector has strong momentum and profitability, while Financials sector has weak momentum and profitability."
+        },
+        {
+            "sector_1": "Utilities",
+            "sector_2": "Information Technology",
+            "relative_return_view": -0.005,
+            "reasoning": "Utilities sector has strong momentum and profitability, while Information Technology sector has weak momentum and profitability."
+        }
+    ]
+]

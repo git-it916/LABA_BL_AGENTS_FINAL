@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Materials",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong trend strength and profitability in Industrials, while Materials has weak profitability and high leverage"
+        },
+        {
+            "sector_1": "Consumer Discretionary",
+            "sector_2": "Health Care",
+            "relative_return_view": -0.015,
+            "reasoning": "Consumer Discretionary has strong momentum and value orientation, while Health Care has weak profitability and high valuation"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Information Technology",
+            "relative_return_view": 0.02,
+            "reasoning": "Financials have strong profitability and value orientation, while Information Technology has weak profitability and high valuation"
+        },
+        {
+            "sector_1": "Utilities",
+            "sector_2": "Real Estate",
+            "relative_return_view": -0.01,
+            "reasoning": "Utilities have strong profitability and value orientation, while Real Estate has weak profitability and high valuation"
+        },
+        {
+            "sector_1": "Energy",
+            "sector_2": "Communication Services",
+            "relative_return_view": 0.005,
+            "reasoning": "Energy has strong momentum and value orientation, while Communication Services has weak profitability and high valuation"
+        }
+    ]
+]

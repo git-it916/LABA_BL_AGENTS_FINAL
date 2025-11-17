@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Energy",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong momentum in IT sector with high trend strength and low volatility, while Energy sector has weak momentum with low trend strength and high volatility"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Materials",
+            "relative_return_view": 0.018,
+            "reasoning": "Communication Services sector has strong momentum with high trend strength and low volatility, while Materials sector has weak momentum with low trend strength and high volatility"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": -0.015,
+            "reasoning": "Industrials sector has moderate momentum with moderate trend strength and moderate volatility, while Consumer Discretionary sector has weak momentum with low trend strength and high volatility"
+        },
+        {
+            "sector_1": "Health Care",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.012,
+            "reasoning": "Health Care sector has moderate momentum with moderate trend strength and moderate volatility, while Real Estate sector has weak momentum with low trend strength and high volatility"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Utilities",
+            "relative_return_view": -0.008,
+            "reasoning": "Financials sector has strong momentum with high trend strength and low volatility, while Utilities sector has weak momentum with low trend strength and high volatility"
+        }
+    ]
+]

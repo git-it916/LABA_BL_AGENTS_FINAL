@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Energy",
+            "sector_2": "Materials",
+            "relative_return_view": 0.025,
+            "reasoning": "Energy sector's strong momentum and value orientation (bm = 0.78) align with its technical indicators, while Materials sector's overbought condition and high CAPE ratio indicate potential weakness."
+        },
+        {
+            "sector_1": "Consumer Discretionary",
+            "sector_2": "Health Care",
+            "relative_return_view": -0.015,
+            "reasoning": "Consumer Discretionary sector's moderate momentum and value orientation (bm = 0.84) contrast with Health Care sector's weak momentum and high CAPE ratio, indicating potential outperformance of the former."
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Financials",
+            "relative_return_view": 0.02,
+            "reasoning": "Industrials sector's strong momentum and value orientation (bm = 0.76) align with its technical indicators, while Financials sector's high CAPE ratio and moderate momentum indicate potential weakness."
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.03,
+            "reasoning": "Information Technology sector's strong momentum and value orientation (bm = 0.57) align with its technical indicators, while Real Estate sector's weak momentum and high CAPE ratio indicate potential outperformance of the former."
+        },
+        {
+            "sector_1": "Utilities",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": -0.01,
+            "reasoning": "Utilities sector's moderate momentum and value orientation (bm = 0.82) contrast with Consumer Staples sector's weak momentum and high CAPE ratio, indicating potential outperformance of the former."
+        }
+    ]
+]
