@@ -1,0 +1,100 @@
+{
+    "simulation_name": "'찐1'",
+    "tier": 3,
+    "tau": 0.025,
+    "num_periods": 8,
+    "period_range": {
+        "start": "2024-04-30",
+        "end": "2024-11-30"
+    },
+    "average_performance": {
+        "mvo_mean_return": 0.02770655950176769,
+        "mvo_std_return": 0.03347468534566021,
+        "bl_mean_return": 0.02245632788503024,
+        "bl_std_return": 0.05467654246855653,
+        "mean_outperformance": -0.005250231616737447,
+        "win_rate": 50.0
+    },
+    "detailed_results": [
+        {
+            "forecast_date": "2024-04-30",
+            "backtest_period": {
+                "start": "2024-05-01",
+                "end": "2024-07-08"
+            },
+            "mvo_final_return": 0.07648631271820228,
+            "bl_final_return": 0.03211262620610067,
+            "outperformance": -0.04437368651210161
+        },
+        {
+            "forecast_date": "2024-05-31",
+            "backtest_period": {
+                "start": "2024-06-01",
+                "end": "2024-08-08"
+            },
+            "mvo_final_return": 0.05887820943623079,
+            "bl_final_return": 0.09832170771799653,
+            "outperformance": 0.03944349828176574
+        },
+        {
+            "forecast_date": "2024-06-30",
+            "backtest_period": {
+                "start": "2024-07-01",
+                "end": "2024-09-07"
+            },
+            "mvo_final_return": -0.01117345333875397,
+            "bl_final_return": -0.0120452063847718,
+            "outperformance": -0.0008717530460178313
+        },
+        {
+            "forecast_date": "2024-07-31",
+            "backtest_period": {
+                "start": "2024-08-01",
+                "end": "2024-10-08"
+            },
+            "mvo_final_return": 0.01051681141769567,
+            "bl_final_return": 0.02301558434148787,
+            "outperformance": 0.0124987729237922
+        },
+        {
+            "forecast_date": "2024-08-31",
+            "backtest_period": {
+                "start": "2024-09-01",
+                "end": "2024-11-08"
+            },
+            "mvo_final_return": 0.010597505175732325,
+            "bl_final_return": 0.016848397289415784,
+            "outperformance": 0.006250892113683459
+        },
+        {
+            "forecast_date": "2024-09-30",
+            "backtest_period": {
+                "start": "2024-10-01",
+                "end": "2024-12-08"
+            },
+            "mvo_final_return": 0.026849649694158817,
+            "bl_final_return": -0.00713796438172265,
+            "outperformance": -0.03398761407588147
+        },
+        {
+            "forecast_date": "2024-10-31",
+            "backtest_period": {
+                "start": "2024-11-01",
+                "end": "2025-01-08"
+            },
+            "mvo_final_return": 0.06655306169390318,
+            "bl_final_return": 0.10324905400998197,
+            "outperformance": 0.036695992316078785
+        },
+        {
+            "forecast_date": "2024-11-30",
+            "backtest_period": {
+                "start": "2024-12-01",
+                "end": "2025-02-07"
+            },
+            "mvo_final_return": -0.01705562078302758,
+            "bl_final_return": -0.07471357571824644,
+            "outperformance": -0.05765795493521886
+        }
+    ]
+}

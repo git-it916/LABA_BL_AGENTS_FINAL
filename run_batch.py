@@ -58,9 +58,9 @@ def get_batch_input():
         else:
             print("[오류] 1, 2, 3 중 하나를 입력하세요.")
 
-    # 시작 날짜
+    # 시작 날짜 (백테스트하려는 달)
     while True:
-        start_date = input("\n시작 날짜를 입력하세요 (YYYY-MM-DD 형식, 예: 2024-04-30): ").strip()
+        start_date = input("\n백테스트 시작 달을 입력하세요 (월말 날짜, 예: 2024-05-31 = 5월 백테스트): ").strip()
         validated_start = validate_date(start_date)
         if validated_start:
             start_date = validated_start + pd.offsets.MonthEnd(0)
@@ -68,23 +68,32 @@ def get_batch_input():
         else:
             print("[오류] 올바른 날짜 형식을 입력하세요 (YYYY-MM-DD).")
 
-    # 종료 날짜
+    # 종료 날짜 (백테스트하려는 마지막 달)
     while True:
-        end_date = input("\n종료 날짜를 입력하세요 (YYYY-MM-DD 형식, 예: 2024-11-30): ").strip()
+        end_date = input("\n백테스트 종료 달을 입력하세요 (월말 날짜, 예: 2024-11-30 = 11월까지 백테스트): ").strip()
         validated_end = validate_date(end_date)
         if validated_end:
             end_date = validated_end + pd.offsets.MonthEnd(0)
-            if end_date > start_date:
+            if end_date >= start_date:
                 break
             else:
-                print("[오류] 종료 날짜는 시작 날짜보다 나중이어야 합니다.")
+                print("[오류] 종료 날짜는 시작 날짜와 같거나 나중이어야 합니다.")
         else:
             print("[오류] 올바른 날짜 형식을 입력하세요 (YYYY-MM-DD).")
 
-    # 월말 날짜 생성
-    forecast_dates = generate_monthly_dates(start_date, end_date)
-    print(f"\n[알림] 총 {len(forecast_dates)}개 시점에 대해 백테스트를 수행합니다.")
-    print(f"예측 날짜 목록: {[d.date() for d in forecast_dates]}")
+    # 월말 날짜 생성 (백테스트하려는 달들)
+    forecast_dates_for_backtest = generate_monthly_dates(start_date, end_date)
+
+    # 학습에 사용할 날짜
+    # 주의: get_rolling_dates()가 내부적으로 1개월을 빼므로
+    # 백테스트 날짜를 그대로 전달하면 최종적으로 1개월 전 데이터로 학습됨
+    # 예: 6월 백테스트 입력 → 6월 30일 전달 → get_rolling_dates()에서 5월 31일로 변환
+    forecast_dates_for_learning = forecast_dates_for_backtest
+
+    print(f"\n[알림] 총 {len(forecast_dates_for_backtest)}개 시점에 대해 백테스트를 수행합니다.")
+    print(f"[알림] 백테스트 기간: {[d.strftime('%Y년 %m월') for d in forecast_dates_for_backtest]}")
+    print(f"[알림] scene()에 전달할 날짜: {[d.date() for d in forecast_dates_for_learning]}")
+    print(f"[알림] 실제 학습 종료일: get_rolling_dates()가 각 날짜에서 1개월 뺀 값 사용")
 
     # tau 값
     while True:
@@ -121,27 +130,29 @@ def get_batch_input():
     return {
         'simul_name': simul_name,
         'tier': tier,
-        'forecast_dates': forecast_dates,
+        'forecast_dates_for_backtest': forecast_dates_for_backtest,
+        'forecast_dates_for_learning': forecast_dates_for_learning,
         'tau': tau,
         'backtest_days': backtest_days
     }
 
 
-def run_batch_backtest(simul_name, tier, forecast_dates, tau, backtest_days=20):
+def run_batch_backtest(simul_name, tier, forecast_dates_for_backtest, forecast_dates_for_learning, tau, backtest_days=20):
     """다중 시점에 대한 배치 백테스트 실행"""
 
     print("\n" + "="*80)
     print("1단계: 모든 시점에 대한 LLM 뷰 생성 및 BL 최적화")
     print("="*80)
 
-    # 날짜 형식 변환
-    forecast_period_str = [d.strftime('%y-%m-%d') for d in forecast_dates]
+    # 날짜 형식 변환 (학습용 날짜 사용)
+    forecast_period_str = [d.strftime('%y-%m-%d') for d in forecast_dates_for_learning]
 
     try:
         # scene 함수 실행 (모든 날짜에 대해 한 번에)
         print(f"\n[실행] 시뮬레이션: {simul_name}, Tier: {tier}")
-        print(f"[실행] 기간: {forecast_dates[0].date()} ~ {forecast_dates[-1].date()}")
-        print(f"[실행] 총 {len(forecast_dates)}개 시점 처리 중...")
+        print(f"[실행] 백테스트 기간: {forecast_dates_for_backtest[0].strftime('%Y년 %m월')} ~ {forecast_dates_for_backtest[-1].strftime('%Y년 %m월')}")
+        print(f"[실행] 학습 기준일: {forecast_dates_for_learning[0].date()} ~ {forecast_dates_for_learning[-1].date()}")
+        print(f"[실행] 총 {len(forecast_dates_for_backtest)}개 시점 처리 중...")
 
         results = scene(
             simul_name=simul_name,
@@ -170,26 +181,29 @@ def run_batch_backtest(simul_name, tier, forecast_dates, tau, backtest_days=20):
     all_results = []
     mvo_returns_list = []
     bl_returns_list = []
-    hist_start = forecast_dates[0] - pd.DateOffset(years=4)  # 4년 전부터 학습
+    hist_start = forecast_dates_for_learning[0] - pd.DateOffset(years=10)  # 10년 전부터 학습 (BL과 동일)
 
-    for i, forecast_date in enumerate(tqdm(forecast_dates, desc="백테스트 진행")):
+    for i, backtest_date in enumerate(tqdm(forecast_dates_for_backtest, desc="백테스트 진행")):
         try:
+            # 해당 백테스트 시점의 학습 기준일
+            learning_date = forecast_dates_for_learning[i]
+
             # 거래일 기준 backtest_days를 확보하기 위해 충분한 캘린더 일수 계산
             calendar_days = int(backtest_days * 2.0) + 30
 
-            # 투자 시작일 (forecast_date 다음 날부터)
-            invest_start = forecast_date + timedelta(days=1)
+            # 투자 시작일 (backtest_date 다음 날부터)
+            invest_start = backtest_date + timedelta(days=1)
             invest_end = invest_start + timedelta(days=calendar_days)
 
-            # MVO 가중치 계산
-            # ✅ 중요: MVO도 forecast_date 시점의 가중치를 계산해야 BL과 비교 가능
+            # MVO 가중치 계산 (learning_date 시점에서)
+            # ✅ 중요: MVO도 learning_date 시점의 가중치를 계산해야 BL과 비교 가능
             mvo_weights_df = calculate_monthly_mvo_weights(
                 hist_start_date=hist_start.strftime('%Y-%m-%d'),
-                investment_start_date=forecast_date.strftime('%Y-%m-%d'),  # ✅ forecast_date로 시작
-                investment_end_date=forecast_date.strftime('%Y-%m-%d')     # ✅ forecast_date만 계산
+                investment_start_date=learning_date.strftime('%Y-%m-%d'),  # ✅ learning_date로 계산
+                investment_end_date=learning_date.strftime('%Y-%m-%d')     # ✅ learning_date만 계산
             )
 
-            # BL 가중치 로드 (전체 시뮬레이션에서 해당 forecast_date 추출)
+            # BL 가중치 로드 (learning_date 기준으로 생성된 가중치)
             bl_weights_df = open_log(simul_name=simul_name, Tier=tier)
 
             # 일별 수익률 데이터 로드
@@ -199,19 +213,19 @@ def run_batch_backtest(simul_name, tier, forecast_dates, tau, backtest_days=20):
             )
 
             if daily_returns is None or daily_returns.empty:
-                print(f"\n[경고] {forecast_date.date()}: 일별 수익률 데이터 없음")
+                print(f"\n[경고] {backtest_date.strftime('%Y년 %m월')}: 일별 수익률 데이터 없음")
                 continue
 
-            # 백테스트 수행 (forecast_date 기준)
+            # 백테스트 수행 (learning_date 기준 가중치로 backtest_date 이후 성과 측정)
             mvo_performance = calculate_performance(
-                mvo_weights_df, daily_returns, forecast_date, backtest_days=backtest_days
+                mvo_weights_df, daily_returns, learning_date, backtest_days=backtest_days
             )
             bl_performance = calculate_performance(
-                bl_weights_df, daily_returns, forecast_date, backtest_days=backtest_days
+                bl_weights_df, daily_returns, learning_date, backtest_days=backtest_days
             )
 
             if mvo_performance is None or bl_performance is None:
-                print(f"\n[경고] {forecast_date.date()}: 백테스트 계산 실패")
+                print(f"\n[경고] {backtest_date.strftime('%Y년 %m월')}: 백테스트 계산 실패")
                 continue
 
             # 최종 수익률 저장
@@ -223,7 +237,8 @@ def run_batch_backtest(simul_name, tier, forecast_dates, tau, backtest_days=20):
             bl_returns_list.append(bl_final)
 
             result = {
-                'forecast_date': forecast_date.strftime('%Y-%m-%d'),
+                'backtest_month': backtest_date.strftime('%Y년 %m월'),
+                'learning_date': learning_date.strftime('%Y-%m-%d'),
                 'backtest_period': {
                     'start': invest_start.strftime('%Y-%m-%d'),
                     'end': invest_end.strftime('%Y-%m-%d')
@@ -236,7 +251,7 @@ def run_batch_backtest(simul_name, tier, forecast_dates, tau, backtest_days=20):
             all_results.append(result)
 
         except Exception as e:
-            print(f"\n[경고] {forecast_date.date()}: 오류 발생 - {e}")
+            print(f"\n[경고] {backtest_date.strftime('%Y년 %m월')}: 오류 발생 - {e}")
             continue
 
     if len(all_results) == 0:
@@ -293,9 +308,13 @@ def run_batch_backtest(simul_name, tier, forecast_dates, tau, backtest_days=20):
         "tier": tier,
         "tau": tau,
         "num_periods": len(all_results),
-        "period_range": {
-            "start": forecast_dates[0].strftime('%Y-%m-%d'),
-            "end": forecast_dates[-1].strftime('%Y-%m-%d')
+        "backtest_period_range": {
+            "start": forecast_dates_for_backtest[0].strftime('%Y년 %m월'),
+            "end": forecast_dates_for_backtest[-1].strftime('%Y년 %m월')
+        },
+        "learning_period_range": {
+            "start": forecast_dates_for_learning[0].strftime('%Y-%m-%d'),
+            "end": forecast_dates_for_learning[-1].strftime('%Y-%m-%d')
         },
         "average_performance": {
             "mvo_mean_return": float(mvo_mean),
@@ -329,13 +348,14 @@ def main():
         print("="*80)
         print(f"시뮬레이션 이름: {params['simul_name']}")
         print(f"Tier: {params['tier']}")
-        print(f"기간: {params['forecast_dates'][0].date()} ~ {params['forecast_dates'][-1].date()}")
-        print(f"시점 개수: {len(params['forecast_dates'])}개")
+        print(f"백테스트 기간: {params['forecast_dates_for_backtest'][0].strftime('%Y년 %m월')} ~ {params['forecast_dates_for_backtest'][-1].strftime('%Y년 %m월')}")
+        print(f"학습 기준일: {params['forecast_dates_for_learning'][0].date()} ~ {params['forecast_dates_for_learning'][-1].date()}")
+        print(f"시점 개수: {len(params['forecast_dates_for_backtest'])}개")
         print(f"tau: {params['tau']}")
         print(f"백테스트 기간: {params['backtest_days']}일")
 
         # 예상 소요 시간 안내
-        estimated_time = len(params['forecast_dates']) * 2  # 시점당 약 2분 가정
+        estimated_time = len(params['forecast_dates_for_backtest']) * 2  # 시점당 약 2분 가정
         print(f"\n[알림] 예상 소요 시간: 약 {estimated_time}분")
         print(f"[알림] GPU가 필요합니다. CUDA가 사용 가능한지 확인하세요.")
 
@@ -348,7 +368,8 @@ def main():
         result = run_batch_backtest(
             simul_name=params['simul_name'],
             tier=params['tier'],
-            forecast_dates=params['forecast_dates'],
+            forecast_dates_for_backtest=params['forecast_dates_for_backtest'],
+            forecast_dates_for_learning=params['forecast_dates_for_learning'],
             tau=params['tau'],
             backtest_days=params['backtest_days']
         )

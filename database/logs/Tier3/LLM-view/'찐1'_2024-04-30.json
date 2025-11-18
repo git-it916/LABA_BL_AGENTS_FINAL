@@ -1,0 +1,34 @@
+[
+    [
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong momentum in Industrials (T1) and attractive valuation (T2) in Real Estate (T2)"
+        },
+        {
+            "sector_1": "Consumer Discretionary",
+            "sector_2": "Health Care",
+            "relative_return_view": -0.015,
+            "reasoning": "Weak momentum in Health Care (T1) and high valuation (T2) in Consumer Discretionary (T2)"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Materials",
+            "relative_return_view": 0.035,
+            "reasoning": "Strong momentum in Information Technology (T1) and improving profitability (T2) in Materials (T2)"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": -0.02,
+            "reasoning": "Weak momentum in Consumer Staples (T1) and high valuation (T2) in Financials (T2)"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.01,
+            "reasoning": "Moderate momentum in Communication Services (T1) and stable fundamentals in Utilities (T2)"
+        }
+    ]
+]
