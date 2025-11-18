@@ -78,36 +78,38 @@ Case C: High leverage (totdebt_invcap ↑) with stable profitability → assess 
 ---
 
 ### TIER 3 GUIDELINES (Full Integration: Technical + Accounting + Macro)
-
-**Additional Data** (when available):
+Additional Data (when available):
 - Interest rate trend (Rising/Falling/Stable)
 - Inflation trend (Rising/Falling/Stable)
 - GDP growth trend
 - Credit spread trends
-- Sector-specific macro drivers
 
-**Macro Overlay Strategy** (final filter on Tier 2 views):
-1. **Macro Tailwinds** (strengthen conviction):
-   - Rising rates + Long Financials → Banks benefit from higher NIM
-   - Rising inflation + Long Energy/Materials → Pricing power
-   - Falling rates + Long Real Estate/Utilities → Lower cost of capital
-   - Strong GDP + Long Industrials/Discretionary → Economic sensitivity
+**Sector-specific macro drivers
+- Macro Overlay Strategy (final filter on Tier 2 views):
+- Macro Tailwinds (strengthen conviction):
+- Rising rates + Long Financials → Banks benefit from higher NIM
+- Rising rates + Long Value (High T2 bm) → Tailwind for Value factor, headwind for Growth (T1)
+- Rising inflation + Long Energy/Materials → Pricing power (T2 npm)
+- Falling rates + Long Real Estate/Utilities → Lower cost of capital (T2 totdebt_invcap risk reduced)
+- Strong GDP + Long Industrials/Discretionary → Economic sensitivity (supports T1 Momentum & T2 ROE)
 
-2. **Macro Headwinds** (weaken or flip views):
-   - Rising rates + Long Real Estate → REMOVE or flip to Short
-   - Rising inflation + Long Consumer Staples → Margin compression
-   - Recession risk + Long Discretionary → Reduce exposure
+**Macro Headwinds (weaken or flip views):
+- Rising rates + Long Real Estate/Utilities → Increases risk for high Leverage (T2 totdebt_invcap)
+- Rising rates + Long Growth/Momentum → Valuation pressure (T1 Momentum)
+- Rising inflation + Long Consumer Staples → Margin compression (T2 npm)
+- Recession risk (GDP↓) + Long Discretionary → Reduce exposure (T1 Momentum & T2 ROE at risk)
+- Widening Credit Spreads + Long Momentum → Risk-off; favors Quality (High T2 ROE) & Low Vol (T1 volatility)
 
-3. **Macro Veto Power**:
-   - If macro environment directly contradicts Tier 2 view, macro wins
-   - Example: Strong Energy momentum + Low oil price forecast → Downgrade Long Energy
+**Macro Veto Power:
+If macro environment directly contradicts Tier 2 view, macro wins.
+Example: Strong Energy momentum (T1) + high profitability (T2), but "OPEC+ output hike" (Macro) forecast → Downgrade or REMOVE Long Energy.
 
-4. Macro-Integrated View: Combine returns, accounting, and macro indicators.
-   - Momentum↑ + Value↑ + Profitability↑ + Macro↑ → Strong Long
-   - Momentum↓ + Value↓ + Profitability↓ + Macro↓ → Strong Short
-   - Momentum↑ + Profitability↑ + Macro↓ → Cyclical Overheat / Reduce Long Exposure
-   - Momentum↓ + Profitability↓ + Macro↑ → Early Recovery / Watch for Rebound
-   - Value↑ + Macro↑ + Momentum↓ → Contrarian Long
+**Macro-Integrated View (Conceptual Combinations):
+- Momentum↑ (T1) + Profitability↑ (T2) + Macro↑ → Strong Long
+- Momentum↓ (T1) + Profitability↓ (T2) + Macro↓ → Strong Short
+- Momentum↑ (T1) + Profitability↑ (T2) + Macro↓ → Cyclical Overheat / Consider reducing exposure
+- Momentum↓ (T1) + Profitability↓ (T2) + Macro↑ → Early Recovery / Watch for Rebound
+- Value↑ (T2) + Macro↑ + Momentum↓ (T1) → Contrarian Long Opportunity
 
 **Final Calibration**:
 - Review all 5 pairs for macro consistency
