@@ -19,7 +19,7 @@ from tqdm import tqdm
 
 # 프로젝트 모듈 임포트
 from aiportfolio.scene import scene
-from aiportfolio.backtest.data_prepare import calculate_monthly_mvo_weights, open_log
+from aiportfolio.backtest.data_prepare import calculate_monthly_mvo_weights, open_BL_MVO_log
 from aiportfolio.backtest.final_Ret import load_daily_returns, calculate_performance
 
 
@@ -205,7 +205,7 @@ def run_batch_backtest(simul_name, tier, forecast_dates_for_backtest, forecast_d
             )
 
             # BL 가중치 로드 (learning_date 기준으로 생성된 가중치)
-            bl_weights_df = open_log(simul_name=simul_name, Tier=tier)
+            bl_weights_df = open_BL_MVO_log(simul_name=simul_name, Tier=tier)
 
             # 일별 수익률 데이터 로드
             daily_returns = load_daily_returns(

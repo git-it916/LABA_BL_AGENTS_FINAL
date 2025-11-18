@@ -136,7 +136,22 @@ def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
         print(f"원본 텍스트 (뒤 500자):\n...{generated_text[-500:]}\n")
         raise RuntimeError(f"LLM JSON 파싱 실패: {e}")
 
-    # 5. 파싱된 데이터를 저장 (문자열이 아닌 객체로 저장)
+    # 5. end_date를 각 뷰에 추가 (시점 구분을 위함)
+    import pandas as pd
+
+    # end_date를 문자열로 변환
+    if isinstance(end_date, str):
+        end_date_str = end_date
+    else:
+        end_date_str = pd.to_datetime(end_date).strftime('%Y-%m-%d')
+
+    # 각 뷰에 end_date 추가
+    for view in views_data:
+        view['end_date'] = end_date_str
+
+    print(f"[알림] 모든 뷰에 end_date '{end_date_str}' 추가 완료")
+
+    # 6. 파싱된 데이터를 저장 (문자열이 아닌 객체로 저장)
     save_view_as_json(views_data, simul_name, Tier, end_date)
 
     return views_data

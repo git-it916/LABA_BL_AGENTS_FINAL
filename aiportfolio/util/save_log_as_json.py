@@ -67,15 +67,7 @@ def save_view_as_json(results, simul_name, Tier, end_date):
 
     # 5. 최종 저장 경로 설정
     save_dir = os.path.join(target_dir, 'LLM-view')
-
-    # 6. 파일명 설정
-    # datetime 객체를 Windows 파일명에 안전한 형식으로 변환
-    if isinstance(end_date, str):
-        end_date_str = end_date
-    else:
-        end_date_str = end_date.strftime('%Y-%m-%d')
-
-    filename = f'{simul_name}_{end_date_str}.json'
+    filename = f'{simul_name}.json'
     filepath = os.path.join(save_dir, filename)
 
     try:

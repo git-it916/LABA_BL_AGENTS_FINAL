@@ -47,8 +47,8 @@ def map_gics_sector_to_code(sector_list):
 # ---------------------------------
 
 
-# --- `open_log` 함수 (BL 가중치 로드용) ---
-def open_log(simul_name='test1', Tier=1):
+# --- `open_BL_MVO_log` 함수 (BL 가중치 로드용) ---
+def open_BL_MVO_log(simul_name, Tier):
     """
     로그 디렉토리에서 BL_MVO.json 파일을 찾아,
     모든 월의 데이터를 포함하는 long-format DataFrame으로 반환합니다.
@@ -267,7 +267,7 @@ if __name__ == "__main__":
     # 시뮬레이션 이름과 Tier를 지정하세요
     SIMUL_NAME = 'test1'  # 실제 시뮬레이션 이름
     TIER = 1              # 실제 Tier (1, 2, 3)
-    bl_weights_df = open_log(simul_name=SIMUL_NAME, Tier=TIER)
+    bl_weights_df = open_BL_MVO_log(simul_name=SIMUL_NAME, Tier=TIER)
 
     # 4. Market Portfolio 가중치 결과 확인 (신규)
     if market_weights_df is not None:

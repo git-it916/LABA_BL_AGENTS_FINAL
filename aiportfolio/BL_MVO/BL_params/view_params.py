@@ -3,7 +3,7 @@ import pandas as pd
 
 from aiportfolio.agents.Llama_config_수정중 import prepare_pipeline_obj
 from aiportfolio.agents.Llama_view_generator import generate_sector_views
-from aiportfolio.agents.converting_viewtomatrix import open_file, create_Q_vector, create_P_matrix
+from aiportfolio.agents.converting_viewtomatrix import open_view_log, create_Q_vector, create_P_matrix
 
 def get_view_params(sigma, tau, end_date, simul_name, Tier):
     """
@@ -35,7 +35,7 @@ def get_view_params(sigma, tau, end_date, simul_name, Tier):
     # LLM으로 뷰 생성
     pipeline_to_use = prepare_pipeline_obj()
     generate_sector_views(pipeline_to_use, end_date, simul_name, Tier)
-    views_data = open_file(simul_name=simul_name, Tier=Tier, end_date=end_date)
+    views_data = open_view_log(simul_name=simul_name, Tier=Tier, end_date=end_date)
 
     if views_data is None:
         raise ValueError(f"Failed to load views data for end_date={end_date}")

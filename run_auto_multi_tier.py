@@ -6,17 +6,14 @@ Tier 1, 2, 3을 각각 지정된 횟수만큼 자동으로 반복 실행합니�
 """
 
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from aiportfolio.scene import scene
-from aiportfolio.backtest.data_prepare import open_log
-from aiportfolio.backtest.preprocessing import get_daily_returns
-from aiportfolio.backtest.final_Ret import calculate_performance
-from aiportfolio.BL_MVO.prepare.preprocessing import get_sector_return
-from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
-from aiportfolio.BL_MVO.MVO_opt import MVO_Optimizer
+from aiportfolio.backtest.data_prepare import calculate_monthly_mvo_weights, open_BL_MVO_log
+from aiportfolio.backtest.final_Ret import load_daily_returns, calculate_performance
 import numpy as np
 import json
 from pathlib import Path
+from tqdm import tqdm
 
 
 def get_user_input():
@@ -183,15 +180,11 @@ def run_single_tier_iteration(tier, simul_name, tau, forecast_period, backtest_d
     print(f"\n[2/3] 백테스트 데이터 준비 중...")
     try:
         # BL 가중치 로드
-        bl_weights_df = open_log(simul_name=simul_name, Tier=tier)
+        bl_weights_df = open_BL_MVO_log(simul_name=simul_name, Tier=tier)
         print(f"✓ BL 가중치 로드 완료: {len(bl_weights_df)}개 레코드")
 
-        # 일별 수익률 데이터 로드
-        daily_returns = get_daily_returns()
-        print(f"✓ 일별 수익률 데이터 로드 완료: {len(daily_returns)}개 날짜")
-
     except Exception as e:
-        print(f"✗ 백테스트 데이터 준비 실패: {e}")
+        print(f"✗ BL 가중치 로드 실패: {e}")
         import traceback
         traceback.print_exc()
         return None
@@ -199,29 +192,50 @@ def run_single_tier_iteration(tier, simul_name, tau, forecast_period, backtest_d
     # 백테스트 실행
     print(f"\n[3/3] 백테스트 실행 중...")
     all_results = []
+    hist_start = forecast_dates[0] - pd.DateOffset(years=10)  # 10년 전부터 학습
 
     for idx, forecast_date in enumerate(forecast_dates, 1):
         print(f"\n  [{idx}/{len(forecast_dates)}] {forecast_date.date()} 백테스트 중...")
 
         try:
-            # MVO 가중치 계산 (학습 기간: 36개월)
-            hist_start = forecast_date - pd.DateOffset(months=36)
+            # get_rolling_dates()를 통해 계산된 learning_date (1개월 전)
+            learning_date = (forecast_date - pd.DateOffset(months=1)).to_period('M').to_timestamp('M')
 
-            # MVO 가중치 계산 (forecast_date 시점)
-            from aiportfolio.backtest.data_prepare import calculate_monthly_mvo_weights
+            # 거래일 기준 backtest_days를 확보하기 위해 충분한 캘린더 일수 계산
+            calendar_days = int(backtest_days * 2.0) + 30
+
+            # 투자 시작일: learning_date 다음 달 1일
+            invest_start = (learning_date + pd.DateOffset(months=1)).replace(day=1)
+            invest_end = invest_start + timedelta(days=calendar_days)
+
+            # MVO 가중치 계산 (learning_date 시점에서)
             mvo_weights_df = calculate_monthly_mvo_weights(
                 hist_start_date=hist_start.strftime('%Y-%m-%d'),
-                investment_start_date=forecast_date.strftime('%Y-%m-%d'),
-                investment_end_date=forecast_date.strftime('%Y-%m-%d')
+                investment_start_date=learning_date.strftime('%Y-%m-%d'),
+                investment_end_date=learning_date.strftime('%Y-%m-%d')
             )
+
+            # 일별 수익률 데이터 로드
+            daily_returns = load_daily_returns(
+                invest_start.strftime('%Y-%m-%d'),
+                invest_end.strftime('%Y-%m-%d')
+            )
+
+            if daily_returns is None or daily_returns.empty:
+                print(f"    ✗ 일별 수익률 데이터 없음")
+                raise ValueError("일별 수익률 데이터를 로드할 수 없습니다")
 
             # 백테스트 수행
             mvo_perf = calculate_performance(
-                mvo_weights_df, daily_returns, forecast_date, backtest_days
+                mvo_weights_df, daily_returns, learning_date, backtest_days
             )
             bl_perf = calculate_performance(
-                bl_weights_df, daily_returns, forecast_date, backtest_days
+                bl_weights_df, daily_returns, learning_date, backtest_days
             )
+
+            if mvo_perf is None or bl_perf is None:
+                print(f"    ✗ 백테스트 계산 실패")
+                raise ValueError("백테스트 성과 계산 실패")
 
             # 최종 수익률 추출
             mvo_final_return = mvo_perf.iloc[-1] if len(mvo_perf) > 0 else 0.0
@@ -230,11 +244,14 @@ def run_single_tier_iteration(tier, simul_name, tau, forecast_period, backtest_d
 
             all_results.append({
                 'forecast_date': forecast_date.strftime('%Y-%m-%d'),
+                'learning_date': learning_date.strftime('%Y-%m-%d'),
+                'invest_start': invest_start.strftime('%Y-%m-%d'),
                 'mvo_final_return': float(mvo_final_return),
                 'bl_final_return': float(bl_final_return),
                 'outperformance': float(outperformance)
             })
 
+            print(f"    학습: {learning_date.date()} | 투자: {invest_start.date()}")
             print(f"    MVO: {mvo_final_return*100:+.2f}% | BL: {bl_final_return*100:+.2f}% | 초과: {outperformance*100:+.2f}%")
 
         except Exception as e:

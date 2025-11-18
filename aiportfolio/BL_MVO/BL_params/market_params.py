@@ -237,8 +237,3 @@ class Market_Params:
         pi = lambda_mkt * sigma[0].values @ w_mkt[0]
 
         return pi
-    
-# python -m aiportfolio.BL_MVO.BL_params.market_params
-a = Market_Params('2014-05-31', '2024-04-30')
-print(a.df.info())
-print(a.df.head(20))

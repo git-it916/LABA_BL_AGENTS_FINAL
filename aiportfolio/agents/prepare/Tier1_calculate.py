@@ -11,9 +11,9 @@ warnings.filterwarnings("ignore")
 
 try:
     from aiportfolio.BL_MVO.prepare.sector_excess_return import final
-    print("[성공] preprocessing_수정중 모듈을 정상적으로 임포트했습니다.")
+    print("[성공] sector_excess_return 모듈을 정상적으로 임포트했습니다.")
 except ImportError as e:
-    print(f"[오류] aiportfolio.BL_MVO.prepare.preprocessing_수정중 임포트 실패: {e}")
+    print(f"[오류] aiportfolio.BL_MVO.prepare.sector_excess_return 임포트 실패: {e}")
     print("[오류] 파일명을 확인하거나 'preprocessing.py'로 변경하세요.")
     print("[오류] 프로덕션 환경에서는 실제 데이터 모듈이 필요합니다.")
 
