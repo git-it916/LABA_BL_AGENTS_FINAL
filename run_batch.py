@@ -191,8 +191,9 @@ def run_batch_backtest(simul_name, tier, forecast_dates_for_backtest, forecast_d
             # 거래일 기준 backtest_days를 확보하기 위해 충분한 캘린더 일수 계산
             calendar_days = int(backtest_days * 2.0) + 30
 
-            # 투자 시작일 (backtest_date 다음 날부터)
-            invest_start = backtest_date + timedelta(days=1)
+            # ✅ 투자 시작일: learning_date 다음 달 1일
+            # 예: learning_date = 2024-04-30 → invest_start = 2024-05-01
+            invest_start = (learning_date + pd.DateOffset(months=1)).replace(day=1)
             invest_end = invest_start + timedelta(days=calendar_days)
 
             # MVO 가중치 계산 (learning_date 시점에서)
@@ -293,10 +294,10 @@ def run_batch_backtest(simul_name, tier, forecast_dates_for_backtest, forecast_d
     print(f"\n{'='*80}")
     print(f"시점별 상세 결과")
     print(f"{'='*80}")
-    print(f"{'예측 날짜':<12} {'MVO 수익률':<12} {'BL 수익률':<12} {'초과 수익률':<12}")
+    print(f"{'백테스트 월':<15} {'학습 날짜':<15} {'MVO 수익률':<12} {'BL 수익률':<12} {'초과 수익률':<12}")
     print(f"{'-'*80}")
     for r in all_results:
-        print(f"{r['forecast_date']:<12} {r['mvo_final_return']*100:>11.2f}% "
+        print(f"{r['backtest_month']:<15} {r['learning_date']:<15} {r['mvo_final_return']*100:>11.2f}% "
               f"{r['bl_final_return']*100:>11.2f}% {r['outperformance']*100:>11.2f}%")
 
     # 결과 저장

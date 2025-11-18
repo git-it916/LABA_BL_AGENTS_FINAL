@@ -7,7 +7,7 @@
 - daily_GICS.py: GICS 섹터 매칭
 - open_DTB3.py: 무위험 수익률 데이터 로드
 
-입력: database/raw_data.csv
+입력: database/raw_data.csv (또는 --raw-data-path로 지정된 외부 경로)
 출력: database/final_stock_daily.parquet
 모든 처리는 메모리에서 수행 (중간 파일 저장 없음)
 """
@@ -21,11 +21,14 @@ import sys
 class RawToParquetPipeline:
     """raw_data.csv를 final_stock_daily.parquet로 변환하는 통합 파이프라인"""
 
-    def __init__(self, base_path=None):
+    # === [수정됨] __init__ 메서드 ===
+    def __init__(self, base_path=None, raw_data_path=None):
         """
         Args:
             base_path (str or Path, optional): 프로젝트 루트 경로
                 None이면 현재 작업 디렉토리 사용
+            raw_data_path (str or Path, optional): raw_data.csv의 '외부' 로컬 경로
+                None이면 기본값 ('database/raw_data.csv') 사용
         """
         if base_path is None:
             self.base_path = Path.cwd()
@@ -34,19 +37,32 @@ class RawToParquetPipeline:
 
         self.database_path = self.base_path / "database"
 
-        # 입력 파일 경로
-        self.raw_data_path = self.database_path / "raw_data.csv"
+        # --- 입력 파일 경로 ---
+
+        # 1. raw_data_path 설정 로직 (수정된 부분)
+        if raw_data_path is not None:
+            # 인수가 제공되면 해당 경로를 Path 객체로 사용
+            self.raw_data_path = Path(raw_data_path)
+            print(f"Info: 외부 raw_data.csv 경로 사용: {self.raw_data_path}")
+        else:
+            # 인수가 없으면 (None이면) 기존 기본값 사용
+            self.raw_data_path = self.database_path / "raw_data.csv"
+            print(f"Info: 기본 raw_data.csv 경로 사용: {self.raw_data_path}")
+
+        # 2. 나머지 파일은 그대로 database_path 기준
         self.sp500_periods_path = self.database_path / "sp500_ticker_start_end.csv"
         self.gics_mapping_path = self.database_path / "ticker_GICS.csv"
 
-        # 출력 파일 경로
+        # --- 출력 파일 경로 (기존과 동일) ---
         self.output_parquet = self.database_path / "final_stock_daily.parquet"
         self.mcap_daily_csv = self.database_path / "mcap_by_exchange_daily.csv"
 
-        # 데이터프레임 (메모리)
+        # --- 데이터프레임 (기존과 동일) ---
         self.df = None
         self.df_sp500 = None
         self.df_gics = None
+    
+    # ==================================
 
     def validate_input_files(self):
         """필수 입력 파일 존재 여부 확인"""
@@ -151,9 +167,9 @@ class RawToParquetPipeline:
         # 합계 및 비율
         pivot["total_mcap"] = pivot["mcap_N"] + pivot["mcap_Q"]
         pivot["ratio_N"] = np.where(pivot["total_mcap"] > 0,
-                                     pivot["mcap_N"] / pivot["total_mcap"], 0.0)
+                                    pivot["mcap_N"] / pivot["total_mcap"], 0.0)
         pivot["ratio_Q"] = np.where(pivot["total_mcap"] > 0,
-                                     pivot["mcap_Q"] / pivot["total_mcap"], 0.0)
+                                    pivot["mcap_Q"] / pivot["total_mcap"], 0.0)
 
         # 저장
         pivot.reset_index().to_csv(self.mcap_daily_csv, index=False, encoding="utf-8-sig")
@@ -462,6 +478,7 @@ class RawToParquetPipeline:
             sys.exit(1)
 
 
+# === [수정됨] main 함수 ===
 def main():
     """메인 실행 함수"""
     import argparse
@@ -476,10 +493,22 @@ def main():
         help="프로젝트 루트 경로 (기본값: 현재 작업 디렉토리)"
     )
 
+    # --- 새로 추가된 인자 ---
+    parser.add_argument(
+        '--raw-data-path',
+        type=str,
+        default=None,
+        help="대용량 raw_data.csv 파일의 '로컬 PC 절대 경로'를 지정합니다. (예: C:/data/raw_data.csv)"
+    )
+    # ----------------------
+
     args = parser.parse_args()
 
-    # 파이프라인 실행
-    pipeline = RawToParquetPipeline(base_path=args.base_path)
+    # 파이프라인 실행 (수정된 부분)
+    pipeline = RawToParquetPipeline(
+        base_path=args.base_path,
+        raw_data_path=args.raw_data_path  # 새로 추가된 인자 전달
+    )
     pipeline.run()
 
 

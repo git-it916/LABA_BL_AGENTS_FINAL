@@ -9,7 +9,7 @@ import warnings
 # 불필요한 경고 메시지를 무시합니다.
 warnings.filterwarnings("ignore")
 
-from aiportfolio.BL_MVO.prepare.preprocessing_수정중 import final
+from aiportfolio.BL_MVO.prepare.sector_excess_return import final
 
 # --- 헬퍼 함수: R-squared 계산기(추세 강도) ---
 def calculate_r_squared(series: pd.Series) -> float:
