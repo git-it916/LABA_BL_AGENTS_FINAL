@@ -10,7 +10,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 try:
-    from aiportfolio.BL_MVO.prepare.preprocessing_수정중 import final
+    from aiportfolio.BL_MVO.prepare.sector_excess_return import final
     print("[성공] preprocessing_수정중 모듈을 정상적으로 임포트했습니다.")
 except ImportError as e:
     print(f"[오류] aiportfolio.BL_MVO.prepare.preprocessing_수정중 임포트 실패: {e}")
