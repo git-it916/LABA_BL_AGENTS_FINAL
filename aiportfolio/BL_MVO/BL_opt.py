@@ -35,6 +35,7 @@ def get_bl_outputs(tau, start_date, end_date, simul_name=None, Tier=None):
     market_params = Market_Params(start_date, end_date)
     Pi = market_params.making_pi()      # Equilibrium excess returns (π)
     sigma = market_params.making_sigma()  # Covariance matrix (Σ)
+    sigma_for_optimize = market_params.making_sigma_for_optimize()
 
     P, Q, Omega = get_view_params(sigma[0], tau, end_date, simul_name, Tier)
 
@@ -77,4 +78,4 @@ def get_bl_outputs(tau, start_date, end_date, simul_name=None, Tier=None):
     print('\nμ_BL (Posterior Expected Returns)')
     print(mu_BL)
 
-    return mu_BL.reshape(-1, 1), Sigma_BL_df, sectors
+    return mu_BL.reshape(-1, 1), Sigma_BL_df, sectors, sigma_for_optimize
