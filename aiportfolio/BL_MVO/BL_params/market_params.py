@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from aiportfolio.BL_MVO.prepare.preprocessing_수정중 import final
+from aiportfolio.BL_MVO.prepare.sector_excess_return import final
 
 # N: 자산 개수 (11 GICS sectors)
 # K: 견해 개수
