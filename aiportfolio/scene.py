@@ -46,7 +46,7 @@ def scene(simul_name, Tier, tau, forecast_period):
         BL = get_bl_outputs(tau, start_date=start_date, end_date=end_date, simul_name=simul_name, Tier=Tier)
 
         # MVO 실행
-        mvo = MVO_Optimizer(mu=BL[0], sigma=BL[1], sectors=BL[2])
+        mvo = MVO_Optimizer(mu=BL[0], sigma=BL[3], sectors=BL[2])
         w_tan = mvo.optimize_tangency_1()[0]
 
         # w_tan을 1차원 배열로 변환

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from aiportfolio.BL_MVO.prepare.preprocessing_수정중 import final
+from aiportfolio.BL_MVO.prepare.sector_excess_return import final
 
 # N: 자산 개수 (11 GICS sectors)
 # K: 견해 개수
@@ -97,6 +97,30 @@ class Market_Params:
             )
 
         return sigma, sectors
+    
+    def making_sigma_for_optimize(self):
+        '''
+        샤프 최적화 시의 샤프비율 분모용 공분산
+        '''
+        filtered_df = self.df[(self.df['date'] >= self.start_date) & (self.df['date'] <= self.end_date)].copy()
+        pivot_filtered_df = filtered_df.pivot_table(index='date', columns='gsector', values='sector_return')
+        sigma_for_optimize = pivot_filtered_df.cov()
+        sectors = sigma_for_optimize.columns.tolist()
+
+        # 공분산 행렬의 인덱스가 정해진 순서와 일치하지 않는다면 에러 발생
+        expected_index = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+        if not isinstance(sigma_for_optimize, pd.DataFrame):
+            raise TypeError("sigma[0] must be a pandas DataFrame (covariance matrix)")
+
+        if list(sigma_for_optimize.index) != expected_index or list(sigma_for_optimize.columns) != expected_index:
+            raise ValueError(
+                f"Covariance matrix index/columns mismatch.\n"
+                f"Expected: {expected_index}\n"
+                f"Got index: {list(sigma_for_optimize.index)}\n"
+                f"Got columns: {list(sigma_for_optimize.columns)}"
+            )
+
+        return sigma_for_optimize, sectors
 
     def making_w_mkt(self, sigma_sectors):
         """
@@ -213,3 +237,8 @@ class Market_Params:
         pi = lambda_mkt * sigma[0].values @ w_mkt[0]
 
         return pi
+    
+# python -m aiportfolio.BL_MVO.BL_params.market_params
+a = Market_Params('2014-05-31', '2024-04-30')
+print(a.df.info())
+print(a.df.head(20))
