@@ -59,15 +59,8 @@ def get_bl_outputs(tau, start_date, end_date, simul_name=None, Tier=None):
     # Calculate posterior expected returns (μ_BL)
     mu_BL = np.linalg.inv(term_A) @ term_B
 
-    # Calculate posterior covariance matrix (Σ_BL)
-    # 이론적으로 정확한 사후 공분산 행렬
-    Sigma_BL = np.linalg.inv(term_A)
-
     # --- Return the outputs for the MVO script ---
     sectors = sigma[1]
-
-    # Sigma_BL을 DataFrame으로 변환 (인덱스 유지)
-    Sigma_BL_df = pd.DataFrame(Sigma_BL, index=sigma[0].index, columns=sigma[0].columns)
 
     print('P (Picking Matrix)')
     print(P)
@@ -78,4 +71,4 @@ def get_bl_outputs(tau, start_date, end_date, simul_name=None, Tier=None):
     print('\nμ_BL (Posterior Expected Returns)')
     print(mu_BL)
 
-    return mu_BL.reshape(-1, 1), Sigma_BL_df, sectors, sigma_for_optimize
+    return mu_BL.reshape(-1, 1), sigma_for_optimize[0], sectors

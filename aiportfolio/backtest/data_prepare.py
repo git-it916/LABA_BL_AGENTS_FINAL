@@ -87,7 +87,7 @@ def open_BL_MVO_log(simul_name, Tier):
                 numeric_sectors = map_gics_sector_to_code(sectors_english)
             except KeyError as e:
                 # 맵핑 실패 시 오류 출력 후 해당 레코드를 건너뜀
-                print(f"  !오류! {forecast_date.date()} BL 로그 GICS 맵핑 실패: {e}")
+                print(f"  !오류! open_BL_MVO_log에서 {forecast_date.date()} BL 로그 GICS 맵핑 실패: {e}")
                 continue # 이 record 처리를 건너뛰고 다음 record로 이동
             # --------------------
 
@@ -101,13 +101,13 @@ def open_BL_MVO_log(simul_name, Tier):
                 })
                 
         if not all_data: 
-            print("오류: JSON 파일 내용은 있으나 처리된 데이터가 없습니다.")
+            print("오류: open_BL_MVO_log에서 JSON 파일 내용은 있으나 처리된 데이터가 없습니다.")
             return None
             
         return pd.DataFrame(all_data)
         
     except Exception as e:
-        print(f"open_log 처리 중 오류 발생: {e}")
+        print(f"open_BL_MVO_log 처리 중 오류 발생: {e}")
         return None
 
 # --- MVO 월별 가중치 계산 함수 (맵핑 로직 제거) ---

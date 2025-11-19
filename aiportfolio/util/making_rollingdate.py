@@ -38,3 +38,20 @@ def get_rolling_dates(forecast_date):
             continue
 
     return rolling_dates
+
+def get_backtest_dates(forecast_date):
+    """
+    forecast_date를 받아서 해당 월의 월초(1일)를 반환합니다.
+    """
+    try:
+        dates = pd.to_datetime(forecast_date)
+    except Exception as e:
+        print(f"get_backtest_dates에서 날짜 변환 오류 발생: {e}")
+        raise
+
+    if isinstance(dates, pd.Series):
+        month_start_dates = dates.dt.to_period('M').dt.start_time
+        return month_start_dates.to_list()
+    else:
+        month_start_date = dates.replace(day=1)
+        return month_start_date

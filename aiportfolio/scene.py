@@ -3,24 +3,14 @@ import os
 from .BL_MVO.BL_opt import get_bl_outputs
 from .BL_MVO.MVO_opt import MVO_Optimizer
 from .util.making_rollingdate import get_rolling_dates
-from .util.sector_mapping import map_gics_sector
-from .util.save_log_as_json import save_BL_as_json
+from .util.sector_mapping import map_code_to_gics_sector
+from .util.save_log_as_json import save_BL_as_json, save_performance_as_json
+from aiportfolio.backtest.calculating_performance import backtest
 
-def scene(simul_name, Tier, tau, forecast_period):
+def scene(simul_name, Tier, tau, forecast_period, backtest_days_count):
     """
     전체 시뮬레이션 실행 함수
-
-    Args:
-        simul_name (str): 시뮬레이션 이름
-        Tier (int): 분석 단계 (1, 2, 3)
-        tau (float): Black-Litterman 불확실성 계수
-        forecast_period (list): 예측 기간 리스트 (예: ["24-05-31", "24-06-30", ...])
-
-    Returns:
-        list: 각 기간별 BL-MVO 결과
     """
-    forecast_date = get_rolling_dates(forecast_period)
-
     # 결과를 저장할 디렉토리 생성
     base_dir = os.path.join("database", "logs")
     os.makedirs(base_dir, exist_ok=True)
@@ -32,6 +22,9 @@ def scene(simul_name, Tier, tau, forecast_period):
         for subdir in subdirs:
             sub_path = os.path.join(path, subdir)
             os.makedirs(sub_path, exist_ok=True)
+
+    # 학습기간 설정        
+    forecast_date = get_rolling_dates(forecast_period)
 
     results = []
 
@@ -46,7 +39,7 @@ def scene(simul_name, Tier, tau, forecast_period):
         BL = get_bl_outputs(tau, start_date=start_date, end_date=end_date, simul_name=simul_name, Tier=Tier)
 
         # MVO 실행
-        mvo = MVO_Optimizer(mu=BL[0], sigma=BL[3], sectors=BL[2])
+        mvo = MVO_Optimizer(mu=BL[0], sigma=BL[1], sectors=BL[2])
         w_tan = mvo.optimize_tangency_1()[0]
 
         # w_tan을 1차원 배열로 변환
@@ -56,10 +49,20 @@ def scene(simul_name, Tier, tau, forecast_period):
         scenario_result = {
             "forecast_date": period['forecast_date'],
             "w_aiportfolio": [f"{weight * 100:.4f}%" for weight in w_tan_flat],
-            "SECTOR": map_gics_sector(BL[2])
+            "SECTOR": map_code_to_gics_sector(BL[2])
         }
         results.append(scenario_result)
 
     save_BL_as_json(results, simul_name, Tier)
+
+    test = backtest(simul_name, Tier, forecast_period, backtest_days_count)
+    BL_result = test.open_BL_MVO_log()
+    mvo_result = test.get_MVO_weight()
+
+    BL_backtest_result = test.performance_of_portfolio(BL_result, portfolio_name='AI_portfolio')
+    save_performance_as_json(BL_backtest_result, simul_name, Tier)
+
+    mvo_backtest_result = test.performance_of_portfolio(mvo_result, portfolio_name='MVO')
+    save_performance_as_json(mvo_backtest_result, simul_name, Tier)
 
     return results
