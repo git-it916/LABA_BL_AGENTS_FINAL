@@ -1,0 +1,76 @@
+[
+    [
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong momentum in Information Technology and weak trend in Real Estate",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Utilities",
+            "relative_return_view": -0.02,
+            "reasoning": "Strong trend in Communication Services and weak trend in Utilities",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.015,
+            "reasoning": "Strong trend in Financials and weak trend in Health Care",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": -0.01,
+            "reasoning": "Strong trend in Industrials and weak trend in Consumer Staples",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Materials",
+            "sector_2": "Energy",
+            "relative_return_view": -0.03,
+            "reasoning": "Weak trend in Materials and strong trend in Energy",
+            "end_date": "2024-04-30"
+        }
+    ],
+    [
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong IT sector momentum and trend strength, while Utilities sector is oversold and has a high z-score",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.015,
+            "reasoning": "Strong CS sector momentum and trend strength, while CD sector is overbought and has a low z-score",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.01,
+            "reasoning": "Financials sector has strong trend strength and a high z-score, while Real Estate sector has a low cagr and is oversold",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Health Care",
+            "sector_2": "Materials",
+            "relative_return_view": -0.005,
+            "reasoning": "Health Care sector has a strong trend and high z-score, while Materials sector has a low trend strength and is overbought",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Consumer Staples",
+            "sector_2": "Energy",
+            "relative_return_view": -0.02,
+            "reasoning": "Consumer Staples sector has a strong trend and high z-score, while Energy sector has a low trend strength and is oversold",
+            "end_date": "2024-05-31"
+        }
+    ]
+]

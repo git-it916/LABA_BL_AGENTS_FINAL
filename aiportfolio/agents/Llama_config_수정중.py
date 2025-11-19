@@ -153,3 +153,78 @@ def chat_with_llama3(pipeline_obj, system_prompt, user_prompt):
         torch.cuda.empty_cache()
 
     return outputs[0]["generated_text"].strip()
+
+
+def call_gemini_api(system_prompt, user_prompt):
+    """
+    Google Gemini API를 사용하여 텍스트를 생성합니다.
+
+    공식 문서: https://ai.google.dev/gemini-api/docs/quickstart?lang=python
+
+    Args:
+        system_prompt (str): 시스템 프롬프트
+        user_prompt (str): 사용자 프롬프트
+
+    Returns:
+        str: 생성된 텍스트
+
+    Raises:
+        ValueError: API 키가 없을 경우
+        RuntimeError: API 호출 실패 시
+    """
+    import os
+    from google import genai
+
+    # .env 파일에서 환경 변수 로드
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except ImportError:
+        # dotenv가 없으면 환경 변수 직접 로드
+        import pathlib
+        env_path = pathlib.Path(__file__).parent.parent.parent / '.env'
+        if env_path.exists():
+            with open(env_path) as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#') and '=' in line:
+                        key, value = line.split('=', 1)
+                        os.environ[key] = value
+
+    # API 키 로드
+    api_key = os.getenv('GOOGLE_API_KEY')
+
+    if not api_key:
+        raise ValueError(
+            "Gemini API key not found.\n"
+            "Create a .env file with: GOOGLE_API_KEY=your_key_here\n"
+            "Get your key at: https://aistudio.google.com/app/apikey"
+        )
+
+    # Gemini 클라이언트 초기화
+    client = genai.Client(api_key=api_key)
+
+    # 프롬프트 결합 (Gemini는 system + user를 하나로 받음)
+    full_prompt = f"{system_prompt}\n\n---\n\n{user_prompt}"
+
+    # 사용할 모델 지정 (Gemini 2.5 Pro - 가장 강력한 최신 모델)
+    model_name = 'gemini-2.5-pro'
+
+    print(f"[Gemini] API 호출 중... (모델: {model_name})")
+
+    try:
+        # 콘텐츠 생성 요청
+        response = client.models.generate_content(
+            model=model_name,
+            contents=full_prompt
+        )
+
+        # 응답 텍스트 추출
+        response_text = response.text
+
+        print(f"[Gemini] 응답 수신 완료 (길이: {len(response_text)} 문자)")
+
+        return response_text.strip()
+
+    except Exception as e:
+        raise RuntimeError(f"Gemini API 호출 중 오류 발생: {e}")

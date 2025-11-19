@@ -6,8 +6,9 @@ from .util.making_rollingdate import get_rolling_dates
 from .util.sector_mapping import map_code_to_gics_sector
 from .util.save_log_as_json import save_BL_as_json, save_performance_as_json
 from aiportfolio.backtest.calculating_performance import backtest
+from aiportfolio.backtest.visalization import calculate_average_cumulative_returns
 
-def scene(simul_name, Tier, tau, forecast_period, backtest_days_count):
+def scene(simul_name, Tier, tau, forecast_period, backtest_days_count, model='llama'):
     """
     전체 시뮬레이션 실행 함수
     """
@@ -36,7 +37,7 @@ def scene(simul_name, Tier, tau, forecast_period, backtest_days_count):
         end_date = period['end_date']
 
         # BL 실행
-        BL = get_bl_outputs(tau, start_date=start_date, end_date=end_date, simul_name=simul_name, Tier=Tier)
+        BL = get_bl_outputs(tau, start_date=start_date, end_date=end_date, simul_name=simul_name, Tier=Tier, model=model)
 
         # MVO 실행
         mvo = MVO_Optimizer(mu=BL[0], sigma=BL[1], sectors=BL[2])
@@ -64,5 +65,7 @@ def scene(simul_name, Tier, tau, forecast_period, backtest_days_count):
 
     mvo_backtest_result = test.performance_of_portfolio(mvo_result, portfolio_name='MVO')
     save_performance_as_json(mvo_backtest_result, simul_name, Tier)
+
+    calculate_average_cumulative_returns(simul_name, Tier)
 
     return results

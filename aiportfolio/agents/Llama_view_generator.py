@@ -4,7 +4,7 @@ from aiportfolio.agents.prompt_maker_improved import making_system_prompt
 from aiportfolio.agents.prompt_maker_improved import making_user_prompt
 from aiportfolio.util.save_log_as_json import save_view_as_json
 
-def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
+def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier, model='llama'):
     """
     LLM을 사용하여 섹터 간 상대적 뷰를 생성하고 저장합니다.
 
@@ -26,26 +26,36 @@ def generate_sector_views(pipeline_to_use, end_date, simul_name, Tier):
 
     # 프롬프트 출력
     print("\n" + "="*80)
-    print("📝 SYSTEM PROMPT (시스템 프롬프트)")
+    print("SYSTEM PROMPT (시스템 프롬프트)")
     print("="*80)
     print(system_prompt)
     print("\n" + "="*80)
-    print("📝 USER PROMPT (사용자 프롬프트)")
+    print("USER PROMPT (사용자 프롬프트)")
     print("="*80)
     print(user_prompt)
     print("="*80 + "\n")
 
     # 3. 모델 실행
-    print("\n[알림] Llama 3 모델에 상대 뷰 생성을 요청합니다...\n")
-    generated_text = chat_with_llama3(
-        pipeline_obj=pipeline_to_use,
-        system_prompt=system_prompt,
-        user_prompt=user_prompt
-    )
+    if model == 'llama':
+        print("\n[알림] Llama 3 모델에 상대 뷰 생성을 요청합니다...\n")
+        generated_text = chat_with_llama3(
+            pipeline_obj=pipeline_to_use,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt
+        )
+    elif model == 'gemini':
+        print("\n[알림] Google Gemini API로 상대 뷰 생성을 요청합니다...\n")
+        from aiportfolio.agents.Llama_config_수정중 import call_gemini_api
+        generated_text = call_gemini_api(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt
+        )
+    else:
+        raise ValueError(f"Unknown model: '{model}'. Use 'llama' or 'gemini'")
 
     # LLM 출력 전체 표시
     print("\n" + "="*80)
-    print("🤖 LLM 원본 출력 (전체)")
+    print("LLM 원본 출력 (전체)")
     print("="*80)
     print(generated_text)
     print("="*80 + "\n")

@@ -1,0 +1,171 @@
+### TIER 1 GUIDELINES (Technical Indicators Only)
+
+**Available Data**:
+- 3-year CAGR: Long-term structural growth trend (higher = better)
+- Recent 12-month returns: Short-term momentum (higher = better)
+- 12-month trend strength (R²): Trend consistency (closer to 1.0 = better)
+- 12-month volatility: Risk/instability (lower = better)
+- Mean reversion signal (z-score): Momentum acceleration indicator
+  - z > 1.5: Strong momentum acceleration → Increase Long conviction (momentum continuation)
+  - z < -1.5: Momentum breakdown → Increase Short conviction (downtrend)
+  - -1.5 < z < 1.5: Neutral momentum → Use other signals
+
+**Selection Strategy**:
+1. **Long Candidates**: Sectors with strong momentum cluster:
+   - High 3-year CAGR (structural tailwind)
+   - High 12-month avg returns (current momentum)
+   - High trend strength R² (quality trend)
+   - Bonus: Low volatility OR positive z-score (momentum acceleration confirmed)
+
+2. **Short Candidates**: Sectors with weak momentum cluster:
+   - Low/negative 3-year CAGR
+   - Low/negative 12-month avg returns
+   - Bonus: High volatility OR negative z-score (momentum breakdown)
+
+**Confidence Calibration**:
+- Strong conviction (relative_return_view ≥ 0.025): All 3 core signals align
+- Moderate conviction (0.015-0.025): 2 of 3 core signals align
+- Low conviction (0.01-0.015): 1 signal + bonus factors
+- Very low conviction (< 0.01): Use as tiebreaker only
+
+---
+
+### TIER 2 GUIDELINES (Technical + Accounting Indicators)
+
+**Available Data (from Accounting layer)**:
+- Book/Market (bm): Valuation (Higher = cheaper; indicates value orientation)
+- Shiller CAPE (capei): Valuation (Lower = cheaper; high CAPE → potentially overvalued sector)
+- Gross Profit / Total Assets (gprof): Efficiency (Higher = assets generate profit efficiently)
+- Net Profit Margin (npm): Profitability (Higher = better cost control and pricing power)
+- Return on Assets (ROA): Profitability (Higher = stronger overall asset utilization)
+- Return on Equity (ROE): Profitability / Quality (Higher = stronger shareholder return efficiency)
+- Total Debt / Invested Capital (totdebt_invcap): Leverage (Higher = more financial risk; context-dependent)
+
+**Data Interpretation**:
+- All accounting metrics represent **Month-over-Month % change** (MoM)
+- Positive value (> 0): Improving fundamentals
+- Negative value (< 0): Deteriorating fundamentals
+- Example: ROE = 0.05 means ROE improved by 5% from last month
+
+**Enhanced Strategy (Building on Tier 1 Momentum Framework)**:
+
+**1. Quality-Growth Confirmation (Primary Focus)**:
+
+Upgrade Long Confidence:
+- Condition: Tier 1 Long + High ROE (>0) + High gprof (>0) + High npm (>0)
+- Interpretation: Strong momentum backed by improving profitability → Quality growth
+- Action: Increase relative_return_view by +0.015 ~ +0.025
+- **Note**: Use decimal format. (e.g., a +2.5% expected relative return = `0.025`)
+
+Upgrade Short Confidence:
+- Condition: Tier 1 Short + Low ROE (<0) + Low npm (<0) + High totdebt_invcap (>0)
+- Interpretation: Weak momentum with deteriorating profitability and rising leverage → Fragile
+- Action: Increase short conviction by +0.015 ~ +0.025
+
+**2. Momentum-Quality Divergence (Warning Signals)**:
+
+Reduce Long Confidence:
+- Condition: Tier 1 Long + ROE (<0) OR npm (<0) (declining profitability)
+- Interpretation: Momentum may be speculative without fundamental support
+- Action: Reduce relative_return_view by -0.01 (but keep Long if momentum is very strong)
+
+Reduce Short Confidence:
+- Condition: Tier 1 Short + ROE (>0) AND npm (>0) (improving profitability)
+- Interpretation: Fundamentals improving despite weak momentum → Potential rebound
+- Action: Reduce short conviction by -0.01 or switch to neutral
+
+**3. Value-Growth Style Awareness**:
+- **Growth Style** (Low bm, High CAPE): Focus on ROE, npm, gprof trends (ignore valuation)
+- **Value Style** (High bm, Low CAPE): Consider valuation + profitability together
+- Do NOT penalize Growth momentum for high CAPE if profitability is improving
+
+**4. Leverage Context**:
+- High leverage (totdebt_invcap >0) + Strong profitability (ROE >0, npm >0) → Acceptable risk
+- High leverage (totdebt_invcap >0) + Weak profitability (ROE <0, npm <0) → High risk, increase Short bias
+
+**5. Integrated Decision Framework**:
+- Tier 1 Strong Long + Profitability improving (ROE >0, npm >0) → Very Strong Long (0.03-0.04)
+- Tier 1 Strong Long + Profitability neutral → Strong Long (0.025-0.03)
+- Tier 1 Strong Long + Profitability declining (ROE <0) → Moderate Long (0.015-0.025)
+- Tier 1 Strong Short + Profitability declining (ROE <0, npm <0) → Very Strong Short (0.03-0.04)
+- Tier 1 Weak + Profitability improving → Watch for reversal, reduce conviction
+---
+
+### TIER 3 GUIDELINES (Full Integration: Technical + Accounting + Macro)
+**Additional Data (when available):
+- Interest rate trend (Rising/Falling/Stable): Defines the cost of capital and discount rates for future cash flows. (e.g., Fed Funds Rate, 10Y Treasury)
+- Inflation trend (Rising/Falling/Stable): Impacts real returns, corporate pricing power, and central bank policy. (e.g., CPI, PCE)
+- GDP growth trend: Indicates the overall health and expansion/contraction phase of the economy. (e.g., Real GDP Growth, OECD CLI)
+- Credit spread trends: Reflects market risk appetite and financial system stress; widening spreads signal risk-off. (e.g., High Yield Spread)
+
+Sector-specific macro drivers: External factors with a direct, concentrated impact on a single sector. (e.g., WTI crude prices for Energy, housing starts for Real Estate)
+
+**Macro Overlay Strategy (final filter on Tier 2 views):
+
+1. Key Inter-Macro Correlations (Macro ↔ Macro)
+
+- Business Cycle Link: The economic "regime" is often defined by these links.
+- Strong GDP Growth often correlates with rising Inflation.
+- Rising Inflation typically leads to rising Interest Rates (as a policy response).
+- Rapidly rising Interest Rates can, in turn, lead to widening Credit Spreads as recession fears mount.
+
+Action: Identify the current "regime" (e.g., "Stagflation," "Goldilocks," "Recession") based on these combinations to set the overall portfolio tilt.
+
+2. Macro ↔ Accounting Correlations (Macro ↔ T2)
+
+- Inflation & Profit Margins: Rising Inflation (Macro) directly pressures corporate Profit Margins (T2 npm), especially for sectors with low pricing power.
+- Interest Rates & Leverage: Rising Interest Rates (Macro) increase risk for firms with high Leverage (T2 totdebt_invcap).
+- GDP Growth & Profitability: Strong GDP Growth (Macro) is a strong tailwind for aggregate Profitability (T2 ROE, ROA).
+
+3. Macro ↔ Returns Correlations (Macro ↔ T1/Factors)
+
+- Interest Rates & Growth Sectors: Rising Interest Rates may pressure high-valuation Growth sectors BUT strong earnings growth (T2 ROE >0) can offset this
+- GDP Growth & Cyclical Momentum: Strong GDP Growth typically benefits cyclical sector momentum (T1 12m returns)
+- Credit Spreads & Quality: Widening Credit Spreads signal "risk-off" → favor Quality (high T2 ROE) and Low Volatility (T1)
+
+**IMPORTANT - Macro as Amplifier, NOT Reversal**:
+- Macro should **amplify or dampen** existing Tier 1/2 signals, NOT reverse them entirely
+- Strong Tier 1 + Tier 2 signals should remain the PRIMARY driver
+- Macro headwinds → Reduce confidence by 10-20%, NOT flip direction
+
+4. Macro-Integrated View (Tier 1 + Tier 2 + Macro)
+
+**Strong Amplification** (Increase conviction by +0.015 to +0.025):
+- Momentum↑ (T1) + Profitability↑ (T2) + Macro Tailwind → Very Strong Long (up to 0.045)
+- Momentum↓ (T1) + Profitability↓ (T2) + Macro Headwind → Very Strong Short (up to 0.045)
+
+**Moderate Amplification** (Adjust by +0.005 to +0.015):
+- Momentum↑ (T1) + Profitability↑ (T2) + Macro Neutral → Strong Long (0.03-0.04)
+- Momentum↓ (T1) + Profitability↓ (T2) + Macro Neutral → Strong Short (0.03-0.04)
+
+**Dampening** (Reduce by -0.005 to -0.01, but DO NOT reverse):
+- Momentum↑ (T1) + Profitability↑ (T2) + Macro Headwind → Moderate Long (0.02-0.03)
+  - Example: Tech momentum strong + ROE improving + Rising rates → Still Long, but lower conviction
+- Momentum↓ (T1) + Profitability↓ (T2) + Macro Tailwind → Moderate Short (0.02-0.03)
+  - Example: Weak sector + GDP growth → Still Short, but watch for recovery
+
+**Conflicting Signals** (Neutral or minimal conviction):
+- Momentum↑ (T1) + Profitability↓ (T2) → Reduce to 0.01-0.015 (regardless of macro)
+- Momentum↓ (T1) + Profitability↑ (T2) → Neutral or very low conviction (0.005-0.01)
+
+**Final Calibration**:
+- Tier 1/2 signals are PRIMARY, Macro is SECONDARY amplifier
+- Maximum relative_return_view: 0.05 (5%)
+- Minimum for inclusion: 0.01 (1%)
+- Ensure portfolio makes sense in current macro regime
+- **Note**: Use decimal format. (e.g., a +2.5% expected relative return = `0.025`)
+---
+
+### COMMON RULES (All Tiers)
+
+**View Construction**:
+- Exactly 5 pairs, no duplicates
+- Each sector can appear max 2 times across all pairs
+- relative_return_view range: -0.05 to +0.05 (realistic)
+ - **Note**: Use decimal format. (e.g., a +2.5% expected relative return = `0.025`)
+- Rank pairs by conviction (highest first)
+
+**Quality Checks**:
+- Avoid contradiction (same sector both Long and Short)
+- Ensure views are actionable (not too small, not too large)
+- Consider sector correlations (avoid redundant pairs like Energy Long + Materials Long vs same Short) /

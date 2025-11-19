@@ -1,0 +1,224 @@
+[
+    [
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.035,
+            "reasoning": "Pitting the sector with the highest trend strength (R²) and 12-month returns against the sector with a negative long-term trend and extremely low trend quality.",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.03,
+            "reasoning": "Pairing the dominant long-term growth leader, which shows strong momentum across all metrics, against the sector with the absolute weakest trend consistency and minimal returns.",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.025,
+            "reasoning": "Expressing a high-conviction view favoring the strongest structural growth trend against the most fundamentally challenged sector with negative long-term CAGR.",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Materials",
+            "relative_return_view": 0.02,
+            "reasoning": "Favoring a consistent cyclical outperformer with solid momentum and trend strength over a cyclically weak sector exhibiting higher volatility and a weaker growth profile.",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.018,
+            "reasoning": "Preferring the high-quality, strong trend in Financials over the unstable, high-volatility profile of Consumer Discretionary, which lacks a structural growth tailwind.",
+            "end_date": "2024-04-30"
+        }
+    ],
+    [
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.035,
+            "reasoning": "Pairing the sector with the highest momentum and trend strength against a sector with a negative long-term trend and very low trend consistency.",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.03,
+            "reasoning": "Longing a sector with strong structural growth and momentum against a low-growth, high-volatility sector showing relative weakness.",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.025,
+            "reasoning": "Favoring Financials' exceptional trend quality and high recent returns over Real Estate's structurally weak and inconsistent profile.",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.02,
+            "reasoning": "Positioning for continued cyclical strength in Industrials versus a structurally weak Consumer Discretionary sector with high risk.",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Energy",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.015,
+            "reasoning": "Longing Energy's superior long-term structural growth trend against Health Care's low recent momentum and defensive posture.",
+            "end_date": "2024-05-31"
+        }
+    ],
+    [
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.035,
+            "reasoning": "Pairing the sector with the strongest combination of long-term CAGR, recent returns, and trend strength against the sector with a negative CAGR and the weakest trend quality.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.03,
+            "reasoning": "Pitting the sector with the highest trend strength (R²) and top returns against a defensive sector with the weakest recent performance and faltering momentum.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.025,
+            "reasoning": "Contrasting a cyclical sector with strong recent momentum and trend quality against a structurally weak sector with high volatility and poor trend consistency.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": 0.02,
+            "reasoning": "Favoring the top growth and momentum leader over a defensive sector exhibiting some of the weakest recent returns in the universe.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Materials",
+            "relative_return_view": 0.018,
+            "reasoning": "Selecting a cyclical with a more consistent and positive profile over another cyclical showing weaker trends, lower returns, and higher volatility.",
+            "end_date": "2024-06-30"
+        }
+    ],
+    [
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.25,
+            "reasoning": "Pitting the top momentum leader, evidenced by the highest 12-month return and trend strength, against the definitive laggard with negative returns and high volatility.",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.22,
+            "reasoning": "Pairing a top growth and momentum sector exhibiting strong returns and trend consistency against a classic laggard with almost non-existent trend strength.",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.18,
+            "reasoning": "Matching a sector with strong recent performance and an extremely consistent trend (high R-squared) against the market's weakest sector based on returns and risk metrics.",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": 0.15,
+            "reasoning": "A classic cyclical outperformer with strong momentum and trend is positioned against a defensive underperformer showing broad technical weakness.",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Energy",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.12,
+            "reasoning": "This structural view pairs the sector with the highest long-term growth (3Y CAGR) against a sector showing early signs of a momentum breakdown.",
+            "end_date": "2024-04-30"
+        }
+    ],
+    [
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.265,
+            "reasoning": "Pairing the sector with the strongest 12-month return and trend strength against the sector with a negative long-term CAGR, the highest volatility, and the weakest trend.",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.1279,
+            "reasoning": "Longing a leader in long-term growth and recent momentum versus a sector with a very weak long-term trend, high volatility, and poor trend consistency.",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Utilities",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.0486,
+            "reasoning": "This is a signal-driven trade, longing the only sector with a strong momentum acceleration signal (z-score > 1.5) against the fundamentally weakest sector profile.",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Materials",
+            "relative_return_view": 0.0773,
+            "reasoning": "Favoring Financials for its superior 12-month returns and very high trend strength (R² > 0.8) over Materials, which exhibits a weaker long-term growth profile and lower momentum.",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": 0.1491,
+            "reasoning": "Positioning for cyclical leadership by pairing Industrials, with its strong recent returns and trend, against the defensive Consumer Staples sector, which shows lagging performance.",
+            "end_date": "2024-05-31"
+        }
+    ],
+    [
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.3113,
+            "reasoning": "This pairs the top-performing sector with the strongest trend consistency (Communication Services) against the definitive laggard with the worst returns, trend, and volatility (Real Estate).",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.2842,
+            "reasoning": "Pairing a premier growth and momentum sector (Information Technology) against a defensive laggard (Utilities) that has poor recent returns and weak trend strength.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.3013,
+            "reasoning": "This high-conviction trade matches the strongest momentum sector (Communication Services) against another clear underperformer (Utilities) to capitalize on the significant performance divergence.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.2942,
+            "reasoning": "Contrasting a high-momentum leader with strong long-term growth (Information Technology) against the absolute weakest sector (Real Estate) to exploit a wide gap in technical profiles.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Materials",
+            "relative_return_view": 0.1439,
+            "reasoning": "Matching a sector with strong recent momentum and a highly consistent trend (Financials) against a cyclical underperformer (Materials) with weak short- and long-term returns.",
+            "end_date": "2024-06-30"
+        }
+    ]
+]

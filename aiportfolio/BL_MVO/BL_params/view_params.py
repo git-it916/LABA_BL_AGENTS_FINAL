@@ -5,7 +5,7 @@ from aiportfolio.agents.Llama_config_수정중 import prepare_pipeline_obj
 from aiportfolio.agents.Llama_view_generator import generate_sector_views
 from aiportfolio.agents.converting_viewtomatrix import open_view_log, create_Q_vector, create_P_matrix
 
-def get_view_params(sigma, tau, end_date, simul_name, Tier):
+def get_view_params(sigma, tau, end_date, simul_name, Tier, model='llama'):
     """
     This function calculates and returns the view-related parameters P, Q, and Omega.
 
@@ -16,25 +16,30 @@ def get_view_params(sigma, tau, end_date, simul_name, Tier):
     Returns:
         tuple: A tuple containing P, Q, and Omega.
     """
-    # GPU 사용 가능 여부 확인
-    import torch
-    if not torch.cuda.is_available():
-        print("\n" + "="*80)
-        print("[치명적 오류] GPU를 사용할 수 없습니다.")
-        print("="*80)
-        print("이 프로그램은 Llama 3 모델을 사용하여 섹터 뷰를 생성합니다.")
-        print("Llama 3 8B 모델은 GPU 없이는 실행할 수 없습니다.")
-        print("\n해결 방법:")
-        print("1. NVIDIA GPU가 설치된 시스템에서 실행하세요.")
-        print("2. CUDA가 올바르게 설치되었는지 확인하세요.")
-        print("3. PyTorch가 CUDA 버전으로 설치되었는지 확인하세요:")
-        print("   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121")
-        print("="*80 + "\n")
-        raise RuntimeError("GPU를 사용할 수 없어 프로그램을 중단합니다.")
-
     # LLM으로 뷰 생성
-    pipeline_to_use = prepare_pipeline_obj()
-    generate_sector_views(pipeline_to_use, end_date, simul_name, Tier)
+    if model == 'llama':
+        # GPU 사용 가능 여부 확인 (Llama만 필요)
+        import torch
+        if not torch.cuda.is_available():
+            print("\n" + "="*80)
+            print("[치명적 오류] GPU를 사용할 수 없습니다.")
+            print("="*80)
+            print("이 프로그램은 Llama 3 모델을 사용하여 섹터 뷰를 생성합니다.")
+            print("Llama 3 8B 모델은 GPU 없이는 실행할 수 없습니다.")
+            print("\n해결 방법:")
+            print("1. NVIDIA GPU가 설치된 시스템에서 실행하세요.")
+            print("2. CUDA가 올바르게 설치되었는지 확인하세요.")
+            print("3. PyTorch가 CUDA 버전으로 설치되었는지 확인하세요:")
+            print("   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121")
+            print("="*80 + "\n")
+            raise RuntimeError("GPU를 사용할 수 없어 프로그램을 중단합니다.")
+
+        pipeline_to_use = prepare_pipeline_obj()
+    else:
+        # Gemini는 pipeline 불필요
+        pipeline_to_use = None
+
+    generate_sector_views(pipeline_to_use, end_date, simul_name, Tier, model)
     views_data = open_view_log(simul_name=simul_name, Tier=Tier, end_date=end_date)
 
     if views_data is None:

@@ -4,16 +4,18 @@ from aiportfolio.scene import scene
 #            configuration           #
 ######################################
 
-simul_name = 'single_test1'
-Tier = 3
+simul_name = 'single_test21'
+Tier = 1
 tau = 0.025
+model = 'llama'  # 'llama' or 'gemini'
+
+'''
 forecast_period = [
         "24-05-31",
         "24-06-30"
 ]
-backtest_days_count = 19
-
 '''
+
 forecast_period = [
         "24-05-31",
         "24-06-30",
@@ -24,11 +26,12 @@ forecast_period = [
         "24-11-30",
         "24-12-31"
     ]
-    '''
+
+backtest_days_count = 19
 
 ######################################
 #                 run                #
 ######################################
 
-scene(simul_name, Tier, tau, forecast_period, backtest_days_count)
+scene(simul_name, Tier, tau, forecast_period, backtest_days_count, model)
 

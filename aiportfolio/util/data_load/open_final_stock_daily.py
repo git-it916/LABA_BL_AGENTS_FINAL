@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 import sys
 
-# python -m aiportfolio.util.data_cleanse.open_final_stock_daily
+# python -m aiportfolio.util.data_load.open_final_stock_daily
 
 def open_final_stock_daily():
     # 확인할 Parquet 파일 경로

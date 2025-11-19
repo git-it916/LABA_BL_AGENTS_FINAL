@@ -133,3 +133,30 @@ monthly_summary = b.groupby(pd.Grouper(key='DlyCalDt', freq='MS')).agg(
 
 print(monthly_summary)
 '''
+def sector_daily():
+    df = open_final_stock_daily()
+
+    df["DlyCalDt"] = pd.to_datetime(df["DlyCalDt"])
+    df["_ret_x_cap"] = df["DlyRet"] * df["DlyCap"]
+    group_keys = ["DlyCalDt", "gsector"]
+    agg = (
+        df.groupby(group_keys, dropna=False)
+            .agg(sector_mktcap=("DlyCap", "sum"),
+                ret_x_cap_sum=("_ret_x_cap", "sum"))
+            .reset_index()
+    )
+
+    # 분모 0 방지
+    agg["sector_return"] = np.where(
+        agg["sector_mktcap"] != 0,
+        agg["ret_x_cap_sum"] / agg["sector_mktcap"],
+        np.nan
+    )
+
+    # 중간열 제거
+    agg = agg.drop(columns=["ret_x_cap_sum"])
+
+    pivoted_df = agg.pivot(index='DlyCalDt', columns='gsector', values='sector_return')
+    df_reset = pivoted_df.reset_index()
+
+    return df_reset

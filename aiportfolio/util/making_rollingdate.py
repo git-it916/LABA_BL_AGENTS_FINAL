@@ -44,14 +44,31 @@ def get_backtest_dates(forecast_date):
     forecast_date를 받아서 해당 월의 월초(1일)를 반환합니다.
     """
     try:
-        dates = pd.to_datetime(forecast_date)
+        # YY-MM-DD 형식 또는 YYYY-MM-DD 형식 모두 지원
+        # 입력이 문자열인 경우 YY-MM-DD 형식으로 가정
+        if isinstance(forecast_date, str):
+            # "24-05-31" 같은 형식을 처리
+            dates = pd.to_datetime(forecast_date, format='%y-%m-%d')
+        elif isinstance(forecast_date, list) and all(isinstance(d, str) for d in forecast_date):
+            # 문자열 리스트인 경우
+            dates = pd.to_datetime(forecast_date, format='%y-%m-%d')
+        else:
+            # 이미 datetime 객체이거나 다른 형식
+            dates = pd.to_datetime(forecast_date)
     except Exception as e:
         print(f"get_backtest_dates에서 날짜 변환 오류 발생: {e}")
         raise
 
-    if isinstance(dates, pd.Series):
-        month_start_dates = dates.dt.to_period('M').dt.start_time
-        return month_start_dates.to_list()
+    # Series 또는 DatetimeIndex (리스트를 변환한 경우)
+    if isinstance(dates, (pd.Series, pd.DatetimeIndex)):
+        month_start_dates = dates.to_period('M').to_timestamp()
+        # DatetimeIndex인 경우 리스트로 변환
+        if isinstance(month_start_dates, pd.DatetimeIndex):
+            return month_start_dates.tolist()
+        else:
+            return month_start_dates.to_list()
     else:
+        # 단일 Timestamp인 경우
         month_start_date = dates.replace(day=1)
         return month_start_date
+# python -m aiportfolio.util.making_rollingdate

@@ -9,7 +9,7 @@ from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
 from aiportfolio.BL_MVO.MVO_opt import MVO_Optimizer
 
 # !!!!!!!!!! 일별데이터 전처리 완료되면 의존성 수정해야함
-from aiportfolio.backtest.preprocessing import final_abnormal_returns
+from aiportfolio.backtest.preprocessing import sector_daily
 
 class backtest():
     def __init__(self, simul_name, Tier, forecast_period, backtest_days_count):
@@ -129,18 +129,6 @@ class backtest():
     def performance_of_portfolio(self, portfolio_weights, portfolio_name="Portfolio"):
         """
         여러 예측 기준일에 대해 포트폴리오의 백테스트 성과를 계산합니다.
-
-        Args:
-            portfolio_weights (pd.DataFrame): 포트폴리오 가중치
-                - ForecastDate: 예측 기준일
-                - SECTOR: GICS 섹터 코드
-                - Weight: 가중치
-            portfolio_name (str): 포트폴리오 이름 (기본값: "Portfolio")
-
-        Returns:
-            dict: 각 forecast_date별 백테스트 결과
-                - key: forecast_date (datetime)
-                - value: dict (백테스트 상세 정보)
         """
         # forecast_period를 리스트로 변환 (단일 날짜인 경우 대비)
         if not isinstance(self.forecast_period, list):
@@ -149,7 +137,7 @@ class backtest():
             forecast_period = self.forecast_period
 
         # 일별 섹터별 초과수익률 데이터 로드 (한 번만 로드)
-        daily_return_df = final_abnormal_returns()
+        daily_return_df = sector_daily()
 
         # DlyCalDt를 인덱스로 설정
         if 'DlyCalDt' in daily_return_df.columns:
@@ -160,9 +148,7 @@ class backtest():
 
         # 각 forecast_date에 대해 백테스트 수행
         for forecast_date in forecast_period:
-            print(f"\n{'='*60}")
             print(f"[{portfolio_name}] 백테스트 시작: {forecast_date}")
-            print(f"{'='*60}")
 
             try:
                 # 백테스트 시작 날짜 계산
@@ -188,7 +174,12 @@ class backtest():
                 print(f"[알림] 백테스트 기간: {backtest_period_dates[0].date()} ~ {backtest_period_dates[-1].date()} ({len(backtest_period_dates)}일)")
 
                 # forecast_date에 해당하는 포트폴리오 가중치 가져오기
-                forecast_date_dt = pd.to_datetime(forecast_date)
+                # 문자열인 경우 YY-MM-DD 형식으로 파싱
+                if isinstance(forecast_date, str):
+                    forecast_date_dt = pd.to_datetime(forecast_date, format='%y-%m-%d')
+                else:
+                    forecast_date_dt = pd.to_datetime(forecast_date)
+
                 portfolio_weights_date = portfolio_weights[portfolio_weights['ForecastDate'] == forecast_date_dt]
 
                 if portfolio_weights_date.empty:
@@ -228,23 +219,19 @@ class backtest():
                 # 샤프 비율 (연율화, 무위험 수익률 0 가정)
                 sharpe_ratio = (avg_daily_return / volatility) * (252 ** 0.5) if volatility != 0 else 0
 
-                print(f"[결과] 최종 누적 수익률: {final_return*100:.2f}%")
-                print(f"[결과] 평균 일별 수익률: {avg_daily_return*100:.4f}%")
-                print(f"[결과] 변동성: {volatility*100:.4f}%")
-                print(f"[결과] 샤프 비율 (연율화): {sharpe_ratio:.4f}")
-
                 # 결과 저장 (상세 정보 포함)
-                results[forecast_date_dt] = {
+                # JSON 직렬화를 위해 키를 문자열로, pandas 객체를 리스트/문자열로 변환
+                results[forecast_date_dt.strftime('%Y-%m-%d')] = {
                     'portfolio_name': portfolio_name,
-                    'forecast_date': forecast_date_dt,
-                    'daily_returns': portfolio_returns_series,
-                    'cumulative_returns': cumulative_return,
-                    'final_return': final_return,
-                    'avg_daily_return': avg_daily_return,
-                    'volatility': volatility,
-                    'sharpe_ratio': sharpe_ratio,
-                    'backtest_start': backtest_period_dates[0],
-                    'backtest_end': backtest_period_dates[-1],
+                    'forecast_date': forecast_date_dt.strftime('%Y-%m-%d'),
+                    'daily_returns': portfolio_returns_series.tolist(),
+                    'cumulative_returns': cumulative_return.tolist(),
+                    'final_return': float(final_return),
+                    'avg_daily_return': float(avg_daily_return),
+                    'volatility': float(volatility),
+                    'sharpe_ratio': float(sharpe_ratio),
+                    'backtest_start': backtest_period_dates[0].strftime('%Y-%m-%d'),
+                    'backtest_end': backtest_period_dates[-1].strftime('%Y-%m-%d'),
                     'backtest_days': len(backtest_period_dates)
                 }
 
@@ -257,54 +244,3 @@ class backtest():
         print(f"{'='*60}\n")
 
         return results
-
-
-# 클래스 외부의 독립 함수로 유지 (기존 호환성 유지)
-def open_BL_MVO_log(simul_name, Tier):
-    """
-    로그 디렉토리에서 BL_MVO.json 파일을 찾아,
-    모든 월의 데이터를 포함하는 long-format DataFrame으로 반환합니다.
-
-    Args:
-        simul_name (str): 시뮬레이션 이름
-        Tier (int): 분석 단계 (1, 2, 3)
-    """
-    bt = backtest(simul_name, Tier, None, None)
-    return bt.open_BL_MVO_log()
-
-def get_MVO_weight(forecast_period):
-    """
-    MVO 가중치를 계산하여 Long 형식 DataFrame으로 반환합니다.
-
-    Args:
-        forecast_period (list): 예측 기간 문자열 리스트 (예: ["24-05-31", "24-06-30", ...])
-
-    Returns:
-        pd.DataFrame: Long 형식 MVO 가중치
-            - ForecastDate: 예측 기준일
-            - SECTOR: GICS 섹터 코드
-            - Weight: 가중치
-    """
-    bt = backtest(None, None, forecast_period, None)
-    return bt.get_MVO_weight()
-
-def performance_of_portfolio(portfolio_weights, forecast_period, backtest_days_count, portfolio_name="Portfolio"):
-    """
-    여러 예측 기준일에 대해 포트폴리오의 백테스트 성과를 계산합니다.
-
-    Args:
-        portfolio_weights (pd.DataFrame): 포트폴리오 가중치
-            - ForecastDate: 예측 기준일
-            - SECTOR: GICS 섹터 코드
-            - Weight: 가중치
-        forecast_period (list or datetime or str): 예측 기준일 리스트 또는 단일 날짜
-        backtest_days_count (int): 백테스트할 거래일 수
-        portfolio_name (str): 포트폴리오 이름 (기본값: "Portfolio")
-
-    Returns:
-        dict: 각 forecast_date별 백테스트 결과
-            - key: forecast_date (datetime)
-            - value: dict (백테스트 상세 정보)
-    """
-    bt = backtest(None, None, forecast_period, backtest_days_count)
-    return bt.performance_of_portfolio(portfolio_weights, portfolio_name)
