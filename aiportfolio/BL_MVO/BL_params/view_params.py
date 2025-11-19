@@ -64,6 +64,7 @@ def get_view_params(sigma, tau, end_date, simul_name, Tier, model='llama'):
         p_sigma_pT = P_row @ sigma_np @ P_row.T
         omega_i = tau * p_sigma_pT
         Omega[i, i] = omega_i
+    Omega = 100000000 * Omega
 
     print('\n=== View Parameters ===')
     print('P (Picking Matrix):')

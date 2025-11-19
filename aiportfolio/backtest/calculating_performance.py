@@ -98,7 +98,7 @@ class backtest():
 
             try:
                 market_params = Market_Params(start_date, end_date)
-                mu = market_params.making_mu()
+                mu = market_params.making_pi()
                 sigma = market_params.making_sigma_for_optimize()
 
                 # MVO 실행

@@ -4,9 +4,9 @@ from aiportfolio.scene import scene
 #            configuration           #
 ######################################
 
-simul_name = 'single_test21'
+simul_name = 'single_test25'
 Tier = 1
-tau = 0.025
+tau = 0.000000000000000000001
 model = 'llama'  # 'llama' or 'gemini'
 
 '''
