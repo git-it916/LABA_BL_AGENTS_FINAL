@@ -4,9 +4,9 @@ from aiportfolio.scene import scene
 #            configuration           #
 ######################################
 
-simul_name = 'single_test25'
+simul_name = 'single_test34'
 Tier = 1
-tau = 0.000000000000000000001
+tau = 0.025
 model = 'llama'  # 'llama' or 'gemini'
 
 '''
@@ -30,7 +30,7 @@ forecast_period = [
 backtest_days_count = 19
 
 ######################################
-#                 run                #
+#                run                 #
 ######################################
 
 scene(simul_name, Tier, tau, forecast_period, backtest_days_count, model)

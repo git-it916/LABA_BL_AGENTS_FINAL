@@ -9,7 +9,7 @@ from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
 from aiportfolio.BL_MVO.MVO_opt import MVO_Optimizer
 
 # !!!!!!!!!! 일별데이터 전처리 완료되면 의존성 수정해야함
-from aiportfolio.backtest.preprocessing import sector_daily
+from aiportfolio.backtest.preprocessing import final_abnormal_returns
 
 class backtest():
     def __init__(self, simul_name, Tier, forecast_period, backtest_days_count):
@@ -137,7 +137,7 @@ class backtest():
             forecast_period = self.forecast_period
 
         # 일별 섹터별 초과수익률 데이터 로드 (한 번만 로드)
-        daily_return_df = sector_daily()
+        daily_return_df = final_abnormal_returns()
 
         # DlyCalDt를 인덱스로 설정
         if 'DlyCalDt' in daily_return_df.columns:

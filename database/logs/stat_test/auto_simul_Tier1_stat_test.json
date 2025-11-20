@@ -1,0 +1,44 @@
+{
+    "simulation_info": {
+        "simul_name_base": "auto_simul_",
+        "Tier": 1,
+        "repetition_counts": 8,
+        "total_samples": 8
+    },
+    "test_1_AI_vs_zero": {
+        "hypothesis": {
+            "H0": "μ = 0",
+            "H1": "μ > 0"
+        },
+        "statistics": {
+            "mean": 0.001855724162443487,
+            "std": 0.006338869015327716,
+            "sample_size": 8,
+            "t_statistic": 0.8280310800570635,
+            "p_value": 0.2174856119551734
+        },
+        "result": {
+            "reject_H0": false,
+            "conclusion": "통계적으로 유의하지 않음"
+        }
+    },
+    "test_2_AI_vs_MVO": {
+        "hypothesis": {
+            "H0": "μ_AI - μ_MVO = 0",
+            "H1": "μ_AI - μ_MVO > 0"
+        },
+        "statistics": {
+            "AI_mean": 0.001855724162443487,
+            "MVO_mean": -0.00031145398271247016,
+            "excess_return_mean": 0.002167178145155957,
+            "excess_return_std": 0.006338869015327716,
+            "sample_size": 8,
+            "t_statistic": 0.9670030150637752,
+            "p_value": 0.18287809751271575
+        },
+        "result": {
+            "reject_H0": false,
+            "conclusion": "통계적으로 유의하지 않음"
+        }
+    }
+}

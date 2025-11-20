@@ -2,6 +2,8 @@ import os
 import json
 import numpy as np
 
+from aiportfolio.util.save_log_as_json import save_performance_as_json
+
 def calculate_average_cumulative_returns(simul_name, Tier):
     """
     JSON 파일에서 백테스트 결과를 불러와 포트폴리오별 영업일별 평균 누적 수익률을 계산하고 시각화합니다.
@@ -100,6 +102,8 @@ def calculate_average_cumulative_returns(simul_name, Tier):
         }
 
         print(f"      ✓ {portfolio_name}: {len(portfolio_data)}개 기간, {min_days}일 평균 계산 완료")
+
+    save_performance_as_json(results, simul_name, Tier)
 
     # 4. 결과 시각화
     print(f"\n[4/4] 결과 시각화")
