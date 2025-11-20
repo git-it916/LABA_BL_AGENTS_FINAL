@@ -8,7 +8,7 @@ from scipy import stats
 ######################################
 
 # 통계검정 진행할 반복실행 simul_name_base
-simul_name_base = 'auto_simul_'
+simul_name_base = 'before_changing_prompt_'
 
 # 통계검정 진행할 Tier
 Tier = 1

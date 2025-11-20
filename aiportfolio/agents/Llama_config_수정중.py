@@ -139,10 +139,10 @@ def chat_with_llama3(pipeline_obj, system_prompt, user_prompt):
     # 하지만 명시적으로 사용해도 문제 없음
     outputs = pipeline_obj(
         prompt,
-        max_new_tokens=4096,  # 5개 뷰 JSON 생성 (각 뷰당 약 400 토큰)
+        max_new_tokens=12288,  # 8192 → 12288 (5개 뷰 JSON + 여유분, 각 뷰당 약 600 토큰)
         do_sample=True,
-        temperature=0.6,  # 0.3 → 0.6 (다양성 증가)
-        top_p=0.9,        # 0.8 → 0.9 (더 넓은 토큰 선택 범위)
+        temperature=0.3,  # 0.6 → 0.3 (JSON 구조 유지를 위해 낮춤)
+        top_p=0.85,       # 0.9 → 0.85 (안정성 증가)
         return_full_text=False,
         eos_token_id=eos_tokens,
         pad_token_id=pipeline_obj.tokenizer.eos_token_id

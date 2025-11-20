@@ -1,0 +1,44 @@
+{
+    "simulation_info": {
+        "simul_name_base": "before_changing_prompt_",
+        "Tier": 1,
+        "repetition_counts": 8,
+        "total_samples": 8
+    },
+    "test_1_AI_vs_zero": {
+        "hypothesis": {
+            "H0": "μ = 0",
+            "H1": "μ > 0"
+        },
+        "statistics": {
+            "mean": 0.005420605230871081,
+            "std": 0.004139531078971419,
+            "sample_size": 8,
+            "t_statistic": 3.7037496699617627,
+            "p_value": 0.0038086318457179144
+        },
+        "result": {
+            "reject_H0": true,
+            "conclusion": "AI Portfolio 평균 > 0 (유의)"
+        }
+    },
+    "test_2_AI_vs_MVO": {
+        "hypothesis": {
+            "H0": "μ_AI - μ_MVO = 0",
+            "H1": "μ_AI - μ_MVO > 0"
+        },
+        "statistics": {
+            "AI_mean": 0.005420605230871081,
+            "MVO_mean": -0.00031145398271247016,
+            "excess_return_mean": 0.005732059213583551,
+            "excess_return_std": 0.004139531078971419,
+            "sample_size": 8,
+            "t_statistic": 3.9165575643846915,
+            "p_value": 0.002887265876206933
+        },
+        "result": {
+            "reject_H0": true,
+            "conclusion": "AI Portfolio > MVO (유의)"
+        }
+    }
+}

@@ -215,7 +215,7 @@ class Market_Params:
 
         Theoretical Foundation:
             π = λ × Σ × w_mkt
-
+    
         This reverse-engineers the CAPM equilibrium:
             E[R_i] - R_f = β_i × (E[R_m] - R_f)
                          = β_i × λ × σ_m^2

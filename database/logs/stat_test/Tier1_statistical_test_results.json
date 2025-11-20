@@ -7,7 +7,7 @@
     },
     "test_1_AI_vs_zero": {
         "hypothesis": {
-            "H0": "μ = 0",
+            "H0": "μ <= 0",
             "H1": "μ > 0"
         },
         "statistics": {
@@ -24,7 +24,7 @@
     },
     "test_2_AI_vs_MVO": {
         "hypothesis": {
-            "H0": "μ_AI - μ_MVO = 0",
+            "H0": "μ_AI - μ_MVO <= 0",
             "H1": "μ_AI - μ_MVO > 0"
         },
         "statistics": {
