@@ -4,10 +4,10 @@ from aiportfolio.scene import scene
 #            configuration           #
 ######################################
 
-simul_name_base = 'before_changing_prompt_'
+simul_name_base = 'before_changing_prompt_3_'
 
-Tier1_repetition_count = 30
-Tier2_repetition_count = 8
+Tier1_repetition_count = 1
+Tier2_repetition_count = 0
 Tier3_repetition_count = 0
 
 tau = 0.025

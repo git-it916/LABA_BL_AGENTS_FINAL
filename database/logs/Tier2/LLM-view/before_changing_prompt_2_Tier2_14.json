@@ -1,0 +1,298 @@
+[
+    [
+        {
+            "sector_1": "Consumer Discretionary",
+            "sector_2": "Energy",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong momentum in Consumer Discretionary, while Energy sector is weak with negative returns and high volatility",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Materials",
+            "relative_return_view": 0.015,
+            "reasoning": "Information Technology sector has strong momentum and high trend strength, while Materials sector is weak with negative returns and high volatility",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.02,
+            "reasoning": "Communication Services sector has strong momentum and high trend strength, while Real Estate sector is weak with negative returns and high volatility",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.01,
+            "reasoning": "Financials sector has moderate momentum and high trend strength, while Health Care sector is weak with negative returns and high volatility",
+            "end_date": "2024-04-30"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.005,
+            "reasoning": "Industrials sector has moderate momentum and high trend strength, while Utilities sector is weak with negative returns and high volatility",
+            "end_date": "2024-04-30"
+        }
+    ],
+    [
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong momentum acceleration in Information Technology and relatively cheap valuation in Real Estate",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Energy",
+            "relative_return_view": 0.02,
+            "reasoning": "Strong trend strength and valuation in Communication Services, while Energy sector shows weak momentum",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.015,
+            "reasoning": "Financials sector shows strong profitability and valuation, while Consumer Discretionary has weak profitability",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Health Care",
+            "sector_2": "Materials",
+            "relative_return_view": 0.01,
+            "reasoning": "Health Care sector has strong profitability and valuation, while Materials sector shows weak profitability",
+            "end_date": "2024-05-31"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Staples",
+            "relative_return_view": -0.005,
+            "reasoning": "Industrials sector shows strong trend strength, while Consumer Staples has weak profitability",
+            "end_date": "2024-05-31"
+        }
+    ],
+    [
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Energy",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong momentum acceleration in Information Technology, combined with relatively low valuation and high profitability, suggests a potential outperformance. Energy, on the other hand, has weak momentum and high valuation, making it a potential underperformer.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Materials",
+            "relative_return_view": 0.02,
+            "reasoning": "Communication Services has strong momentum and relatively low valuation, while Materials has weak momentum and high valuation, making it a potential underperformer.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.015,
+            "reasoning": "Industrials has moderate momentum and relatively low valuation, while Real Estate has weak momentum and high valuation, making it a potential underperformer.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Consumer Discretionary",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.01,
+            "reasoning": "Consumer Discretionary has moderate momentum and relatively low valuation, while Health Care has weak momentum and high valuation, making it a potential underperformer.",
+            "end_date": "2024-06-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Utilities",
+            "relative_return_view": -0.005,
+            "reasoning": "Financials has moderate momentum and relatively high valuation, while Utilities has weak momentum and relatively low valuation, making it a potential outperformer.",
+            "end_date": "2024-06-30"
+        }
+    ],
+    [
+        {
+            "sector_1": "Energy",
+            "sector_2": "Materials",
+            "relative_return_view": 0.025,
+            "reasoning": "Energy sector's strong momentum and valuation metrics, combined with Materials sector's weak momentum and high valuation, make Energy a strong long candidate and Materials a strong short candidate.",
+            "end_date": "2024-07-31"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.02,
+            "reasoning": "Industrials sector's strong momentum and valuation metrics, combined with Consumer Discretionary sector's weak momentum and high valuation, make Industrials a strong long candidate and Consumer Discretionary a strong short candidate.",
+            "end_date": "2024-07-31"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Information Technology",
+            "relative_return_view": 0.015,
+            "reasoning": "Financials sector's strong momentum and valuation metrics, combined with Information Technology sector's weak momentum and high valuation, make Financials a strong long candidate and Information Technology a strong short candidate.",
+            "end_date": "2024-07-31"
+        },
+        {
+            "sector_1": "Utilities",
+            "sector_2": "Real Estate",
+            "relative_return_view": -0.01,
+            "reasoning": "Utilities sector's weak momentum and valuation metrics, combined with Real Estate sector's strong momentum and high valuation, make Utilities a strong short candidate and Real Estate a strong long candidate.",
+            "end_date": "2024-07-31"
+        },
+        {
+            "sector_1": "Health Care",
+            "sector_2": "Communication Services",
+            "relative_return_view": -0.015,
+            "reasoning": "Health Care sector's weak momentum and valuation metrics, combined with Communication Services sector's strong momentum and high valuation, make Health Care a strong short candidate and Communication Services a strong long candidate.",
+            "end_date": "2024-07-31"
+        }
+    ],
+    [
+        {
+            "sector_1": "Consumer Staples",
+            "sector_2": "Energy",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong fundamentals in Consumer Staples, with high ROA and ROE, and low debt, contrasted with weak Energy sector with low ROA and ROE and high debt",
+            "end_date": "2024-08-31"
+        },
+        {
+            "sector_1": "Health Care",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.02,
+            "reasoning": "Health Care sector's strong fundamentals, including high ROA and ROE, and low debt, contrasted with Real Estate sector's weak fundamentals, including low ROA and ROE and high debt",
+            "end_date": "2024-08-31"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Information Technology",
+            "relative_return_view": 0.015,
+            "reasoning": "Financials sector's strong fundamentals, including high ROA and ROE, and low debt, contrasted with Information Technology sector's weak fundamentals, including low ROA and ROE and high debt",
+            "end_date": "2024-08-31"
+        },
+        {
+            "sector_1": "Utilities",
+            "sector_2": "Materials",
+            "relative_return_view": 0.01,
+            "reasoning": "Utilities sector's strong fundamentals, including high ROA and ROE, and low debt, contrasted with Materials sector's weak fundamentals, including low ROA and ROE and high debt",
+            "end_date": "2024-08-31"
+        },
+        {
+            "sector_1": "Consumer Discretionary",
+            "sector_2": "Industrials",
+            "relative_return_view": -0.01,
+            "reasoning": "Consumer Discretionary sector's weak fundamentals, including low ROA and ROE, and high debt, contrasted with Industrials sector's strong fundamentals, including high ROA and ROE and low debt",
+            "end_date": "2024-08-31"
+        }
+    ],
+    [
+        {
+            "sector_1": "Energy",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.025,
+            "reasoning": "Energy sector's weak momentum and high volatility, combined with its relatively high valuation, make it a good candidate for a short position. Consumer Discretionary, on the other hand, has shown strong momentum and relatively low volatility, making it a good candidate for a long position.",
+            "end_date": "2024-09-30"
+        },
+        {
+            "sector_1": "Materials",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.02,
+            "reasoning": "Materials sector's strong momentum and relatively low valuation make it a good candidate for a long position. Health Care, with its weak momentum and high valuation, is a good candidate for a short position.",
+            "end_date": "2024-09-30"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.015,
+            "reasoning": "Industrials sector's strong momentum and relatively low valuation make it a good candidate for a long position. Real Estate, with its weak momentum and high valuation, is a good candidate for a short position.",
+            "end_date": "2024-09-30"
+        },
+        {
+            "sector_1": "Consumer Staples",
+            "sector_2": "Information Technology",
+            "relative_return_view": 0.01,
+            "reasoning": "Consumer Staples sector's strong momentum and relatively low valuation make it a good candidate for a long position. Information Technology, with its weak momentum and high valuation, is a good candidate for a short position.",
+            "end_date": "2024-09-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Communication Services",
+            "relative_return_view": 0.005,
+            "reasoning": "Financials sector's strong momentum and relatively low valuation make it a good candidate for a long position. Communication Services, with its weak momentum and high valuation, is a good candidate for a short position.",
+            "end_date": "2024-09-30"
+        }
+    ],
+    [
+        {
+            "sector_1": "Energy",
+            "sector_2": "Materials",
+            "relative_return_view": 0.025,
+            "reasoning": "Energy sector's strong 3-year CAGR and recent momentum, combined with its relatively low valuation and efficient profitability, make it a strong long candidate. Materials sector's weak 3-year CAGR, low profitability, and high valuation make it a suitable short candidate.",
+            "end_date": "2024-10-31"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.02,
+            "reasoning": "Industrials sector's strong 3-year CAGR, recent momentum, and efficient profitability make it a strong long candidate. Real Estate sector's weak 3-year CAGR, high valuation, and low profitability make it a suitable short candidate.",
+            "end_date": "2024-10-31"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.015,
+            "reasoning": "Financials sector's strong 3-year CAGR, recent momentum, and efficient profitability make it a strong long candidate. Health Care sector's weak 3-year CAGR, low profitability, and high valuation make it a suitable short candidate.",
+            "end_date": "2024-10-31"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Consumer Discretionary",
+            "relative_return_view": 0.01,
+            "reasoning": "Information Technology sector's strong 3-year CAGR, recent momentum, and efficient profitability make it a strong long candidate. Consumer Discretionary sector's weak 3-year CAGR, high valuation, and low profitability make it a suitable short candidate.",
+            "end_date": "2024-10-31"
+        },
+        {
+            "sector_1": "Communication Services",
+            "sector_2": "Utilities",
+            "relative_return_view": 0.005,
+            "reasoning": "Communication Services sector's strong 3-year CAGR, recent momentum, and efficient profitability make it a strong long candidate. Utilities sector's weak 3-year CAGR, high valuation, and low profitability make it a suitable short candidate.",
+            "end_date": "2024-10-31"
+        }
+    ],
+    [
+        {
+            "sector_1": "Consumer Discretionary",
+            "sector_2": "Health Care",
+            "relative_return_view": 0.025,
+            "reasoning": "Strong momentum in Consumer Discretionary, while Health Care shows weakness in both technical and accounting indicators.",
+            "end_date": "2024-11-30"
+        },
+        {
+            "sector_1": "Financials",
+            "sector_2": "Real Estate",
+            "relative_return_view": 0.02,
+            "reasoning": "Financials show strong technical momentum and accounting indicators, while Real Estate has a high CAPE ratio and low ROE.",
+            "end_date": "2024-11-30"
+        },
+        {
+            "sector_1": "Industrials",
+            "sector_2": "Materials",
+            "relative_return_view": 0.015,
+            "reasoning": "Industrials have strong technical momentum and accounting indicators, while Materials have a high CAPE ratio and low ROA.",
+            "end_date": "2024-11-30"
+        },
+        {
+            "sector_1": "Consumer Staples",
+            "sector_2": "Energy",
+            "relative_return_view": 0.01,
+            "reasoning": "Consumer Staples have a stable technical and accounting profile, while Energy has a low ROE and high debt-to-capital ratio.",
+            "end_date": "2024-11-30"
+        },
+        {
+            "sector_1": "Information Technology",
+            "sector_2": "Communication Services",
+            "relative_return_view": 0.005,
+            "reasoning": "Information Technology has a strong technical momentum, while Communication Services have a high CAPE ratio and low ROE.",
+            "end_date": "2024-11-30"
+        }
+    ]
+]

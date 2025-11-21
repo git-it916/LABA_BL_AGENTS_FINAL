@@ -71,15 +71,18 @@ def calculate_average_cumulative_returns(simul_name, Tier):
             print(f"      [경고] '{portfolio_name}' 데이터가 비어있습니다.")
             continue
 
-        # cumulative_returns 수집
+        # cumulative_returns 및 cumulative_sharpe_ratios 수집
         all_cumulative_returns = []
+        all_cumulative_sharpe_ratios = []
         backtest_days_set = set()
 
         for forecast_date, result_data in portfolio_data.items():
             cumulative_returns = result_data['cumulative_returns']
+            cumulative_sharpe_ratios = result_data.get('cumulative_sharpe_ratios', [])  # 없으면 빈 리스트
             backtest_days = result_data['backtest_days']
 
             all_cumulative_returns.append(cumulative_returns)
+            all_cumulative_sharpe_ratios.append(cumulative_sharpe_ratios)
             backtest_days_set.add(backtest_days)
 
         # 백테스트 기간 일치 확인
@@ -87,6 +90,7 @@ def calculate_average_cumulative_returns(simul_name, Tier):
             print(f"      [경고] '{portfolio_name}' 백테스트 기간 불일치: {backtest_days_set}")
             min_days = min(backtest_days_set)
             all_cumulative_returns = [returns[:min_days] for returns in all_cumulative_returns]
+            all_cumulative_sharpe_ratios = [sharpe[:min_days] for sharpe in all_cumulative_sharpe_ratios if sharpe]
         else:
             min_days = list(backtest_days_set)[0]
 
@@ -94,8 +98,15 @@ def calculate_average_cumulative_returns(simul_name, Tier):
         returns_array = np.array(all_cumulative_returns)  # (num_periods, backtest_days)
         avg_cumulative_returns = returns_array.mean(axis=0)  # (backtest_days,)
 
+        # Sharpe Ratio 평균 계산 (데이터가 있는 경우만)
+        avg_cumulative_sharpe_ratios = []
+        if all_cumulative_sharpe_ratios and all(sharpe for sharpe in all_cumulative_sharpe_ratios):
+            sharpe_array = np.array(all_cumulative_sharpe_ratios)  # (num_periods, backtest_days)
+            avg_cumulative_sharpe_ratios = sharpe_array.mean(axis=0).tolist()  # (backtest_days,)
+
         results[portfolio_name] = {
             'avg_cumulative_returns': avg_cumulative_returns.tolist(),
+            'avg_cumulative_sharpe_ratios': avg_cumulative_sharpe_ratios,  # 일별 누적 Sharpe Ratio 평균 추가
             'num_periods': len(portfolio_data),
             'backtest_days': min_days,
             'final_avg_return': float(avg_cumulative_returns[-1])
@@ -124,6 +135,8 @@ def calculate_average_cumulative_returns(simul_name, Tier):
         pf1_name, pf2_name = portfolio_names[0], portfolio_names[1]
         pf1_returns = results[pf1_name]['avg_cumulative_returns']
         pf2_returns = results[pf2_name]['avg_cumulative_returns']
+        pf1_sharpe = results[pf1_name]['avg_cumulative_sharpe_ratios']
+        pf2_sharpe = results[pf2_name]['avg_cumulative_sharpe_ratios']
 
         print(f"{'='*80}")
         print(f"영업일별 누적 수익률 비교 (매일)")
@@ -138,6 +151,21 @@ def calculate_average_cumulative_returns(simul_name, Tier):
             diff = pf1_val - pf2_val
 
             print(f"{day+1:>6}일 | {pf1_val:>11.2f}% | {pf2_val:>11.2f}% | {diff:>+11.2f}%")
+
+        # Sharpe Ratio 비교 (데이터가 있는 경우만)
+        if pf1_sharpe and pf2_sharpe:
+            print(f"\n{'='*80}")
+            print(f"영업일별 누적 Sharpe Ratio 비교 (매일, 연율화)")
+            print(f"{'='*80}")
+            print(f"{'영업일':>6} | {pf1_name:>12} | {pf2_name:>12} | {'차이':>12}")
+            print(f"{'-'*80}")
+
+            for day in range(backtest_days):
+                pf1_sr = pf1_sharpe[day]
+                pf2_sr = pf2_sharpe[day]
+                diff_sr = pf1_sr - pf2_sr
+
+                print(f"{day+1:>6}일 | {pf1_sr:>12.4f} | {pf2_sr:>12.4f} | {diff_sr:>+12.4f}")
 
     print(f"\n{'='*80}")
     print(f"분석 완료")

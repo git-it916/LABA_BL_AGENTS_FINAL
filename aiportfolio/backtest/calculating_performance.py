@@ -219,6 +219,24 @@ class backtest():
                 # 샤프 비율 (연율화, 무위험 수익률 0 가정)
                 sharpe_ratio = (avg_daily_return / volatility) * (252 ** 0.5) if volatility != 0 else 0
 
+                # 일별 누적 Sharpe Ratio 계산
+                cumulative_sharpe_ratios = []
+                for i in range(1, len(portfolio_returns_series) + 1):
+                    # i일까지의 수익률
+                    returns_so_far = portfolio_returns_series.iloc[:i]
+
+                    # 평균과 표준편차 계산
+                    mean_return = returns_so_far.mean()
+                    std_return = returns_so_far.std()
+
+                    # Sharpe Ratio 계산 (연율화)
+                    if std_return != 0:
+                        sharpe = (mean_return / std_return) * (252 ** 0.5)
+                    else:
+                        sharpe = 0.0
+
+                    cumulative_sharpe_ratios.append(sharpe)
+
                 # 결과 저장 (상세 정보 포함)
                 # JSON 직렬화를 위해 키를 문자열로, pandas 객체를 리스트/문자열로 변환
                 results[forecast_date_dt.strftime('%Y-%m-%d')] = {
@@ -226,6 +244,7 @@ class backtest():
                     'forecast_date': forecast_date_dt.strftime('%Y-%m-%d'),
                     'daily_returns': portfolio_returns_series.tolist(),
                     'cumulative_returns': cumulative_return.tolist(),
+                    'cumulative_sharpe_ratios': cumulative_sharpe_ratios,  # 일별 누적 Sharpe Ratio 추가
                     'final_return': float(final_return),
                     'avg_daily_return': float(avg_daily_return),
                     'volatility': float(volatility),
