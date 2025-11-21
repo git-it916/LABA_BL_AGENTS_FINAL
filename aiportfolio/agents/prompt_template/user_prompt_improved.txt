@@ -1,5 +1,5 @@
 [Task]
-Analyze the provided sector data and generate exactly 5 Long-Short relative views following your system prompt guidelines for Tier {{TIER}}.
+Analyze the provided sector data and generate **up to 6** Long-Short relative views following your system prompt guidelines for Tier {{TIER}}. **Prioritize conviction over quantity** (output fewer pairs if high-conviction criteria are not met).
 
 [Sector Data - Tier {{TIER}}]
 {{DATA_BLOCKS}}

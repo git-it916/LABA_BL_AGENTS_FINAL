@@ -14,8 +14,8 @@
 
 ### TIER 2 GUIDELINES (Technical + Accounting Indicators)
 
-**Available Data (from Accounting layer)**:
-- Book/Market (bm): Valuation (Higher = cheaper; indicates value orientation)
+
+- bmBook/Market (bm): Valuation (Higher = cheaper; indicates value orientation)
 - Shiller CAPE (capei): Valuation (Lower = cheaper; high CAPE → potentially overvalued sector)
 - Gross Profit / Total Assets (gprof): Efficiency (Higher = assets generate profit efficiently)
 - Net Profit Margin (npm): Profitability (Higher = better cost control and pricing power)
