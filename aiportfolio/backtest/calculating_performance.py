@@ -139,8 +139,10 @@ class backtest():
         # 일별 섹터별 초과수익률 데이터 로드 (한 번만 로드)
         daily_return_df = final_abnormal_returns()
 
-        # DlyCalDt를 인덱스로 설정
-        if 'DlyCalDt' in daily_return_df.columns:
+        # date를 인덱스로 설정 (preprocessing_2차수정.py는 'date' 컬럼 사용)
+        if 'date' in daily_return_df.columns:
+            daily_return_df = daily_return_df.set_index('date')
+        elif 'DlyCalDt' in daily_return_df.columns:
             daily_return_df = daily_return_df.set_index('DlyCalDt')
 
         # 결과를 저장할 딕셔너리

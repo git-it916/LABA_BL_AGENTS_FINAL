@@ -102,7 +102,7 @@ def total_daily_returns():
 
     merged_df['prev_DlyCap'] = merged_df.groupby('Ticker')['DlyCap'].shift(1)
 
-    merged_df["_ret_x_cap"] = merged_df["DlyRet"] * merged_df["prev_DlyCap"]
+    merged_df["_ret_x_cap"] = merged_df["excess_return"] * merged_df["prev_DlyCap"]
     agg = merged_df.groupby("date").agg(
         total_mktcap=("prev_DlyCap", "sum"),
         total_ret_x_cap=("_ret_x_cap", "sum")

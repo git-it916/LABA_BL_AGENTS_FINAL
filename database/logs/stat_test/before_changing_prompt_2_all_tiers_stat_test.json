@@ -1,0 +1,83 @@
+{
+    "simulation_info": {
+        "simul_name_base": "before_changing_prompt_2_",
+        "repetition_counts": 30,
+        "tier1_samples": 30,
+        "tier2_samples": 30,
+        "tier3_samples": 30
+    },
+    "test_1_Tier1_vs_zero": {
+        "hypothesis": {
+            "H0": "μ_Tier1 = 0",
+            "H1": "μ_Tier1 > 0"
+        },
+        "statistics": {
+            "mean": 0.004026898667579358,
+            "std": 0.0042196321432922375,
+            "sample_size": 30,
+            "t_statistic": 5.227050989567641,
+            "p_value": 6.747565589910244e-06
+        },
+        "result": {
+            "reject_H0": true,
+            "conclusion": "Tier 1 평균 > 0 (유의)"
+        }
+    },
+    "test_2_Tier1_vs_MVO": {
+        "hypothesis": {
+            "H0": "μ_Tier1 - μ_MVO = 0",
+            "H1": "μ_Tier1 - μ_MVO > 0"
+        },
+        "statistics": {
+            "Tier1_mean": 0.004026898667579358,
+            "MVO_mean": -0.00031145398271247016,
+            "excess_return_mean": 0.004338352650291828,
+            "excess_return_std": 0.0042196321432922375,
+            "sample_size": 30,
+            "t_statistic": 5.631328817974139,
+            "p_value": 2.1992132746246645e-06
+        },
+        "result": {
+            "reject_H0": true,
+            "conclusion": "Tier 1 > MVO (유의)"
+        }
+    },
+    "test_3_Tier2_vs_Tier1": {
+        "hypothesis": {
+            "H0": "μ_Tier2 - μ_Tier1 = 0",
+            "H1": "μ_Tier2 - μ_Tier1 > 0"
+        },
+        "statistics": {
+            "Tier2_mean": -0.0009392738197065695,
+            "Tier1_mean": 0.004026898667579358,
+            "excess_return_mean": -0.004966172487285928,
+            "excess_return_std": 0.007940447798910724,
+            "sample_size": 30,
+            "t_statistic": -3.4256061681070227,
+            "p_value": 0.9990737337920896
+        },
+        "result": {
+            "reject_H0": false,
+            "conclusion": "통계적으로 유의하지 않음"
+        }
+    },
+    "test_4_Tier3_vs_Tier2": {
+        "hypothesis": {
+            "H0": "μ_Tier3 - μ_Tier2 = 0",
+            "H1": "μ_Tier3 - μ_Tier2 > 0"
+        },
+        "statistics": {
+            "Tier3_mean": 0.0012524417667153587,
+            "Tier2_mean": -0.0009392738197065695,
+            "excess_return_mean": 0.0021917155864219283,
+            "excess_return_std": 0.005673128031292075,
+            "sample_size": 30,
+            "t_statistic": 2.11603203681893,
+            "p_value": 0.021523811130612077
+        },
+        "result": {
+            "reject_H0": true,
+            "conclusion": "Tier 3 > Tier 2 (유의)"
+        }
+    }
+}

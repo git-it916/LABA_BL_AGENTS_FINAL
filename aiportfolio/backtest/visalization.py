@@ -109,7 +109,7 @@ def calculate_average_cumulative_returns(simul_name, Tier):
             'avg_sharpe_ratios': avg_sharpe_ratios,
             'num_periods': len(portfolio_data),
             'backtest_days': min_days,
-            'final_avg_return': float(avg_cumulative_returns[-1])
+            'final_avg_cumulative_return': float(avg_cumulative_returns[-1])
         }
 
         print(f"      ✓ {portfolio_name}: {len(portfolio_data)}개 기간, {min_days}일 평균 계산 완료")
@@ -127,7 +127,7 @@ def calculate_average_cumulative_returns(simul_name, Tier):
         print(f"■ {portfolio_name}")
         print(f"  ├─ 분석 기간 수: {result['num_periods']}개")
         print(f"  ├─ 백테스트 영업일: {result['backtest_days']}일")
-        print(f"  └─ 평균 최종 누적 수익률: {result['final_avg_return']*100:.2f}%\n")
+        print(f"  └─ 평균 최종 누적 수익률: {result['final_avg_cumulative_return']*100:.2f}%\n")
 
     # 간단한 텍스트 차트
     if len(results) == 2:
