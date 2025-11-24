@@ -9,7 +9,7 @@ from aiportfolio.BL_MVO.BL_params.market_params import Market_Params
 from aiportfolio.BL_MVO.MVO_opt import MVO_Optimizer
 
 # !!!!!!!!!! 일별데이터 전처리 완료되면 의존성 수정해야함
-from aiportfolio.backtest.preprocessing import final_abnormal_returns
+from aiportfolio.backtest.preprocessing_2차수정 import final_abnormal_returns
 
 class backtest():
     def __init__(self, simul_name, Tier, forecast_period, backtest_days_count):

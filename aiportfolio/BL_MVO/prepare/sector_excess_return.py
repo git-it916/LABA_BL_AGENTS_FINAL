@@ -4,7 +4,7 @@ import numpy as np
 from aiportfolio.util.data_load.open_DTB3 import open_rf_rate
 from aiportfolio.util.data_load.open_final_stock_months import open_final_stock_months
 
-# python -m aiportfolio.BL_MVO.prepare.preprocessing_수정중
+# python -m aiportfolio.BL_MVO.prepare.sector_excess_return
 
 # ---------- 1) 월별 초과수익률 제작 ----------
 # https://fred.stlouisfed.org/series/DTB3
