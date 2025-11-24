@@ -219,10 +219,11 @@ class backtest():
                 # 샤프 비율 (연율화, 무위험 수익률 0 가정)
                 sharpe_ratio = (avg_daily_return / volatility) * (252 ** 0.5) if volatility != 0 else 0
 
-                # 일별 누적 Sharpe Ratio 계산
+                # 일별 누적 Sharpe Ratio 계산 (expanding window)
+                # 각 영업일까지의 일별 수익률을 사용하여 Sharpe Ratio 계산
                 cumulative_sharpe_ratios = []
                 for i in range(1, len(portfolio_returns_series) + 1):
-                    # i일까지의 수익률
+                    # i일까지의 일별 수익률
                     returns_so_far = portfolio_returns_series.iloc[:i]
 
                     # 평균과 표준편차 계산
@@ -244,7 +245,7 @@ class backtest():
                     'forecast_date': forecast_date_dt.strftime('%Y-%m-%d'),
                     'daily_returns': portfolio_returns_series.tolist(),
                     'cumulative_returns': cumulative_return.tolist(),
-                    'cumulative_sharpe_ratios': cumulative_sharpe_ratios,  # 일별 누적 Sharpe Ratio 추가
+                    'cumulative_sharpe_ratios': cumulative_sharpe_ratios,
                     'final_return': float(final_return),
                     'avg_daily_return': float(avg_daily_return),
                     'volatility': float(volatility),

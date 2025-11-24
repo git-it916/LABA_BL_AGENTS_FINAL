@@ -4,7 +4,7 @@ from aiportfolio.scene import scene
 #            configuration           #
 ######################################
 
-simul_name = 'simul_2'
+simul_name = 'simul_6'
 Tier = 1
 tau = 0.025
 model = 'llama'  # 'llama' or 'gemini'
@@ -12,10 +12,10 @@ model = 'llama'  # 'llama' or 'gemini'
 '''
 forecast_period = [
         "24-05-31",
-        "24-06-30"
+        "24-06-30",
+        "24-07-31"
 ]
 '''
-
 forecast_period = [
         "24-05-31",
         "24-06-30",

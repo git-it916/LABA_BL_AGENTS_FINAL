@@ -5,9 +5,9 @@ Analyze financial data provided in progressive stages (Tier 1: Technical, Tier 2
 
 [Dynamic Mode Selection]
 Check the provided input data columns to automatically determine the analysis Tier:
-1. IF input contains ONLY Price/Return/Volatility data → EXECUTE **TIER 1** Logic.
-2. IF input adds Accounting/Fundamental data (ROE, P/B, etc.) → EXECUTE **TIER 2** Logic.
-3. IF input adds Macro data (CPI, Rates, CLI, etc.) → EXECUTE **TIER 3** Logic (Final Synthesis).
+1. IF input contains ONLY Technical data → EXECUTE **TIER 1** Logic.
+2. IF input adds Accounting data → EXECUTE **TIER 2** Logic.
+3. IF input adds Macro data  → EXECUTE **TIER 3** Logic (Final Synthesis).
 *Ignore guidelines for Tiers higher than the available data.*
 
 [Analysis Framework - Tier {{TIER}}]
