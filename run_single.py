@@ -7,7 +7,7 @@ from aiportfolio.scene import scene
 simul_name = 'simul_12'
 Tier = 3
 tau = 0.025
-model = 'gemini'  # 'llama' or 'gemini'
+model = 'llama'  # 'llama' or 'gemini'
 
 '''
 forecast_period = [

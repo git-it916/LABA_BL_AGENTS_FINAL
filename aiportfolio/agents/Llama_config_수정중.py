@@ -141,8 +141,8 @@ def chat_with_llama3(pipeline_obj, system_prompt, user_prompt):
         prompt,
         max_new_tokens=12288,  # 8192 → 12288 (5개 뷰 JSON + 여유분, 각 뷰당 약 600 토큰)
         do_sample=True,
-        temperature=0.3,  # 0.6 → 0.3 (JSON 구조 유지를 위해 낮춤)
-        top_p=0.85,       # 0.9 → 0.85 (안정성 증가)
+        temperature=0.2,  # 0.6 → 0.3 (JSON 구조 유지를 위해 낮춤)
+        top_p=0.80,       # 0.9 → 0.85 (안정성 증가)
         return_full_text=False,
         eos_token_id=eos_tokens,
         pad_token_id=pipeline_obj.tokenizer.eos_token_id

@@ -4,10 +4,10 @@ from aiportfolio.scene import scene
 #            configuration           #
 ######################################
 
-simul_name_base = 'test_12_'
+simul_name_base = 'test_13_'
 
-Tier1_repetition_count = 3
-Tier2_repetition_count = 3
+Tier1_repetition_count = 0
+Tier2_repetition_count = 0
 Tier3_repetition_count = 3
 
 tau = 0.025
