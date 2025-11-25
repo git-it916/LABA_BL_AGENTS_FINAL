@@ -19,11 +19,19 @@ def add_sp500_flag(compustat_df: pd.DataFrame, base_path: str) -> pd.DataFrame:
     sp500_df["start_date"] = pd.to_datetime(sp500_df["start_date"])
     sp500_df["end_date"]   = pd.to_datetime(sp500_df["end_date"])
 
-    # 문자열 통일 (대문자)
-    compustat_df["Ticker"] = compustat_df["Ticker"].astype(str).str.upper()
-    sp500_df["Ticker"]     = sp500_df["Ticker"].astype(str).str.upper()
+    # 문자열 통일 (대문자 + strip)
+    compustat_df["Ticker"] = compustat_df["Ticker"].astype(str).str.upper().str.strip()
+    sp500_df["Ticker"]     = sp500_df["Ticker"].astype(str).str.upper().str.strip()
 
-    # merge : Ticker 기준
+    # 매칭 가능성 체크용 디버그 (교집합 티커 개수)
+    comp_tickers = set(compustat_df["Ticker"].unique())
+    sp500_tickers = set(sp500_df["Ticker"].unique())
+    inter_tickers = comp_tickers & sp500_tickers
+    print(f"[DEBUG] Compustat Ticker 수 : {len(comp_tickers):,}")
+    print(f"[DEBUG] S&P500 Ticker 수   : {len(sp500_tickers):,}")
+    print(f"[DEBUG] 교집합 Ticker 수   : {len(inter_tickers):,}")
+
+    # merge : Ticker 기준 (LEFT JOIN → Compustat 행 누락 없음)
     merged = compustat_df.merge(
         sp500_df,
         on="Ticker",
@@ -69,7 +77,7 @@ def add_gics_sector_for_sp500(df: pd.DataFrame, base_path: str):
     gics_path = os.path.join(base_path, "ticker_GICS.csv")
     gics = pd.read_csv(gics_path)
 
-    gics["Ticker"]   = gics["Ticker"].astype(str).str.upper()
+    gics["Ticker"]   = gics["Ticker"].astype(str).str.upper().str.strip()
     gics["datadate"] = pd.to_datetime(gics["datadate"])
 
     # GICS 파일 자체에 몇 개 섹터가 있는지 먼저 확인
@@ -86,7 +94,7 @@ def add_gics_sector_for_sp500(df: pd.DataFrame, base_path: str):
 
     # --- Compustat 쪽도 Ticker 정규화 ---
     df = df.copy()
-    df["Ticker"]      = df["Ticker"].astype(str).str.upper()
+    df["Ticker"]      = df["Ticker"].astype(str).str.upper().str.strip()
     df["public_date"] = pd.to_datetime(df["public_date"])
 
     # --- 단순 merge: Ticker 기준으로 gsector 붙이기 ---
@@ -96,7 +104,7 @@ def add_gics_sector_for_sp500(df: pd.DataFrame, base_path: str):
         how="left"
     )
 
-    print(f"[INFO] GICS 매핑 후 전체 고유 섹터 수 (NaN 포함): {df_merged['gsector'].nunique(dropna=True)}")
+    print(f"[INFO] GICS 매핑 후 전체 고유 섹터 수 (NaN 제외): {df_merged['gsector'].nunique(dropna=True)}")
 
     # --- S&P500 구간에서 매핑 성공/실패 집계 ---
     sp500_mask = df_merged["sp500"] == 1
@@ -187,8 +195,12 @@ if __name__ == "__main__":
     compustat_df = pd.read_csv(comp_path)
     compustat_df["public_date"] = pd.to_datetime(compustat_df["public_date"])
 
+    # 🔹 여기서 먼저 TICKER → Ticker로 통일
+    if "Ticker" not in compustat_df.columns and "TICKER" in compustat_df.columns:
+        compustat_df = compustat_df.rename(columns={"TICKER": "Ticker"})
+
     if "Ticker" not in compustat_df.columns:
-        raise ValueError("Compustat 파일에 'Ticker' 컬럼이 없습니다. 모든 파일에서 컬럼명을 'Ticker'로 통일하세요.")
+        raise ValueError("Compustat 파일에 'Ticker' 또는 'TICKER' 컬럼이 없습니다. 티커 컬럼명을 확인하세요.")
 
     print(f"[INFO] Compustat 로드 완료. 관측치 수: {len(compustat_df):,}, "
           f"고유 ticker 수: {compustat_df['Ticker'].nunique():,}")
@@ -202,9 +214,6 @@ if __name__ == "__main__":
     # 3) GICS 섹터 매핑
     # ----------------------------------------------
     df_with_gics, unmatched = add_gics_sector_for_sp500(compustat_df, base_path_repo)
-
-    # ❌ 네 요구대로: 매칭 안 되는 데이터는 따로 파일로 저장하지 않음
-    # (필요하면 나중에 unmatched를 수동으로 확인)
 
     # ----------------------------------------------
     # 4) 섹터 × 연 × 월 평균 계산
