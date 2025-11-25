@@ -1,89 +1,179 @@
 import pandas as pd
 import numpy as np
 import os
-import warnings
 
-# 불필요한 경고 메시지를 무시합니다.
-warnings.filterwarnings("ignore")
+# ==========================================================
+# 전역 경로 설정 (사용자 환경에 맞게 수정 필요)
+# ==========================================================
+BASE_PATH_COMPUSTAT = r"C:\Users\shins\OneDrive\문서"
+BASE_PATH_REPO = r"C:\Users\shins\OneDrive\LABA_BL_AGENTS_F\LABA_BL_AGENTS_FINAL\database"
 
-def calculate_accounting_indicator(): 
-    try:
-        base_path = os.path.dirname(os.path.abspath(__file__))
-    except NameError:
-        print("[경고] __file__ 변수를 찾을 수 없습니다. 현재 작업 디렉토리를 기준으로 경로를 설정합니다.")
-        base_path = os.getcwd() 
-        
-    file_path = os.path.join(base_path, '..', '..', '..', 'database', 'compustat_2021.01_2024.12.csv')
-    try:
-        raw_df = pd.read_csv(file_path, encoding='utf-8')
-    except FileNotFoundError:
-        print(f"오류: {file_path} 에서 파일을 찾을 수 없습니다.")
-        return pd.DataFrame()
-        
-    raw_df['public_date'] = pd.to_datetime(raw_df['public_date'])
+# ==========================================================
+# 1) S&P500 플래그 추가
+# ==========================================================
+def add_sp500_flag(compustat_df: pd.DataFrame, base_path: str) -> pd.DataFrame:
+    sp500_path = os.path.join(base_path, "sp500_ticker_start_end.csv")
+    if not os.path.exists(sp500_path):
+        print(f"[오류] S&P500 파일을 찾을 수 없습니다: {sp500_path}")
+        return compustat_df
 
-    # --- 계산할 회계 지표(레벨) 목록 ---
-    TARGET_METRICS = [
-        'bm_Mean',
-        'CAPEI_Mean',
-        'GProf_Mean',
-        'npm_Mean',
-        'roa_Mean',
-        'roe_Mean',
-        'totdebt_invcap_Mean'
-    ]
+    sp500_df = pd.read_csv(sp500_path)
+    sp500_df["start_date"] = pd.to_datetime(sp500_df["start_date"])
+    sp500_df["end_date"]   = pd.to_datetime(sp500_df["end_date"])
     
-    # 최종 결과 담을 리스트
-    all_results = []
+    # end_date 없는 종목(현재 편입중) 처리
+    sp500_df["end_date"] = sp500_df["end_date"].fillna(pd.Timestamp("2099-12-31"))
 
-    # --- 각 지표별로: "공시 시차 반영 3개월 평균( t-3, t-4, t-5 )"을 현재 월 t에서 사용 ---
-    for metric_name in TARGET_METRICS:
-        print(f"[알림] '{metric_name}' 지표의 공시 시차( t-3, t-4, t-5 ) 평균 계산 중...")
+    compustat_df["Ticker"] = compustat_df["Ticker"].astype(str).str.upper().str.strip()
+    sp500_df["Ticker"]     = sp500_df["Ticker"].astype(str).str.upper().str.strip()
 
-        # (1) 레벨 피벗 (Index: 날짜, Columns: 섹터, Values: 지표값)
-        levels_df = raw_df.pivot_table(
-            index='public_date',
-            columns='gicdesc',
-            values=metric_name
-        ).sort_index()
+    merged = compustat_df.merge(sp500_df, on="Ticker", how="left")
+    merged["public_date"] = pd.to_datetime(merged["public_date"])
 
-        # (2) 시차 3·4·5개월 이전 값 준비
-        # 예) t가 5월이면 shift(3)=2월, shift(4)=1월, shift(5)=이전해 12월
-        L3 = levels_df.shift(3)
-        L4 = levels_df.shift(4)
-        L5 = levels_df.shift(5)
+    merged["sp500"] = (
+        (merged["public_date"] >= merged["start_date"]) &
+        (merged["public_date"] <= merged["end_date"])
+    ).astype(int)
 
-        # (3) 세 값의 단순 평균을 현재 월 t의 "사용 가능 회계정보"로 정의
-        #     세 달 모두 있어야 평균이 나오도록(=하나라도 없으면 NaN)
-        available_acct = (L3 + L4 + L5) / 3.0
+    return merged.drop(columns=["start_date", "end_date"])
 
-        # (4) Long 포맷으로 변환
-        long_df = available_acct.stack(dropna=True).reset_index()
-        long_df.columns = ['date', 'gsector', 'acct_level_lagged_avg']
-        long_df['metric'] = metric_name
+# ==========================================================
+# 2) GICS 섹터 매핑
+# ==========================================================
+def add_gics_sector_for_sp500(df: pd.DataFrame, base_path: str):
+    gics_path = os.path.join(base_path, "ticker_GICS.csv")
+    if not os.path.exists(gics_path):
+        print(f"[오류] GICS 파일을 찾을 수 없습니다: {gics_path}")
+        return df, pd.DataFrame()
 
-        all_results.append(long_df)
+    gics = pd.read_csv(gics_path)
+    gics["Ticker"]   = gics["Ticker"].astype(str).str.upper().str.strip()
+    gics["datadate"] = pd.to_datetime(gics["datadate"])
 
-    print("[알림] 모든 지표 계산 완료. 데이터 취합 중...")
+    gics_sorted = gics.sort_values(["Ticker", "datadate"])
+    gics_latest = gics_sorted.groupby("Ticker").tail(1).copy()
 
-    if not all_results:
-        print("[경고] 최종 결과가 없습니다.")
+    df = df.copy()
+    df["Ticker"]      = df["Ticker"].astype(str).str.upper().str.strip()
+    df["public_date"] = pd.to_datetime(df["public_date"])
+
+    df_merged = df.merge(
+        gics_latest[["Ticker", "gsector"]],
+        on="Ticker",
+        how="left"
+    )
+    
+    # 디버깅용 로그: 실제 섹터 값이 숫자인지 문자인지 확인
+    unique_sectors = df_merged['gsector'].dropna().unique()
+    print(f"[DEBUG] CSV에 있는 섹터 값 예시: {unique_sectors[:5]}")
+
+    sp500_mask = df_merged["sp500"] == 1
+    unmatched_sp500 = df_merged[sp500_mask & df_merged["gsector"].isna()].copy()
+
+    return df_merged, unmatched_sp500
+
+# ==========================================================
+# 3) 섹터 × 연 × 월별 평균 계산
+# ==========================================================
+def calculate_sector_monthly_average(df: pd.DataFrame, metric_cols=None) -> pd.DataFrame:
+    df = df.copy()
+    filtered = df[(df["sp500"] == 1) & (df["gsector"].notna())].copy()
+
+    if filtered.empty:
         return pd.DataFrame()
 
-    # (5) 하나로 합치고 정렬
-    final_df = pd.concat(all_results, ignore_index=True)
-    final_df = final_df.sort_values(by=['metric', 'gsector', 'date']).reset_index(drop=True)
+    filtered["public_date"] = pd.to_datetime(filtered["public_date"])
+    filtered["year"]  = filtered["public_date"].dt.year
+    filtered["month"] = filtered["public_date"].dt.month
 
-    # 최종 출력: date 시점에서 사용 가능한 회계 레벨 (t-3,4,5 평균)
-    return final_df
+    if metric_cols is None:
+        metric_cols = filtered.select_dtypes(include=["float32", "float64", "int32", "int64"]).columns.tolist()
+        metric_cols = [c for c in metric_cols if c not in ["sp500", "year", "month"]]
+
+    grouped = (
+        filtered
+        .groupby(["gsector", "year", "month"])[metric_cols]
+        .mean()
+        .reset_index()
+        .sort_values(["gsector", "year", "month"])
+    )
+    return grouped
+
+# ==========================================================
+# 4) Prompt Maker용 통합 함수 (수정됨: 매핑 로직 추가)
+# ==========================================================
+def calculate_accounting_indicator():
+    print("[INFO] Tier 2 회계 지표 계산 시작...")
+    
+    # 1. Compustat 로드
+    comp_path = os.path.join(BASE_PATH_COMPUSTAT, "compustat_2021.01_2024.12_company.csv")
+    if not os.path.exists(comp_path):
+        return pd.DataFrame()
+
+    compustat_df = pd.read_csv(comp_path)
+    if "Ticker" not in compustat_df.columns and "TICKER" in compustat_df.columns:
+        compustat_df = compustat_df.rename(columns={"TICKER": "Ticker"})
+
+    # 2. S&P500 및 GICS 매핑
+    compustat_df = add_sp500_flag(compustat_df, BASE_PATH_REPO)
+    df_with_gics, _ = add_gics_sector_for_sp500(compustat_df, BASE_PATH_REPO)
+
+    # 3. 섹터 평균 계산
+    metric_cols = ["bm", "npm", "roe", "roa", "CAPEI", "GProf", "totdebt_invcap"]
+    available_metrics = [c for c in metric_cols if c in df_with_gics.columns]
+    
+    df_avg = calculate_sector_monthly_average(df_with_gics, available_metrics)
+
+    if df_avg.empty:
+        return pd.DataFrame(columns=['date', 'gsector', 'metric', 'acct_level_lagged_avg'])
+
+    # -----------------------------------------------------------
+    # [수정] GICS 숫자 코드를 영어 이름으로 변환 (Mapping)
+    # -----------------------------------------------------------
+    gics_map = {
+        10: "Energy", 
+        15: "Materials", 
+        20: "Industrials",
+        25: "Consumer Discretionary", 
+        30: "Consumer Staples",
+        35: "Health Care", 
+        40: "Financials", 
+        45: "Information Technology",
+        50: "Communication Services", 
+        55: "Utilities", 
+        60: "Real Estate"
+    }
+    
+    # 섹터 컬럼이 숫자형(int, float)일 경우 매핑 적용
+    if pd.api.types.is_numeric_dtype(df_avg['gsector']):
+        print("[INFO] 섹터 코드를 이름으로 변환합니다 (예: 45 -> Information Technology)")
+        df_avg['gsector'] = df_avg['gsector'].map(gics_map)
+    else:
+        # 혹시 이미 문자열이라도 공백이나 대소문자 차이가 있을 수 있으므로 확인 필요
+        print("[INFO] 섹터가 이미 문자열 형식이므로 매핑을 건너뜁니다.")
+
+    # 4. Prompt Maker 호환 포맷 변환 (Wide -> Long)
+    df_avg['date'] = pd.to_datetime(df_avg[['year', 'month']].assign(day=1)) + pd.offsets.MonthEnd(0)
+    
+    id_vars = ['date', 'gsector']
+    value_vars = available_metrics
+    
+    df_long = df_avg.melt(
+        id_vars=id_vars, 
+        value_vars=value_vars, 
+        var_name='metric', 
+        value_name='acct_level_lagged_avg'
+    )
+
+    df_long['metric'] = df_long['metric'].astype(str) + '_Mean'
+
+    print(f"[INFO] Tier 2 계산 완료. 데이터 형태: {df_long.shape}")
+    
+    # 디버깅: 변환 후 어떤 섹터들이 있는지 확인
+    print(f"[DEBUG] 최종 데이터에 포함된 섹터 목록: {df_long['gsector'].unique()}")
+    
+    return df_long
 
 if __name__ == "__main__":
-    print("[알림] 공시 시차 반영 회계 레벨(3개월 평균) 계산 스크립트 실행 시작...")
-    accounting_levels = calculate_accounting_indicator()
-    print("\n[알림] 스크립트 실행 완료.")
-    print("\n--- 최종 데이터 정보 ---")
-    print(accounting_levels.info())
-    print("\n--- Head ---")
-    print(accounting_levels.head())
-    print("\n--- Tail ---")
-    print(accounting_levels.tail())
+    result = calculate_accounting_indicator()
+    print(result.head())
