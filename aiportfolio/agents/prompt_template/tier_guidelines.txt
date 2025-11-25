@@ -1,35 +1,33 @@
 ### TIER 1 GUIDELINES (Technical Indicators Only)
-**Objective: Analyze sector strength using a hybrid approach:
-  - Standard Metrics: Evaluate absolute values for Growth, Momentum, and Risk (e.g., higher return is better).
-  - Z-Score (Mean Reversion): Apply Relative Ranking only to this metric to identify comparative momentum acceleration or breakdown regardless of absolute thresholds.
+**Objective: Identify sectors with strong fundamentals that are NOT overextended, using mean reversion signals to avoid buying peaks and selling troughs.
 
 **Available Data & Interpretation Logic:
-  - Standard Metrics (Absolute Assessment):
-    1. 3-year CAGR: Long-term structural growth trend (higher = better)
-    2. Recent 12-month returns: Short-term momentum (higher = better)
-    3. 12-month trend strength (R²): Trend consistency (closer to 1.0 = better)
-  
-  - Mean Reversion Signal (Z-score) - [RELATIVE RANKING ONLY]:
-    
-    1. 12-month volatility: Risk/instability (lower = better)
-    - Mean reversion signal (z-score): Momentum acceleration indicator
-    - Rank High to Low: Compare Z-scores across all sectors.
-    - Top Ranks: Indicates relative momentum acceleration (Bullish signal).
-    - Bottom Ranks: Indicates relative momentum breakdown (Bearish signal).
+  1. 3-year CAGR: Long-term structural growth trend (higher = better)
+  2. Recent 12-month returns: Short-term momentum (higher = better)
+  3. 12-month trend strength (R²): Trend consistency (closer to 1.0 = better)
+  4. 12-month volatility: Risk/instability (lower = better)
+  5. Mean reversion signal (z-score): Overextension indicator
+     - Z-score > +1.5: OVERBOUGHT (recent returns far above historical average) → AVOID Long
+     - Z-score -1.5 to +0.5: MODERATE (not overextended) → SAFE zone for Long
+     - Z-score < -1.5: OVERSOLD (recent returns far below historical average) → Potential bounce
 
 **Selection Strategy**:
-1. **Long Candidates**: Sectors with strong momentum cluster:
-  - Base: Strong absolute data (High CAGR, High Returns, High $R^2$ nearing 1.0).
-  - Trigger: Top-tier Rank in Z-score (Confirming momentum is accelerating relative to peers).
-  - Filter: Acceptable (Low) absolute volatility
+1. **Long Candidates**: Strong fundamentals WITHOUT overextension
+  - Base: Strong quality (High CAGR >10%, High R² >0.6, Low Volatility <25%)
+  - Critical Filter: Z-score between -1.5 and +0.5 (NOT overbought)
+  - Reasoning: Good sectors that haven't run too far yet → Room to grow
+  - AVOID: High Z-score (+1.5 or above) even if fundamentals are strong → Likely to correct
 
-2. **Short Candidates**: Sectors with weak momentum cluster:
-  - Base: Weak/Negative absolute data (Low/Neg CAGR, Low/Neg Returns).
-  - Trigger: Bottom-tier Rank in Z-score (Confirming momentum is breaking down relative to peers).
-  - Filter: High absolute volatility (indicating instability).
+2. **Short Candidates**: Weak fundamentals WITH overextension
+  - Base: Weak quality (Low/Negative CAGR, Low R², High Volatility >30%)
+  - Trigger: High Z-score (+1.0 or above) → Overextended rally on weak fundamentals
+  - Reasoning: Bad sectors that have rallied too much → Likely to reverse
+  - Secondary: Very low Z-score (<-2.0) on weak fundamentals → Falling knife, wait for bounce failure
 
-**Conviction Assessment (Flexible Judgment):
-  - High Conviction: Strong absolute metrics are supported by a Top-tier Z-score rank.
+**Conviction Assessment**:
+  - High Conviction Long: Strong CAGR + High R² + Z-score near 0 (neutral, not overheated)
+  - High Conviction Short: Weak CAGR + Low R² + High Z-score (+1.5) (bad sector overextended)
+  - Avoid: Strong fundamentals + High Z-score (overbought) OR Weak fundamentals + Low Z-score (already crashed)
 ---
 
 ### TIER 2 GUIDELINES (Technical + Accounting Indicators)

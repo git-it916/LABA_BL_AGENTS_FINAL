@@ -216,7 +216,7 @@ def load_tier_guidelines(tier):
     Tier별 분석 가이드라인 로드 (누적 방식)
     """
     base_path = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(base_path, 'prompt_template', 'tier_guidelines.txt')
+    file_path = os.path.join(base_path, 'prompt_template', 'tier_guidelines_상윤.txt')
 
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -267,7 +267,7 @@ def making_system_prompt(tier):
     Tier별 시스템 프롬프트 생성
     """
     base_path = os.path.dirname(os.path.abspath(__file__))
-    template_path = os.path.join(base_path, 'prompt_template', 'system_prompt_improved.txt')
+    template_path = os.path.join(base_path, 'prompt_template', 'system_prompt_상윤.txt')
 
     try:
         with open(template_path, 'r', encoding='utf-8') as f:

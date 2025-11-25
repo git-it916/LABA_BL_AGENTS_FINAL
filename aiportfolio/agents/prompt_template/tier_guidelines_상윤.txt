@@ -7,10 +7,12 @@
 ---
 
 ### TIER 2 GUIDELINES (Technical + Accounting Indicators)
-- bm: The inverse of the price-to-book ratio (PBR), capturing relative value; higher values indicate more undervaluation based on book equity. 
+The accounting metrics reflect a **2-quarter (approximately 6-month) lag** due to quarterly reporting schedules. For example, when forecasting for Q3 (Jul-Sep), you are analyzing Q1 (Jan-Mar) accounting data. 
+This lag is realistic and intentional—investors must make decisions based on the most recently available reported financials. Therefore, focus on **structural quality patterns** (e.g., consistently high ROE over multiple quarters) rather than expecting short-term accounting momentum to align with recent price action.
+- bm: The inverse of the price-to-book ratio (PBR), capturing relative value; higher values indicate more undervaluation based on book equity.
 - npm: Net profit margin, measuring the percentage of revenue that is converted into net income, capturing profitability efficiency.
-- roe: Return on equity, indicating how effectively a sector generates profit from its shareholders’ equity.
-- roa: Return on assets, measuring how efficiently a sector’s assets are used to generate earnings.
+- roe: Return on equity, indicating how effectively a sector generates profit from its shareholders' equity.
+- roa: Return on assets, measuring how efficiently a sector's assets are used to generate earnings.
 - CAPEI: A CAPEX-related indicator reflecting capital expenditure intensity or asset reinvestment behavior, typically capturing long-term investment and capital allocation efficiency.
 - GProf: Gross profit margin, measuring core profitability from revenue after accounting for direct production costs.
 - totdebt_invcap: Total debt divided by invested capital (or market capitalization proxy), capturing leverage and balance-sheet risk.

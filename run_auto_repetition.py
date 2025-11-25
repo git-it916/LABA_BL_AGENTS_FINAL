@@ -4,11 +4,11 @@ from aiportfolio.scene import scene
 #            configuration           #
 ######################################
 
-simul_name_base = 'test_6_'
+simul_name_base = 'test_12_'
 
-Tier1_repetition_count = 0
-Tier2_repetition_count = 2
-Tier3_repetition_count = 2
+Tier1_repetition_count = 3
+Tier2_repetition_count = 3
+Tier3_repetition_count = 3
 
 tau = 0.025
 model = 'llama'  # 'llama' or 'gemini'
