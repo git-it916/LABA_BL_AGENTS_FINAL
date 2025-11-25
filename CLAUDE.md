@@ -34,6 +34,13 @@
 - ✅ LLM 기반 구조화된 뷰 생성
 - ✅ 베이지안 포트폴리오 최적화
 - ✅ 백테스팅 및 성과 검증
+- ✅ 뷰 없는 BL (NONE_view) 베이스라인 비교
+
+### 포트폴리오 비교 구조
+1. **AI_portfolio**: LLM 생성 뷰 + Black-Litterman + MVO 최적화
+2. **NONE_view (베이스라인)**: 뷰 없는 Black-Litterman (P=0, 시장 균형 수익률 사용)
+   - 수학적으로 순수 MVO와 동등하지만 BL 프레임워크 내에서 구현
+   - 시장 균형 수익률(π)을 그대로 사용하여 MVO 최적화 수행
 
 ---
 
@@ -2420,4 +2427,53 @@ agg["sector_return"] = ret_x_cap_sum / sector_mktcap
 
 ---
 
-*Last Updated: 2025-11-12 (백테스트 시스템 전면 수정 + 프롬프트 일관성 수정 + 데이터 소수점 처리 개선 + **이론적 정확성 100% 달성** 완료)*
+## 🔄 최신 업데이트 (2025-11-25)
+
+### 명명 체계 개선
+**목적**: 개념적 정확성 향상
+
+#### 변경 사항
+1. **포트폴리오 명명 변경**
+   - `MVO` → `NONE_view` (뷰 없는 Black-Litterman 베이스라인)
+   - 이유: 실제로는 BL 프레임워크(P=0)를 사용하므로 개념적으로 더 정확
+
+2. **하위 호환성 보장**
+   - 기존 JSON 파일(`"portfolio_name": "MVO"`)도 자동 변환
+   - [visalization.py](aiportfolio/backtest/visalization.py#L56-L57): `if portfolio_name == 'MVO': portfolio_name = 'NONE_view'`
+
+3. **문서화 개선**
+   - Docstring에 포트폴리오 개념 명시
+   - `AI_portfolio`: LLM 뷰 + BL + MVO
+   - `NONE_view`: 뷰 없는 BL (P=0, 시장 균형 수익률)
+
+#### 영향 받은 파일
+- [scene.py](aiportfolio/scene.py#L66): `portfolio_name='NONE_view'`
+- [calculating_performance.py](aiportfolio/backtest/calculating_performance.py#L167-L179): Docstring 추가
+- [visalization.py](aiportfolio/backtest/visalization.py#L15-L18): Docstring + 하위 호환성
+- [final_visualization.py](final_visualization.py#L61-L63): Docstring + 하위 호환성
+- [README.md](README.md#L34-L38): 백테스트 설명 업데이트
+
+### 함수 명명 개선
+**목적**: BL 프레임워크 사용 명시
+
+#### 변경 사항
+- `get_MVO_weight()` → `get_NONE_view_BL_weight()`
+- [calculating_performance.py:79](aiportfolio/backtest/calculating_performance.py#L79-L91)
+  ```python
+  def get_NONE_view_BL_weight(self):
+      """
+      Black-Litterman 프레임워크를 사용하되 뷰가 없는 상태(P=0)로
+      시장 균형 수익률 기반 포트폴리오를 생성합니다.
+      """
+  ```
+
+#### 수학적 검증
+- P=0일 때: `μ_BL = [(τΣ)^(-1)]^(-1) × [(τΣ)^(-1)π] = π` ✅
+- 시장 균형 수익률(π)을 그대로 사용하여 MVO 최적화 수행
+- 결과적으로 순수 MVO와 동일하지만 BL 프레임워크 내에서 구현
+
+---
+
+*Last Updated: 2025-11-25 (명명 체계 개선 + 개념적 정확성 향상 + 하위 호환성 보장)*
+
+*Previous Update: 2025-11-12 (백테스트 시스템 전면 수정 + 프롬프트 일관성 수정 + 데이터 소수점 처리 개선 + 이론적 정확성 100% 달성)*

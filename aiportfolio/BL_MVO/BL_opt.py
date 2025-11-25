@@ -18,7 +18,7 @@ def get_bl_outputs(tau, start_date, end_date, simul_name=None, Tier=None, model=
         μ_BL = [(τΣ)^(-1) + P^T·Ω^(-1)·P]^(-1) × [(τΣ)^(-1)·π + P^T·Ω^(-1)·Q]
         Σ_BL = [(τΣ)^(-1) + P^T·Ω^(-1)·P]^(-1)
 
-    Args:
+    Args:  
         tau (float): Black-Litterman 불확실성 계수 (일반적으로 0.01~0.05)
         start_date (datetime): 시작 날짜
         end_date (datetime): 종료 날짜 (예측 기준일)

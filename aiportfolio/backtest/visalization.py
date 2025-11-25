@@ -14,8 +14,8 @@ def calculate_average_cumulative_returns(simul_name, Tier):
 
     Returns:
         dict: 포트폴리오별 평균 누적 수익률 정보
-            - 'AI_portfolio': AI 포트폴리오 결과
-            - 'MVO': MVO 포트폴리오 결과
+            - 'AI_portfolio': LLM 뷰 + BL + MVO 결과
+            - 'NONE_view': 뷰 없는 BL (베이스라인) 결과
     """
     # 1. JSON 파일 경로 생성 및 로드
     base_log_dir = os.path.join("database", "logs")
@@ -46,11 +46,15 @@ def calculate_average_cumulative_returns(simul_name, Tier):
     # 2. 포트폴리오별로 데이터 분리
     print(f"[2/4] 포트폴리오별 데이터 분리 중...")
 
-    portfolios = {}  # {'AI_portfolio': {...}, 'MVO': {...}}
+    portfolios = {}  # {'AI_portfolio': {...}, 'NONE_view': {...}}
 
     for item in data:
         for date, result_data in item.items():
             portfolio_name = result_data.get('portfolio_name')
+
+            # 하위 호환성: 'MVO' → 'NONE_view' 자동 변환
+            if portfolio_name == 'MVO':
+                portfolio_name = 'NONE_view'
 
             if portfolio_name not in portfolios:
                 portfolios[portfolio_name] = {}

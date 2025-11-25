@@ -52,7 +52,7 @@ def load_tier_data(simul_name_base, tier):
     특정 Tier의 모든 데이터 로드
 
     Returns:
-        tuple: (AI_portfolio_returns, MVO_returns) 두 개의 numpy array
+        tuple: (AI_portfolio_returns, NONE_view_returns) 두 개의 numpy array
     """
     files = find_json_files(simul_name_base, tier)
 
@@ -60,7 +60,7 @@ def load_tier_data(simul_name_base, tier):
         return np.array([]), np.array([])
 
     AI_portfolio_sample = []
-    mvo_sample = []
+    none_view_sample = []
 
     print(f"\n{'='*80}")
     print(f"Tier {tier} 데이터 수집 중... (찾은 파일: {len(files)}개)")
@@ -75,14 +75,21 @@ def load_tier_data(simul_name_base, tier):
             # data[2]에 평균값 요약이 저장되어 있음
             summary = data[2]
 
-            # AI Portfolio와 MVO의 평균 누적 수익률 추출
+            # AI Portfolio와 NONE_view의 평균 누적 수익률 추출
             ai_avg = summary['AI_portfolio']['final_avg_cumulative_return']
-            mvo_avg = summary['MVO']['final_avg_cumulative_return']
+
+            # 하위 호환성: 'MVO' 키가 있으면 그것을 사용, 없으면 'NONE_view' 사용
+            if 'NONE_view' in summary:
+                none_view_avg = summary['NONE_view']['final_avg_cumulative_return']
+            elif 'MVO' in summary:
+                none_view_avg = summary['MVO']['final_avg_cumulative_return']
+            else:
+                raise KeyError("'NONE_view' 또는 'MVO' 키를 찾을 수 없습니다.")
 
             AI_portfolio_sample.append(ai_avg)
-            mvo_sample.append(mvo_avg)
+            none_view_sample.append(none_view_avg)
 
-            print(f"[{i}/{len(files)}] {filename} (AI: {ai_avg*100:.2f}%, MVO: {mvo_avg*100:.2f}%)")
+            print(f"[{i}/{len(files)}] {filename} (AI: {ai_avg*100:.2f}%, NONE_view: {none_view_avg*100:.2f}%)")
 
         except FileNotFoundError:
             print(f"[오류] 파일을 찾을 수 없습니다: {filepath}")
@@ -94,7 +101,7 @@ def load_tier_data(simul_name_base, tier):
             print(f"[오류] 예상치 못한 오류 발생: {e}")
             continue
 
-    return np.array(AI_portfolio_sample), np.array(mvo_sample)
+    return np.array(AI_portfolio_sample), np.array(none_view_sample)
 
 
 ######################################
@@ -140,17 +147,17 @@ print(f"\n[확인] 모든 Tier에서 {repetition_counts}개의 파일이 발견�
 print(f"통계검정을 진행합니다.\n")
 
 # 각 Tier 데이터 로드
-tier1_ai, tier1_mvo = load_tier_data(simul_name_base, 1)
-tier2_ai, tier2_mvo = load_tier_data(simul_name_base, 2)
-tier3_ai, tier3_mvo = load_tier_data(simul_name_base, 3)
+tier1_ai, tier1_none_view = load_tier_data(simul_name_base, 1)
+tier2_ai, tier2_none_view = load_tier_data(simul_name_base, 2)
+tier3_ai, tier3_none_view = load_tier_data(simul_name_base, 3)
 
 # 데이터 검증
 print(f"\n{'='*80}")
 print(f"데이터 로드 완료")
 print(f"{'='*80}")
-print(f"Tier 1: AI={len(tier1_ai)}개, MVO={len(tier1_mvo)}개")
-print(f"Tier 2: AI={len(tier2_ai)}개, MVO={len(tier2_mvo)}개")
-print(f"Tier 3: AI={len(tier3_ai)}개, MVO={len(tier3_mvo)}개")
+print(f"Tier 1: AI={len(tier1_ai)}개, NONE_view={len(tier1_none_view)}개")
+print(f"Tier 2: AI={len(tier2_ai)}개, NONE_view={len(tier2_none_view)}개")
+print(f"Tier 3: AI={len(tier3_ai)}개, NONE_view={len(tier3_none_view)}개")
 print(f"{'='*80}\n")
 
 # 최소 표본 수 확인
@@ -196,25 +203,25 @@ else:
     print("-> Tier 1의 평균 수익률이 0보다 크다고 할 수 없습니다.")
 
 # ============================================================
-# 통계 검정 2: Tier 1 평균 > MVO 평균
+# 통계 검정 2: Tier 1 평균 > NONE_view 평균
 # ============================================================
 print(f"\n{'='*80}")
-print("통계 검정 2: Tier 1 AI Portfolio의 평균 수익률이 MVO보다 큰가?")
+print("통계 검정 2: Tier 1 AI Portfolio의 평균 수익률이 NONE_view보다 큰가?")
 print(f"{'='*80}\n")
 
-excess_tier1_vs_mvo = tier1_ai - tier1_mvo
-t_stat_2, p_val_2 = stats.ttest_1samp(excess_tier1_vs_mvo, popmean=0, alternative='greater')
+excess_tier1_vs_none_view = tier1_ai - tier1_none_view
+t_stat_2, p_val_2 = stats.ttest_1samp(excess_tier1_vs_none_view, popmean=0, alternative='greater')
 
 print(f"[기술 통계]")
 print(f"Tier 1 AI 평균: {tier1_ai.mean()*100:.2f}%")
-print(f"MVO 평균: {tier1_mvo.mean()*100:.2f}%")
-print(f"평균 초과 수익률: {excess_tier1_vs_mvo.mean()*100:.2f}%")
-print(f"초과 수익률 표준편차: {excess_tier1_vs_mvo.std(ddof=1)*100:.2f}%")
-print(f"표본 크기: {len(excess_tier1_vs_mvo)}")
+print(f"NONE_view 평균: {tier1_none_view.mean()*100:.2f}%")
+print(f"평균 초과 수익률: {excess_tier1_vs_none_view.mean()*100:.2f}%")
+print(f"초과 수익률 표준편차: {excess_tier1_vs_none_view.std(ddof=1)*100:.2f}%")
+print(f"표본 크기: {len(excess_tier1_vs_none_view)}")
 
 print(f"\n[대응표본 t검정 결과]")
-print(f"귀무가설 (H0): μ_Tier1 - μ_MVO = 0")
-print(f"대립가설 (H1): μ_Tier1 - μ_MVO > 0")
+print(f"귀무가설 (H0): μ_Tier1 - μ_NONE_view = 0")
+print(f"대립가설 (H1): μ_Tier1 - μ_NONE_view > 0")
 print(f"t-통계량: {t_stat_2:.4f}")
 print(f"p-value: {p_val_2:.4f}")
 
@@ -222,12 +229,12 @@ print(f"\n[판정] (유의수준 α = {alpha})")
 if p_val_2 < alpha:
     print(f"[O] p-value ({p_val_2:.4f}) < {alpha}")
     print("-> 귀무가설 기각")
-    print(f"-> Tier 1이 MVO보다 평균 {excess_tier1_vs_mvo.mean()*100:.2f}% 높은 수익률을 보이며,")
+    print(f"-> Tier 1이 NONE_view보다 평균 {excess_tier1_vs_none_view.mean()*100:.2f}% 높은 수익률을 보이며,")
     print("   이는 통계적으로 유의합니다.")
 else:
     print(f"[X] p-value ({p_val_2:.4f}) >= {alpha}")
     print("-> 귀무가설 기각 실패")
-    print("-> Tier 1이 MVO보다 유의하게 높다고 할 수 없습니다.")
+    print("-> Tier 1이 NONE_view보다 유의하게 높다고 할 수 없습니다.")
 
 # ============================================================
 # 통계 검정 3: Tier 2 평균 > Tier 1 평균
@@ -338,23 +345,23 @@ results = {
             "conclusion": "Tier 1 평균 > 0 (유의)" if p_val_1 < alpha else "통계적으로 유의하지 않음"
         }
     },
-    "test_2_Tier1_vs_MVO": {
+    "test_2_Tier1_vs_NONE_view": {
         "hypothesis": {
-            "H0": "μ_Tier1 - μ_MVO = 0",
-            "H1": "μ_Tier1 - μ_MVO > 0"
+            "H0": "μ_Tier1 - μ_NONE_view = 0",
+            "H1": "μ_Tier1 - μ_NONE_view > 0"
         },
         "statistics": {
             "Tier1_mean": float(tier1_ai.mean()),
-            "MVO_mean": float(tier1_mvo.mean()),
-            "excess_return_mean": float(excess_tier1_vs_mvo.mean()),
-            "excess_return_std": float(excess_tier1_vs_mvo.std(ddof=1)),
-            "sample_size": len(excess_tier1_vs_mvo),
+            "NONE_view_mean": float(tier1_none_view.mean()),
+            "excess_return_mean": float(excess_tier1_vs_none_view.mean()),
+            "excess_return_std": float(excess_tier1_vs_none_view.std(ddof=1)),
+            "sample_size": len(excess_tier1_vs_none_view),
             "t_statistic": float(t_stat_2),
             "p_value": float(p_val_2)
         },
         "result": {
             "reject_H0": bool(p_val_2 < alpha),
-            "conclusion": "Tier 1 > MVO (유의)" if p_val_2 < alpha else "통계적으로 유의하지 않음"
+            "conclusion": "Tier 1 > NONE_view (유의)" if p_val_2 < alpha else "통계적으로 유의하지 않음"
         }
     }
 }

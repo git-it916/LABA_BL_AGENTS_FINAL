@@ -76,12 +76,15 @@ class backtest():
             print(f"open_BL_MVO_log 처리 중 오류 발생: {e}")
             return None
 
-    def get_MVO_weight(self):
+    def get_NONE_view_BL_weight(self):
         """
-        MVO 가중치를 계산하여 Long 형식 DataFrame으로 반환합니다.
+        Black-Litterman 프레임워크를 사용하되 뷰가 없는 상태(P=0)로 MVO와 동일한 결과를 산출합니다.
+
+        이 함수는 BL 모델에서 P=0 (뷰 없음)으로 설정하여 μ_BL = π (시장 균형 수익률)을 얻고,
+        이를 기반으로 Sharpe Ratio 최적화를 수행합니다. 수학적으로 순수 MVO와 동일한 결과를 보장합니다.
 
         Returns:
-            pd.DataFrame: Long 형식 MVO 가중치
+            pd.DataFrame: Long 형식 가중치
                 - ForecastDate: 예측 기준일
                 - SECTOR: GICS 섹터 코드
                 - Weight: 가중치
@@ -109,6 +112,7 @@ class backtest():
                 P = np.zeros((1, num_sectors))
                 Q = np.zeros((1, 1))
                 Omega = np.eye(1)
+                tau = 0.000000000000000001
 
                 # --- Execute the Black-Litterman formula ---
                 pi_np = (Pi.values.flatten() if isinstance(Pi, pd.DataFrame) else Pi.flatten()).reshape(-1, 1)
@@ -155,7 +159,7 @@ class backtest():
                 continue
 
         if not all_data:
-            print("MVO 가중치 계산에 모두 실패했습니다.")
+            print("가중치 계산에 모두 실패했습니다.")
             return None
 
         return pd.DataFrame(all_data)
@@ -163,6 +167,15 @@ class backtest():
     def performance_of_portfolio(self, portfolio_weights, portfolio_name="Portfolio"):
         """
         여러 예측 기준일에 대해 포트폴리오의 백테스트 성과를 계산합니다.
+
+        Args:
+            portfolio_weights (pd.DataFrame): 포트폴리오 가중치
+            portfolio_name (str): 포트폴리오 이름
+                - 'AI_portfolio': LLM 뷰 + BL + MVO 최적화 결과
+                - 'NONE_view': 뷰 없는 BL (P=0, 시장 균형 베이스라인)
+
+        Returns:
+            dict: 백테스트 성과 지표
         """
         # forecast_period를 리스트로 변환 (단일 날짜인 경우 대비)
         if not isinstance(self.forecast_period, list):

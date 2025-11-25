@@ -58,13 +58,13 @@ def scene(simul_name, Tier, tau, forecast_period, backtest_days_count, model='ll
 
     test = backtest(simul_name, Tier, forecast_period, backtest_days_count)
     BL_result = test.open_BL_MVO_log()
-    mvo_result = test.get_MVO_weight()
+    none_view_result = test.get_NONE_view_BL_weight()
 
     BL_backtest_result = test.performance_of_portfolio(BL_result, portfolio_name='AI_portfolio')
     save_performance_as_json(BL_backtest_result, simul_name, Tier)
 
-    mvo_backtest_result = test.performance_of_portfolio(mvo_result, portfolio_name='MVO')
-    save_performance_as_json(mvo_backtest_result, simul_name, Tier)
+    none_view_backtest_result = test.performance_of_portfolio(none_view_result, portfolio_name='NONE_view')
+    save_performance_as_json(none_view_backtest_result, simul_name, Tier)
 
     calculate_average_cumulative_returns(simul_name, Tier)
 

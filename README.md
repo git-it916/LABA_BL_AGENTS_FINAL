@@ -33,7 +33,9 @@
 
 ✅ **백테스팅 및 성과 검증**
 - 복리 누적 수익률 (CAR) 계산
-- MVO 대비 초과 성과 측정
+- NONE_view (뷰 없는 BL 베이스라인) 대비 초과 성과 측정
+  - AI_portfolio: LLM 뷰 + BL + MVO
+  - NONE_view: 뷰 없는 BL (P=0, 시장 균형 수익률 사용)
 
 ---
 
@@ -128,10 +130,12 @@ tau 값 (예: 0.025): 0.025
 
 **출력 예시**:
 ```
-평균 MVO 성과: 5.23%
-평균 BL(AI) 성과: 7.89%
+평균 NONE_view (베이스라인) 성과: 5.23%
+평균 AI_portfolio 성과: 7.89%
 평균 초과 성과: 2.66%
 승률: 75.0%
+
+※ NONE_view: 뷰 없는 Black-Litterman (P=0, 시장 균형 수익률 기반)
 ```
 
 #### 커스텀 실행 (run.py 수정)
@@ -379,10 +383,43 @@ forecast_period = ["24-05-31", "24-06-30", ...]  # ✅ 올바름
 
 ## 📄 상세 문서
 
-- [CLAUDE.md](CLAUDE.md) - 전체 시스템 상세 설명 (프로젝트 분석 보고서)
-- [THEORETICAL_VALIDATION_REPORT.md](THEORETICAL_VALIDATION_REPORT.md) - 이론적 정확성 검증 (19개 항목)
-- [BACKTEST_README.md](BACKTEST_README.md) - 백테스트 시스템 설명
-- [PROMPT_IMPROVEMENTS.md](PROMPT_IMPROVEMENTS.md) - 프롬프트 개선 사항
+### 핵심 문서
+- **[CLAUDE.md](CLAUDE.md)** - 전체 시스템 상세 설명 (프로젝트 분석 보고서, 2000+ 라인)
+- **[THEORETICAL_VALIDATION_REPORT.md](THEORETICAL_VALIDATION_REPORT.md)** - 이론적 정확성 검증 (19개 항목, 100% 달성)
+- **[BACKTEST_README.md](BACKTEST_README.md)** - 백테스트 시스템 설명
+- **[PROMPT_IMPROVEMENTS.md](PROMPT_IMPROVEMENTS.md)** - 프롬프트 개선 사항
+
+### 주요 업데이트 이력
+- **2025-11-25**: 명명 체계 개선
+  - `MVO` → `NONE_view` (개념적 정확성 향상)
+  - 함수명: `get_MVO_weight()` → `get_NONE_view_BL_weight()`
+  - 하위 호환성 보장 (기존 JSON 파일 자동 변환)
+- **2025-11-12**: 백테스트 시스템 전면 수정
+  - 날짜 컬럼 통일 (`ForecastDate`)
+  - CAR 계산 수정 (복리 사용)
+  - 이론적 정확성 100% 달성
+
+---
+
+## 🔧 실행 스크립트
+
+### 메인 실행 파일
+| 파일 | 설명 | 용도 |
+|------|------|------|
+| [run_single.py](run_single.py) | 단일 시뮬레이션 | 하나의 설정으로 전체 기간 백테스트 |
+| [run_auto_repetition.py](run_auto_repetition.py) | 반복 실험 자동화 | Tier별 여러 번 반복 실행 (통계적 검증) |
+
+### 분석 도구
+| 파일 | 설명 | 출력 |
+|------|------|------|
+| [final_visualization.py](final_visualization.py) | 결과 시각화 | 그래프 및 차트 |
+| [statistical_analysis.py](statistical_analysis.py) | 통계 분석 | 평균, 표준편차, t-test 등 |
+
+### 실험 디렉토리
+- **[potato_trial/](potato_trial/)**: 개발 중/테스트용 스크립트
+  - 실험적 기능 및 백업 코드 포함
+  - 프로덕션 실행 시 무시 가능
+  - 여러 버전의 백테스트 구현 포함
 
 ---
 

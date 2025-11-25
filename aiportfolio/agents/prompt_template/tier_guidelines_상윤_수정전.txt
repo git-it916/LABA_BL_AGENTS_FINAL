@@ -18,7 +18,7 @@ This lag is realistic and intentional—investors must make decisions based on t
 - totdebt_invcap: Total debt divided by invested capital (or market capitalization proxy), capturing leverage and balance-sheet risk.
 ---
 
-### TIER 3 GUIDELINES (Technical + Accounting + Macroeconomic Indicators)
+### TIER 3 GUIDELINES (Final Synthesis: Macro-Regime & Multi-Factor Integration)
 - FEDFUNDS: The effective federal funds rate level
 - CPI: The year-over-year percent change in the Consumer Price Index
 - G20_CLI: The OECD Composite Leading Indicator index level
