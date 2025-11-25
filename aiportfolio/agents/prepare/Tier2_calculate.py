@@ -100,7 +100,7 @@ def calculate_sector_monthly_average(df: pd.DataFrame, metric_cols=None) -> pd.D
     return grouped
 
 # ==========================================================
-# 4) Prompt Maker용 통합 함수 (수정됨: 매핑 로직 추가)
+# 4) Prompt Maker용 통합 함수 (View 생성 및 Parquet 저장)
 # ==========================================================
 def calculate_accounting_indicator():
     print("[INFO] Tier 2 회계 지표 계산 시작...")
@@ -149,7 +149,6 @@ def calculate_accounting_indicator():
         print("[INFO] 섹터 코드를 이름으로 변환합니다 (예: 45 -> Information Technology)")
         df_avg['gsector'] = df_avg['gsector'].map(gics_map)
     else:
-        # 혹시 이미 문자열이라도 공백이나 대소문자 차이가 있을 수 있으므로 확인 필요
         print("[INFO] 섹터가 이미 문자열 형식이므로 매핑을 건너뜁니다.")
 
     # 4. Prompt Maker 호환 포맷 변환 (Wide -> Long)
@@ -168,10 +167,24 @@ def calculate_accounting_indicator():
     df_long['metric'] = df_long['metric'].astype(str) + '_Mean'
 
     print(f"[INFO] Tier 2 계산 완료. 데이터 형태: {df_long.shape}")
-    
-    # 디버깅: 변환 후 어떤 섹터들이 있는지 확인
     print(f"[DEBUG] 최종 데이터에 포함된 섹터 목록: {df_long['gsector'].unique()}")
+
+    # -----------------------------------------------------------
+    # [NEW] 최종 View를 Parquet 파일로 저장
+    # -----------------------------------------------------------
+    output_filename = "tier2_accounting_metrics.parquet"
+    output_path = os.path.join(BASE_PATH_REPO, output_filename)
     
+    try:
+        # engine='pyarrow' 사용 (설치 필요: pip install pyarrow)
+        df_long.to_parquet(output_path, engine='pyarrow', index=False)
+        print(f"[SAVED] Tier 2 View 저장 완료: {output_path}")
+    except ImportError:
+        print("[오류] pyarrow가 설치되어 있지 않습니다. Parquet 저장을 건너뜁니다.")
+        print("설치 명령어: pip install pyarrow")
+    except Exception as e:
+        print(f"[오류] Parquet 저장 중 에러 발생: {e}")
+
     return df_long
 
 if __name__ == "__main__":
