@@ -145,7 +145,7 @@ Determine the "season" to see which sectors are favored by the environment.
 ### COMMON RULES (All Tiers)
 
 **View Construction**:
-- Count: Maximum 6 pairs. No fixed minimum (Quality > Quantity). No duplicate
+- Count: Maximum 5 pairs. No fixed minimum (Quality > Quantity). No duplicate
 - Each sector can appear max 2 times across all pairs
 - relative_return_view range: -0.05 to +0.05 (realistic)
  - **Note**: Use decimal format. (e.g., a +2.5% expected relative return = `0.025`)
