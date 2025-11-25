@@ -35,54 +35,49 @@
 ### TIER 2 GUIDELINES (Technical + Accounting Indicators)
 
 **Available Data (from Accounting layer)**:
-  - bm_Mean (Book/Market): Valuation (Higher = cheaper; indicates value orientation)
-  - CAPEI_Mean (Shiller CAPE): Valuation (Lower = cheaper; high CAPE → potentially overvalued sector)
-  - GProf_Mean (Gross Profit / Total Assets): Efficiency (Higher = assets generate profit efficiently)
-  - npm_Mean (Net Profit Margin): Profitability (Higher = better cost control and pricing power)
-  - roa_Mean (Return on Assets): Profitability (Higher = stronger overall asset utilization)
-  - roe_Mean (Return on Equity): Profitability / Quality (Higher = stronger shareholder return efficiency)
-  - totdebt_invcap_Mean (Total Debt / Invested Capital): Leverage (Higher = more financial risk; context-dependent)
-
-**Data Interpretation**:
-  - Absolute Levels over Changes: Unlike Tier 1 (Momentum), Tier 2 uses Absolute Levels (current snapshot) to assess intrinsic safety.
-  - Role: Use these absolute metrics to stabilize the volatile momentum signals.
-  - Ranking: Assess whether the sector is currently High Quality, Cheap, or Risky relative to peers.
+  - bm_Mean: Book/Market Ratio (Lower = Cheaper/Value)
+  - CAPEI_Mean: Shiller CAPE Ratio (Lower = Cheaper)
+  - GProf_Mean: Gross Profitability (Higher = More Efficient)
+  - npm_Mean: Net Profit Margin (Higher = Better Profitability)
+  - roa_Mean: Return on Assets (Higher = Better Asset Utilization)
+  - roe_Mean: Return on Equity (Higher = Better Quality)
+  - totdebt_invcap_Mean: Total Debt/Invested Capital (Lower = Less Leveraged/Safer)
 
 **Enhanced Strategy (Building on Tier 1 Momentum Framework)**:
 
 **1. Quality-Growth Confirmation (Boosting Longs):
   **Upgrade Long Confidence:
-  - Condition: Tier 1 Long + Top-Tier Rank in roe_Mean & npm_Mean (High Absolute Quality).
+  - Condition: Tier 1 Long + High roe_Mean & npm_Mean (Strong Quality).
   - Interpretation: Momentum is supported by superior fundamentals. The trend is safe to follow.
   - Action: Apply a Positive Adjustment.
     - Guideline: Shift conviction from 'Strong' to 'Very Strong' or slightly increase the return view based on confidence.
 
-**2. Speculative Rally Filter (Stabilizing Longs):
-  **Penalize Long Confidence:
-  - Condition: Tier 1 Long + Bottom-Tier Rank in roe_Mean OR npm_Mean (Low Absolute Quality).
-  - Interpretation: "Junk Rally". Price is rising, but absolute fundamentals are poor. High risk of reversal.
-  - Action: Apply a Negative Penalty.
-    - Guideline: Dampen the expected return. Treat this as a "Speculative Buy" (Lower sizing/conviction) rather than a core holding.
-    
-**3. Value Floor Detection (Stabilizing Shorts):
-  **Neutralize Short Confidence:
-  - Condition: Tier 1 Short + Top-Tier Rank in Valuation (bm_Mean High, CAPEI_Mean Low).
-  - Interpretation: Momentum is weak, but the sector is at a "Hard Valuation Floor". Downside is limited by absolute cheapness.
-  - Action: Neutralize or Soften the Short.
-    - Guideline: Be cautious about shorting. Move the view closer to Neutral (0.00) to avoid a "Bear Trap".
-    
+**2. Speculative Rally Awareness (Monitoring Longs):
+  **Minor Caution on Long Confidence:
+  - Condition: Tier 1 Long + Low roe_Mean OR npm_Mean (Weak Quality).
+  - Interpretation: Price momentum is strong but quality is low. Monitor for potential reversal.
+  - Action: Apply a Small Caution (Optional minor adjustment -0.005 or less).
+    - Guideline: Maintain the Tier 1 view but acknowledge quality concerns. Do NOT heavily dampen the return.
+
+**3. Value Floor Awareness (Short Monitoring):
+  **Minor Caution on Short Confidence:
+  - Condition: Tier 1 Short + Low bm_Mean & CAPEI_Mean (Deep Value).
+  - Interpretation: Momentum is weak, but valuation suggests potential value support.
+  - Action: Apply Small Caution (Optional minor adjustment +0.005 to reduce short intensity).
+    - Guideline: Maintain Tier 1 short view but acknowledge value floor. Do NOT fully neutralize.
+
 **4. Structural Distress (Confirming Shorts):
 **Confirm Short Confidence:
-  - Condition: Tier 1 Short + Bottom-Tier Rank in Quality + Top-Tier Rank in Risk.
-  - Interpretation: Price is falling and the absolute financial health is critical.
+  - Condition: Tier 1 Short + Low Quality (roe, npm) + High Debt (totdebt_invcap).
+  - Interpretation: Price is falling and the financial health is deteriorating.
   - Action: Confirm High Confidence Short.
     - Guideline: Maintain the strong negative view derived from Tier 1.
 
-**5. Integrated Decision Matrix:
-  - Tier 1 Strong Long + High Absolute Quality → Priority Buy (Max Conviction)
-  - Tier 1 Strong Long + Low Absolute Quality → Speculative Buy (Reduced Conviction/Penalty)
-  - Tier 1 Strong Short + Deep Value (Absolute) → Neutral / Avoid (Safety Brake)
-  - Tier 1 Strong Short + High Risk (Absolute) → Priority Short (Max Conviction)
+**5. Integrated Decision Matrix (Tier 1 Dominates, Tier 2 Refines):
+  - Tier 1 Strong Long + High Quality → Priority Buy (Boost +0.005 to +0.01)
+  - Tier 1 Strong Long + Low Quality → Maintain Long (Minor caution -0.005 max)
+  - Tier 1 Strong Short + Deep Value → Maintain Short (Minor caution +0.005 max)
+  - Tier 1 Strong Short + High Debt/Low Quality → Priority Short (Boost -0.005 to -0.01)
 ---
 
 ### TIER 3 GUIDELINES (Final Synthesis: Macro-Regime & Multi-Factor Integration)
@@ -104,13 +99,13 @@ Determine the "season" to see which sectors are favored by the environment.
 - **Expansionary Cycle (CLI Rising, Capex Up)**: Tailwind for Cyclicals (Industrials, Energy, Cons. Disc).
 - **Contractionary Cycle (CLI Falling, Capex Down)**: Tailwind for Defensives (Staples, Health Care).
 
-**2. Systemic Risk Guard (The "All-Stop" Signal)**:
-- **Condition**: If the Yield Curve is **Deeply Inverted** OR Business Investment is **Crashing** (Recession Signals).
-- **Action**: **GLOBAL DAMPENING**.
-  - Override Tier 1 Momentum.
-  - Reduce conviction on ALL Long positions.
-  - Force a rotation into "Deep Quality" and "Defensives" regardless of their current momentum.
-  - *Rationale*: In a systemic crisis, macro risk outweighs individual sector strength.
+**2. Systemic Risk Awareness (Extreme Crisis Only)**:
+- **Condition**: If MULTIPLE macro signals simultaneously indicate EXTREME crisis (e.g., Yield Curve Deeply Inverted AND Capex Crashing AND CLI Falling).
+- **Action**: **MODERATE CAUTION** (Not Full Override).
+  - Acknowledge macro headwinds but respect Tier 1 Momentum signals.
+  - Apply minor reduction (-0.005 to -0.01) on cyclical Long positions.
+  - Slightly favor defensive sectors if Tier 1 signals are neutral.
+  - *Rationale*: Price action (Tier 1) often leads macro data. Do NOT blindly override momentum.
 
 **3. Multi-Factor Synthesis Logic (Combining T1 + T2 + T3)**:
 
@@ -120,22 +115,22 @@ Determine the "season" to see which sectors are favored by the environment.
   - **Action**: **Aggressive Long**. Use maximum allowed conviction.
   - *Reasoning*: The sector is leading price, has solid numbers, and the economy supports it.
 
-- **The "Divergence" (Conflict Resolution)**:
+- **The "Divergence" (Respect Price Action)**:
   - **Context**: Price is moving against the Macro logic.
   - **Condition**: **Tier 1 (Strong Trend)** + **Tier 3 (Macro Headwind)**.
-  - **Action**: **Respect Price, but Reduce Size**. Maintain a Long view but dampen the conviction significantly.
-  - *Reasoning*: "Don't fight the tape," but acknowledge the wind is in your face. Be cautious.
+  - **Action**: **Prioritize Tier 1**. Maintain the Long view with only minor adjustment (-0.005 max).
+  - *Reasoning*: "Don't fight the tape." Price often leads fundamentals. Macro headwinds are noted but not overriding.
 
-- **The "Value Trap" Avoidance**:
+- **The "Value Trap" Caution**:
   - **Context**: Cheap valuations in a bad economy.
-  - **Condition**: **Tier 2 (Deep Value/Cheap)** + **Tier 3 (Macro Headwind/Recession)** + **Tier 1 (Weak)**.
-  - **Action**: **Avoid / Neutral**. Do not buy based on value alone.
-  - *Reasoning*: Stocks are cheap for a reason. Wait for Tier 1 or Tier 3 to turn first.
+  - **Condition**: **Tier 2 (Deep Value Rank)** + **Tier 3 (Macro Headwind)** + **Tier 1 (Weak)**.
+  - **Action**: **Maintain Tier 1 View**. Do not force a long based solely on value rank.
+  - *Reasoning*: Sectors are cheap for a reason. Respect Tier 1 weakness. Value rank alone is insufficient.
 
 - **The "Quality Shield"**:
   - **Context**: Macro is uncertain/neutral.
   - **Condition**: **Tier 3 (Neutral/Mixed)**.
-  - **Action**: **Rely on Tier 2**. Prioritize sectors with the highest "Relative Quality Rank" (ROE, Margins).
+  - **Action**: **Prioritize Tier 1, with Tier 2 as tiebreaker**. Use Quality Rank to refine conviction when Tier 1 signals are similar.
 
 **4. Final Output Calibration**:
 - **Holistic Review**: Does the final set of 5-6 pairs tell a consistent story? (e.g., If you are betting on a "Boom," you shouldn't be heavily Long Defensives).

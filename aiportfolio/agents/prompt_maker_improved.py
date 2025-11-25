@@ -22,7 +22,14 @@ from aiportfolio.agents.prepare.Tier3_calculate import calculate_macro_indicator
 # ==========================================================
 # [설정] 데이터베이스 경로
 # ==========================================================
-BASE_PATH_DB = r"C:\Users\shins\OneDrive\LABA_BL_AGENTS_F\LABA_BL_AGENTS_FINAL\database"
+# 프로젝트 루트 디렉토리 기준 상대 경로 사용 (사용자 환경 독립적)
+import os as _os
+# __file__은 aiportfolio/agents/prompt_maker_improved.py
+# 프로젝트 루트는 3단계 위 (agents -> aiportfolio -> LABA_BL_AGENTS_FINAL)
+_CURRENT_FILE_DIR = _os.path.dirname(_os.path.abspath(__file__))  # .../aiportfolio/agents
+_AIPORTFOLIO_DIR = _os.path.dirname(_CURRENT_FILE_DIR)           # .../aiportfolio
+_PROJECT_ROOT = _os.path.dirname(_AIPORTFOLIO_DIR)               # .../LABA_BL_AGENTS_FINAL
+BASE_PATH_DB = _os.path.join(_PROJECT_ROOT, "database")
 TIER2_PARQUET_FILE = "tier2_accounting_metrics.parquet"
 
 def round_numeric_values(data, decimals=2):
@@ -157,17 +164,18 @@ def making_tier2_INPUT(end_date):
         else:
             return value
 
+    # 최종 리스트 생성 (절대값 Mean 사용)
     sector_data_list = []
     for sector in sectors:
         sector_data_list.append({
             "sector": sector,
-            "bm": safe_get_metric_value(sector, 'bm_Mean'),                   # PBR 관련
-            "capei": safe_get_metric_value(sector, 'CAPEI_Mean'),             # PER/CAPE 관련
-            "gprof": safe_get_metric_value(sector, 'GProf_Mean'),             # 매출총이익성
-            "npm": safe_get_metric_value(sector, 'npm_Mean'),                 # 순이익률
-            "roa": safe_get_metric_value(sector, 'roa_Mean'),                 # ROA
-            "roe": safe_get_metric_value(sector, 'roe_Mean'),                 # ROE
-            "totdebt_invcap": safe_get_metric_value(sector, 'totdebt_invcap_Mean') # 부채비율
+            "bm_Mean": safe_get_metric_value(sector, 'bm_Mean'),
+            "CAPEI_Mean": safe_get_metric_value(sector, 'CAPEI_Mean'),
+            "GProf_Mean": safe_get_metric_value(sector, 'GProf_Mean'),
+            "npm_Mean": safe_get_metric_value(sector, 'npm_Mean'),
+            "roa_Mean": safe_get_metric_value(sector, 'roa_Mean'),
+            "roe_Mean": safe_get_metric_value(sector, 'roe_Mean'),
+            "totdebt_invcap_Mean": safe_get_metric_value(sector, 'totdebt_invcap_Mean')
         })
 
     return sector_data_list
