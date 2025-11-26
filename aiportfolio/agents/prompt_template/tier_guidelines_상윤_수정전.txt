@@ -4,6 +4,7 @@
 - volatility: The annualized standard deviation of monthly returns over the past 12 months, measuring recent return variability.
 - z_score: The standardized score of the latest monthly return relative to the mean and standard deviation of the past 24 months, indicating mean-reversion or deviation from typical behavior. 
 - trend_strength_r2: The R-squared from a linear regression on the most recent 12 months of the price index, quantifying the strength and consistency of the sector’s price trend.
+Observe the raw price action (`12m_returns`, `trend_strength_r2`) and risk (`volatility`, `z_score`).
 ---
 
 ### TIER 2 GUIDELINES (Technical + Accounting Indicators)
@@ -16,6 +17,8 @@ This lag is realistic and intentional—investors must make decisions based on t
 - CAPEI: A CAPEX-related indicator reflecting capital expenditure intensity or asset reinvestment behavior, typically capturing long-term investment and capital allocation efficiency.
 - GProf: Gross profit margin, measuring core profitability from revenue after accounting for direct production costs.
 - totdebt_invcap: Total debt divided by invested capital (or market capitalization proxy), capturing leverage and balance-sheet risk.
+
+Judge whether 'structural quality' justifies the current price action.
 ---
 
 ### TIER 3 GUIDELINES (Final Synthesis: Macro-Regime & Multi-Factor Integration)
@@ -24,6 +27,7 @@ This lag is realistic and intentional—investors must make decisions based on t
 - G20_CLI: The OECD Composite Leading Indicator index level
 - T10Y2Y: The yield spread between the 10-year and 2-year U.S. Treasury rates
 - GPDIC1_PCA: The year-over-year percent change in real private domestic investment
+Which of your identified opportunities are favored by the current economic cycle?
 ---
 
 ### COMMON RULES (All Tiers)
